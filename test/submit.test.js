@@ -128,6 +128,20 @@ test('el Partner completo pasa y lleva los 22 campos, sin pisarse ninguno', asyn
   assert.match(sent[0].text, /^Certified by a certifying agency\?: yes$/m)
 })
 
+// Las tres casillas de clasificacion se anadieron al HTML y por poco se quedan
+// fuera de la lista blanca: habrian viajado en el POST y desaparecido en
+// silencio, que es exactamente el fallo que este formulario ya tenia.
+test('las casillas de clasificacion llegan al email', async () => {
+  sent.length = 0
+  const r = res()
+  await handler(req({ method: 'POST', query: { f: 'partner' },
+    body: { ...PARTNER, 'small-business': 'yes', 'woman-owned': 'yes' } }), r)
+  assert.strictEqual(r.statusCode, 200)
+  assert.match(sent[0].text, /^Small Business Enterprise: yes$/m)
+  assert.match(sent[0].text, /^Woman-Owned Business Enterprise: yes$/m)
+  assert.match(sent[0].text, /^Minority Business Enterprise: -$/m)
+})
+
 test('la misma IP no puede mandar sin limite', async () => {
   const ip = { headers: { 'x-forwarded-for': '203.0.113.9' } }
   let ultimo

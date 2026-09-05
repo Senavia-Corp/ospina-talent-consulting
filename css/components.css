@@ -329,8 +329,16 @@ html:not(.js) .nav-toggle { display: none; }
 .field:focus { border-color: var(--violet); }
 textarea.field { min-height: 8rem; resize: vertical; }
 
+.field-row + .field-row { margin-top: var(--s-4); }
+
+.form-fieldset { border: 0; padding: 0; margin: var(--s-5) 0 0; }
+.form-fieldset + .field-row { margin-top: var(--s-5); }
+.form-fieldset legend { padding: 0; }
+
 .choice { display: flex; align-items: center; gap: var(--s-3); padding-block: var(--s-2); }
 .choice input { width: 1.125rem; height: 1.125rem; accent-color: var(--violet); }
+
+.form-actions { margin-top: var(--s-6); }
 
 .form-hp { position: absolute; left: -9999px; top: -9999px; }
 

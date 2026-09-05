@@ -52,7 +52,7 @@ a { color: inherit; }
 button, input, textarea, select { font: inherit; color: inherit; }
 
 :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
-  outline: var(--focus-w) solid var(--amber);
+  outline: var(--focus-w) solid var(--focus-c);
   outline-offset: 2px;
   border-radius: 1px;
 }

@@ -131,10 +131,13 @@ html:not(.js) .nav-toggle { display: none; }
   color: var(--outline-on, var(--on-violet));
 }
 
-/* Toda superficie sobre la que el texto va en blanco declara aqui su contorno. */
+/* Toda superficie sobre la que el texto va en blanco declara aqui su contorno,
+   y de paso el color del anillo de foco: sobre violeta o tinta, el violeta del
+   anillo seria invisible y el ambar da 4,65:1 y 8,75:1. */
 .plane-violet, .plane-deep, .hero, .page-head, .cta-panel, .site-footer {
   --outline-c: var(--on-violet);
   --outline-on: var(--violet);
+  --focus-c: var(--amber);
 }
 
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--s-4); }

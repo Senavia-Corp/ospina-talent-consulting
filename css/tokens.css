@@ -119,6 +119,15 @@
      en todo el sitio, la del panel de contacto, que se monta sobre el borde
      de dos planos y necesita despegarse de los dos a la vez. */
   --shadow-1: 0 1px 2px rgb(29 16 41 / .06), 0 12px 32px -16px rgb(29 16 41 / .28);
+
+  /* ---- foco ---------------------------------------------------------------
+     El anillo de foco es un elemento NO textual: WCAG 1.4.11 le pide 3:1
+     contra lo que tiene al lado. El ambar da 2,08:1 sobre blanco y NO vale
+     ahi; el violeta da 9,67:1. Asi que el color por defecto es el violeta y
+     son las superficies oscuras las que lo cambian a ambar (4,65:1 sobre
+     violeta, 8,75:1 sobre tinta).
+     -------------------------------------------------------------------- */
+  --focus-c:  var(--violet);
   --focus-w:  3px;
 
   /* ---- movimiento -------------------------------------------------------- */

@@ -97,6 +97,26 @@ test('los unicos terceros que sirven assets son los esperados', () => {
   assert.deepStrictEqual([...hosts].sort(), EXTERNOS_OK.slice().sort())
 })
 
+// Las URL absolutas al PROPIO dominio se saltaban el gate, porque el filtro descarta
+// todo lo que empieza por https:. Y og:image es una de ellas: apuntaba a una imagen
+// borrada al pasar la fotografia a WebP y devolvia 404 en produccion, de modo que
+// cualquiera que compartiera el sitio lo veia sin imagen. No lo canto ningun test.
+test('las URL absolutas al propio dominio apuntan a ficheros que existen', () => {
+  const rotas = []
+  const propias = /https?:\/\/(?:www\.)?(?:ospina-talent-consulting\.vercel\.app|ospinatalentconsulting\.com)(\/[^\s"')]*)/g
+  for (const file of [...html, ...css]) {
+    const s = fs.readFileSync(path.join(ROOT, file), 'utf8')
+    for (const m of s.matchAll(propias)) {
+      const ruta = m[1].split(/[?#]/)[0]
+      // Las rutas de pagina las resuelve cleanUrls; /api/ y /_vercel/ son de plataforma.
+      if (/^\/(api|_vercel)\//.test(ruta)) continue
+      const target = path.join(ROOT, ruta === '/' ? 'index.html' : ruta)
+      if (!existe(target)) rotas.push(`${file} -> ${m[0]}`)
+    }
+  }
+  assert.deepStrictEqual(rotas, [], `URL absolutas al propio dominio que no existen:\n${rotas.join('\n')}`)
+})
+
 // srcset no lo miraba nadie. El regex de refs() pide el literal `src="`, y en `srcset="`
 // tras src viene set=, asi que las candidatas no pasaban por el gate: un nombre de
 // variante mal escrito se desplegaba en silencio, sin 404 visible y sin fallar un test.

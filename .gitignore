@@ -1,5 +1,10 @@
 node_modules/
 .vercel
 .env*
-.claude/
 .DS_Store
+
+# De .claude solo se versiona el entorno de desarrollo, que el README documenta.
+# Lo demas (settings.local.json, worktrees) es local de cada maquina.
+.claude/*
+!.claude/serve.js
+!.claude/launch.json

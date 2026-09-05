@@ -1,8 +1,7 @@
 // Envia los formularios a /api/submit y reproduce lo que hacia Webflow al volver.
 //
-// Webflow deja de gestionar un formulario en cuanto tiene un action= propio: en
-// js/webflow.js, la funcion que monta el form se sale sin asignar handler. Sin esto, el
-// navegador navegaria a la respuesta JSON de la API y se perderia el mensaje de exito.
+// Sin esto el navegador navegaria a la respuesta JSON de la API y se perderia el
+// mensaje de exito en linea.
 //
 // Se replica su comportamiento: se oculta el form y se muestra .w-form-done, o
 // .w-form-fail si algo fallo.
@@ -16,9 +15,10 @@
     return wrap ? wrap.querySelector(selector) : null
   }
 
-  // El CSS de Webflow los deja en display:none, asi que hay que poner block explicito.
-  // OJO al borrar css/webflow.css: esa regla hay que redeclararla o los dos mensajes se
-  // ven permanentemente, sin lanzar ningun error.
+  // Esto solo pone display:block; nunca oculta al cargar. Quien los oculta es la
+  // regla .w-form-done, .w-form-fail { display: none } de css/components.css.
+  // Si esa regla desaparece, los dos mensajes se ven a la vez y permanentemente,
+  // sin lanzar ningun error en consola.
   function show(el, visible) {
     if (el) el.style.display = visible ? 'block' : 'none'
   }
@@ -31,7 +31,9 @@
     if (!action || action.indexOf('/api/submit') !== 0) return
 
     evt.preventDefault()
-    evt.stopPropagation() // en fase de captura: webflow.js ni se entera
+    // Fase de captura y stopPropagation: asi ningun otro handler que se registre
+    // despues puede volver a enviar el formulario por su cuenta.
+    evt.stopPropagation()
 
     var btn = form.querySelector('[type="submit"]')
     var label = btn ? btn.value : null

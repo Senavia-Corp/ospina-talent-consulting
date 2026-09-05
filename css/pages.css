@@ -72,14 +72,14 @@
   font-size: var(--fs-lead);
   line-height: var(--lh-lead);
   color: var(--on-violet-2);
-  max-width: 56ch;
+  max-width: 42ch;
 }
 
 /* ------------------------------------------------------- bloque de texto */
 .section-head { margin-bottom: var(--s-7); }
 .section-icon { width: 3rem; height: 3rem; margin-bottom: var(--s-4); }
 .section-head__title { margin-bottom: var(--s-4); }
-.section-head__lede { color: var(--mute); font-size: var(--fs-lead); max-width: 56ch; }
+.section-head__lede { color: var(--mute); font-size: var(--fs-lead); max-width: 42ch; }
 .plane-violet .section-head__lede,
 .plane-deep .section-head__lede { color: var(--on-violet-2); }
 
@@ -139,7 +139,7 @@
   color: var(--violet);
   margin-bottom: var(--s-5);
 }
-.form-note { color: var(--mute); font-size: var(--fs-sm); }
+.form-note { color: var(--mute); font-size: var(--fs-sm); max-width: var(--w-prose); }
 
 /* =========================================================== movimiento
    UN solo momento animado en todo el sitio, el de la portada, y se ANADE

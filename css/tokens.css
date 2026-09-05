@@ -125,6 +125,30 @@
      de dos planos y necesita despegarse de los dos a la vez. */
   --shadow-1: 0 1px 2px rgb(29 16 41 / .06), 0 12px 32px -16px rgb(29 16 41 / .28);
 
+  /* La MISMA elevacion para superficies RECORTADAS con clip-path, que no pueden
+     llevar box-shadow: el recorte se aplica DESPUES de pintar (filter -> clip ->
+     mask -> opacity), asi que se lleva la sombra por delante. Va como filter en
+     un ANCESTRO sin recortar; en el propio elemento recortado tampoco se ve.
+
+     No es --shadow-1 portado, es --shadow-1 REAJUSTADO, por dos motivos:
+
+     1. drop-shadow() no admite spread. El -16px de --shadow-1 no se puede
+        expresar, y el navegador RECHAZA la declaracion entera si se copia tal
+        cual: CSS.supports('filter','drop-shadow(0 12px 32px -16px …)') es false.
+        Falla en silencio, sin error en consola y sin sombra.
+     2. El desenfoque no esta en la misma escala. Medido en Chrome sobre este
+        mismo violeta: box-shadow blur 32 da sigma 17 (blur/2, como dice el
+        spec), pero drop-shadow blur 32 da sigma 31. Difumina el doble.
+
+     Los numeros salen de ajustar el perfil de oscurecimiento contra --shadow-1
+     sin recortar, muestreado a 2/4/8/12/16/24/32/40px del borde inferior y a
+     2/6/12/20px del lateral. blur 10 y alfa .11 es el minimo del error.
+     Queda un poco mas cargado en los 4px pegados al lateral (4,0 % contra
+     3,2 %): es el suelo de no tener spread, no un descuido. */
+  --shadow-1-clip:
+    drop-shadow(0 1px 1px rgb(29 16 41 / .06))
+    drop-shadow(0 12px 10px rgb(29 16 41 / .11));
+
   /* ---- foco ---------------------------------------------------------------
      El anillo de foco es un elemento NO textual: WCAG 1.4.11 le pide 3:1
      contra lo que tiene al lado. El ambar da 2,08:1 sobre blanco y NO vale

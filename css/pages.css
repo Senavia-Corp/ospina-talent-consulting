@@ -93,12 +93,17 @@
 
 /* --------------------------------------------------------- panel de CTA
    La UNICA sombra del sitio: se monta sobre el borde de dos planos y
-   necesita despegarse de los dos a la vez. */
+   necesita despegarse de los dos a la vez.
+
+   Aqui NO va box-shadow, aunque sea lo que pide el cuerpo. El panel lleva
+   .notch-tr-bl, y clip-path recorta el render ya pintado: la sombra se
+   dibujaba y el recorte se la comia entera. Estuvo asi, muerta y sin que lo
+   cantara nada, hasta que se midio. La sombra vive ahora en el .u-page de
+   abajo, que es el ancestro sin recortar mas cercano. */
 .cta-panel {
   padding: clamp(var(--s-6), 5vw, var(--s-8));
   background: var(--violet);
   color: var(--on-violet);
-  box-shadow: var(--shadow-1);
 }
 .cta-panel__title { font-size: var(--fs-h2); margin-bottom: var(--s-4); }
 .cta-panel__lede { color: var(--on-violet-2); margin-bottom: var(--s-6); max-width: 48ch; }
@@ -143,6 +148,24 @@
   .cta-panel__media::after {
     background: linear-gradient(to right, var(--violet), transparent 6rem);
   }
+}
+
+/* La elevacion del panel, puesta en su envoltorio porque el panel esta
+   recortado. El :has() NO es cosmetico, es el guarda: .u-page sale 4-9 veces
+   por pagina y una de ellas es .site-header__inner, que contiene el .site-nav
+   con position: fixed. Un filter ahi le cambia el bloque contenedor y el menu
+   movil colapsa de 375x747 a 375x96, con los siete enlaces en una rendija.
+   :has(> .cta-panel) casa exactamente uno por pagina, nunca la cabecera.
+   NO ensanchar este selector. */
+.u-page:has(> .cta-panel) { filter: var(--shadow-1-clip); }
+
+/* En PAPEL se apaga. Un subarbol con filter se rasteriza al paginar: con el
+   filtro puesto, el titular, la entradilla, la etiqueta del boton y el
+   telefono salen del panel como bitmap y desaparecen de la capa de texto del
+   PDF, o sea que dejan de poder seleccionarse y buscarse. En papel la sombra
+   no aporta nada y el texto si. */
+@media print {
+  .u-page:has(> .cta-panel) { filter: none; }
 }
 
 /* ------------------------------------------------------------ liderazgo */

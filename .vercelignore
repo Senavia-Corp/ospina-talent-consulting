@@ -4,3 +4,7 @@ node_modules/
 .env*
 scripts/
 code.html
+
+# El traspaso y las notas no se despliegan
+README.md
+memory/

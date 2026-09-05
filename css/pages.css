@@ -1,0 +1,148 @@
+/* ============================================================================
+   pages — la composicion de cada pagina
+   ========================================================================== */
+
+/* ============================================================== la portada
+   Plano violeta y fotografia UNO AL LADO DEL OTRO, no uno encima del otro.
+   El export ponia linear-gradient(#6214a8b3, #000000b3) sobre cada foto: la
+   imagen quedaba de textura y el titular perdia contraste real. */
+.hero { background: var(--violet); color: var(--on-violet); }
+.hero__grid { display: grid; gap: 0; align-items: stretch; }
+@media (min-width: 56rem) { .hero__grid { grid-template-columns: 1.05fr .95fr; } }
+
+.hero__copy {
+  padding-block: clamp(var(--s-8), 8vw, var(--s-10));
+  padding-inline: var(--gutter);
+  max-width: calc(var(--w-page) / 2 + var(--gutter));
+  margin-left: auto;
+  width: 100%;
+}
+.hero__title {
+  font-size: var(--fs-display);
+  font-weight: 800;
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+  margin-bottom: var(--s-5);
+}
+.hero__lede {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  color: var(--on-violet-2);
+  max-width: 46ch;
+  margin-bottom: var(--s-7);
+}
+.hero__media { position: relative; min-height: clamp(15rem, 42vw, 30rem); }
+.hero__media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* El chaflan muerde la esquina del medio hacia el plano violeta. */
+@media (min-width: 56rem) {
+  .hero__media { clip-path: polygon(var(--notch) 0, 100% 0, 100% 100%, 0 100%, 0 var(--notch)); }
+}
+
+/* ------------------------------------------------- cabecera de pagina
+   Las interiores no llevan hero fotografico: un plano violeta bajo, con el
+   titulo y una entradilla. Menos ruido y carga mucho menos. */
+.page-head {
+  background: var(--violet);
+  color: var(--on-violet);
+  padding-block: clamp(var(--s-7), 6vw, var(--s-9));
+}
+.page-head__title {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  letter-spacing: var(--tr-display);
+  margin-bottom: var(--s-4);
+}
+.page-head__lede {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  color: var(--on-violet-2);
+  max-width: 56ch;
+}
+
+/* ------------------------------------------------------- bloque de texto */
+.section-head { margin-bottom: var(--s-7); }
+.section-head__title { margin-bottom: var(--s-4); }
+.section-head__lede { color: var(--mute); font-size: var(--fs-lead); max-width: 56ch; }
+.plane-violet .section-head__lede,
+.plane-deep .section-head__lede { color: var(--on-violet-2); }
+
+/* --------------------------------------------------- dos columnas texto+foto */
+.split { display: grid; gap: var(--s-7); align-items: center; }
+@media (min-width: 56rem) {
+  .split { grid-template-columns: 1fr 1fr; gap: clamp(var(--s-7), 5vw, var(--s-9)); }
+  .split--flip .split__media { order: -1; }
+}
+.split__media img { width: 100%; }
+
+/* --------------------------------------------------------- panel de CTA
+   La UNICA sombra del sitio: se monta sobre el borde de dos planos y
+   necesita despegarse de los dos a la vez. */
+.cta-panel {
+  padding: clamp(var(--s-6), 5vw, var(--s-8));
+  background: var(--violet);
+  color: var(--on-violet);
+  box-shadow: var(--shadow-1);
+}
+.cta-panel__title { font-size: var(--fs-h2); margin-bottom: var(--s-4); }
+.cta-panel__lede { color: var(--on-violet-2); margin-bottom: var(--s-6); max-width: 48ch; }
+.cta-phone {
+  display: inline-block;
+  margin-top: var(--s-5);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--amber);          /* 4,65:1 sobre violeta, y va en tamano grande */
+  text-decoration: none;
+}
+.cta-phone:hover { text-decoration: underline; }
+
+/* ------------------------------------------------------------ liderazgo */
+.leader { display: grid; gap: var(--s-7); }
+@media (min-width: 56rem) { .leader { grid-template-columns: 20rem 1fr; gap: var(--s-9); } }
+.leader__portrait img { width: 100%; }
+.leader__name { font-size: var(--fs-h1); font-weight: 800; letter-spacing: var(--tr-display); }
+.leader__role { color: var(--violet); font-weight: 600; margin-top: var(--s-2); }
+.leader__body { margin-top: var(--s-5); }
+.leader__body p + p { margin-top: var(--s-4); }
+
+/* -------------------------------------------------------------- contacto */
+.contact-grid { display: grid; gap: var(--s-7); }
+@media (min-width: 56rem) { .contact-grid { grid-template-columns: 1fr 1.1fr; gap: var(--s-9); } }
+.contact-item + .contact-item { margin-top: var(--s-5); }
+.contact-item__label { font-size: var(--fs-sm); font-weight: 700; color: var(--violet); }
+.contact-item__value { font-size: var(--fs-lead); text-decoration: none; }
+.contact-item__value:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------- formularios */
+.form-stack { display: grid; gap: var(--s-5); }
+.form-section { padding-top: var(--s-6); border-top: 1px solid var(--line); }
+.form-section:first-of-type { padding-top: 0; border-top: 0; }
+.form-section__title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--violet);
+  margin-bottom: var(--s-5);
+}
+.form-note { color: var(--mute); font-size: var(--fs-sm); }
+
+/* =========================================================== movimiento
+   UN solo momento animado en todo el sitio, el de la portada, y se ANADE
+   bajo prefers-reduced-motion: no-preference en vez de quitarse bajo
+   reduce. El estado por defecto es el visible.
+
+   Esto no es un detalle de estilo. El sitio anterior ocultaba 28 elementos
+   con style="opacity:0" en el HTML y los revelaba con un disparador
+   SCROLL_INTO_VIEW de Webflow IX2, que no dispara para lo que ya esta en el
+   viewport. Aqui la visibilidad del contenido no depende de JavaScript en
+   ningun momento. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__title, .hero__lede, .hero__actions {
+    animation: subir var(--dur-3) var(--ease-out) both;
+  }
+  .hero__lede    { animation-delay: 60ms; }
+  .hero__actions { animation-delay: 120ms; }
+}
+@keyframes subir {
+  from { opacity: 0; transform: translateY(0.75rem); }
+  to   { opacity: 1; transform: none; }
+}

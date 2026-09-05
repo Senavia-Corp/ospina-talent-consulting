@@ -1,0 +1,354 @@
+/* ============================================================================
+   components — cabecera, botones, filas de servicio, franjas, testimonios,
+   formularios, casos, pie
+   ========================================================================== */
+
+/* ------------------------------------------------------------- cabecera
+   Hermana de <main> y del pie, nunca dentro de una seccion achaflanada. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  min-height: var(--header-h);
+}
+.site-header__brand { margin-right: auto; display: flex; align-items: center; }
+.site-header__brand img { width: auto; height: clamp(1.75rem, 3vw, 2.25rem); }
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--s-4), 2vw, var(--s-6));
+}
+.site-nav__link {
+  display: inline-block;
+  padding-block: var(--s-2);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--ink);
+}
+.site-nav__link:hover { color: var(--violet); }
+.site-nav__link[aria-current="page"] {
+  color: var(--violet);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 0 var(--amber);
+}
+
+.nav-toggle {
+  display: none;
+  width: 2.75rem; height: 2.75rem;   /* 44px: area de toque minima */
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: var(--r-control);
+  cursor: pointer;
+}
+.nav-toggle__bars, .nav-toggle__bars::before, .nav-toggle__bars::after {
+  display: block;
+  width: 1.125rem; height: 2px;
+  margin-inline: auto;
+  background: var(--ink);
+  content: "";
+}
+.nav-toggle__bars::before { transform: translateY(-6px); }
+.nav-toggle__bars::after  { transform: translateY(4px); }
+
+/* El complemento EXACTO de min-width: 64rem. Escribir max-width: 63.99rem
+   dejaria una franja muerta entre 1023,84 y 1024px sin navegacion de ningun
+   tipo: ni la de escritorio ni la de movil. */
+@media not all and (min-width: 64rem) {
+  .nav-toggle { display: block; }
+  .site-nav {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    z-index: 40;
+    padding: var(--s-6) var(--gutter) var(--s-8);
+    background: var(--paper);
+    overflow-y: auto;
+  }
+  .site-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .site-nav__link {
+    padding-block: var(--s-4);
+    font-size: var(--fs-h3);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-nav__cta { margin-top: var(--s-5); }
+}
+
+/* Sin JavaScript el panel no puede quedar oculto: el boton no existe y la
+   lista se ve apilada. El hidden solo manda cuando hay JS para quitarlo. */
+html:not(.js) .site-nav[hidden] { display: block; }
+html:not(.js) .nav-toggle { display: none; }
+
+/* --------------------------------------------------------------- botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.875rem;
+  padding: var(--s-3) var(--s-6);
+  border: 2px solid transparent;
+  border-radius: var(--r-control);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--ease-out),
+              color var(--dur-1) var(--ease-out),
+              border-color var(--dur-1) var(--ease-out);
+}
+/* Relleno ambar, tinta oscura. Nunca texto blanco sobre ambar: 1,9:1. */
+.btn--amber { background: var(--amber); color: var(--ink); }
+.btn--amber:hover { background: var(--amber-press); }
+
+.btn--violet { background: var(--violet); color: var(--on-violet); }
+.btn--violet:hover { background: var(--violet-deep); }
+
+.btn--outline { background: transparent; color: var(--violet); border-color: var(--violet); }
+.btn--outline:hover { background: var(--violet); color: var(--on-violet); }
+
+/* Sobre plano violeta el contorno se dibuja en blanco, no en violeta. */
+.plane-violet .btn--outline,
+.plane-deep .btn--outline { color: var(--on-violet); border-color: var(--on-violet); }
+.plane-violet .btn--outline:hover,
+.plane-deep .btn--outline:hover { background: var(--on-violet); color: var(--violet); }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--s-4); }
+
+/* ------------------------------------------------- filas de servicio
+   Cinco servicios con nombres largos. Como filas se leen; troceados en
+   cinco tarjetas identicas se convierten en un muestrario. */
+.service-list { border-top: 1px solid var(--line); }
+.service-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-2) var(--s-6);
+  padding-block: var(--s-6);
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+@media (min-width: 48rem) {
+  .service-row { grid-template-columns: minmax(14rem, 20rem) 1fr auto; align-items: baseline; }
+}
+.service-row__name {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: var(--tr-head);
+  color: var(--violet);
+}
+.service-row__desc { color: var(--mute); max-width: 52ch; }
+/* La marca de la fila: un chaflan pequeno que se rellena de ambar al
+   apuntar. Es el unico movimiento no pedido por el usuario en la pagina. */
+.service-row__mark {
+  width: 1.25rem; height: 1.25rem;
+  align-self: center;
+  background: var(--violet-mist);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 35% 100%, 0 65%);
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+.service-row:hover .service-row__mark,
+.service-row:focus-visible .service-row__mark { background: var(--amber); }
+.service-row:hover .service-row__name { text-decoration: underline; text-underline-offset: 4px; }
+
+/* --------------------------------------------------------------- franjas
+   Dos franjas tipograficas: certificaciones del equipo y empresas con las
+   que ha trabajado la fundadora. Sin logos: los de terceros son marcas
+   registradas con sus propias normas de uso. */
+.strip { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.strip__item {
+  padding: var(--s-2) var(--s-5);
+  background: var(--violet-mist);
+  color: var(--violet);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  clip-path: polygon(0 0, calc(100% - .5rem) 0, 100% .5rem, 100% 100%, 0 100%);
+}
+.plane-violet .strip__item,
+.plane-deep .strip__item { background: rgb(255 255 255 / .12); color: var(--on-violet); }
+
+.wordmarks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4) var(--s-7);
+  align-items: baseline;
+}
+.wordmarks li {
+  font-size: clamp(1.0625rem, .95rem + .5vw, 1.375rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--mute);
+}
+
+/* --------------------------------------------------- valores y pasos */
+.grid-cards {
+  display: grid;
+  gap: var(--s-5);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.value {
+  padding: var(--s-5) var(--s-5) var(--s-6);
+  background: var(--paper-2);
+  border-top: 3px solid var(--violet);
+}
+.value__name { font-size: var(--fs-h3); margin-bottom: var(--s-2); }
+.value__desc { color: var(--mute); font-size: var(--fs-sm); }
+
+/* El proceso SI es una secuencia, asi que aqui el numero informa. En el
+   resto del sitio no hay marcadores numerados. */
+.steps { counter-reset: paso; display: grid; gap: var(--s-6); }
+@media (min-width: 48rem) { .steps { grid-template-columns: repeat(3, 1fr); gap: var(--s-7); } }
+.step { counter-increment: paso; }
+.step::before {
+  content: counter(paso);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem; height: 2.5rem;
+  margin-bottom: var(--s-4);
+  background: var(--amber);
+  color: var(--ink);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  clip-path: polygon(0 0, calc(100% - .625rem) 0, 100% .625rem, 100% 100%, 0 100%);
+}
+.step__name { font-size: var(--fs-h3); margin-bottom: var(--s-2); }
+.step__desc { color: var(--mute); font-size: var(--fs-sm); }
+
+/* ------------------------------------------------------------- casos */
+.case { display: grid; gap: 0; }
+@media (min-width: 56rem) { .case { grid-template-columns: 1fr 1fr; } }
+.case__side { padding: var(--s-6) clamp(var(--s-5), 4vw, var(--s-8)); }
+.case__side--challenge { background: var(--violet-mist); }
+.case__side--solution { background: var(--paper-2); }
+.case__kicker {
+  margin-bottom: var(--s-3);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--violet);
+}
+.case__title { margin-bottom: var(--s-5); }
+
+/* ------------------------------------------------------- testimonios
+   El desplazamiento es CSS. El JS solo anade flechas y puntos: si se borra
+   el fichero, el carrusel se sigue arrastrando con el dedo. */
+.quotes__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(min(19rem, 82vw), 1fr);
+  gap: var(--s-5);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: var(--s-2);
+}
+.quotes__track::-webkit-scrollbar { display: none; }
+@media (min-width: 64rem) { .quotes__track { grid-auto-columns: minmax(0, calc((100% - 2 * var(--s-5)) / 3)); } }
+.quote {
+  scroll-snap-align: start;
+  padding: var(--s-6);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.quote__stars { width: 6.5rem; margin-bottom: var(--s-4); }
+.quote__text { margin-bottom: var(--s-5); }
+.quote__who { font-weight: 600; font-size: var(--fs-sm); }
+
+.quotes__nav { display: flex; gap: var(--s-3); margin-top: var(--s-5); }
+.quotes__arrow {
+  width: 2.75rem; height: 2.75rem;
+  display: grid; place-items: center;
+  border: 1px solid var(--violet);
+  background: transparent;
+  color: var(--violet);
+  border-radius: var(--r-control);
+  cursor: pointer;
+}
+.quotes__arrow:hover:not([disabled]) { background: var(--violet); color: var(--on-violet); }
+.quotes__arrow[disabled] { opacity: .35; cursor: default; }
+.quotes__dots { display: flex; gap: var(--s-2); margin-left: auto; align-items: center; }
+.quotes__dot {
+  width: .5rem; height: .5rem; padding: 0;
+  border: 0; background: var(--line); cursor: pointer;
+}
+.quotes__dot[aria-current="true"] { background: var(--violet); }
+
+/* ---------------------------------------------------------- formularios */
+.field-row { display: grid; gap: var(--s-4); }
+@media (min-width: 40rem) { .field-row--2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 40rem) { .field-row--3 { grid-template-columns: repeat(3, 1fr); } }
+
+.field-label {
+  display: block;
+  margin-bottom: var(--s-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.field {
+  width: 100%;
+  min-height: 2.875rem;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--paper);
+}
+.field:focus { border-color: var(--violet); }
+textarea.field { min-height: 8rem; resize: vertical; }
+
+.choice { display: flex; align-items: center; gap: var(--s-3); padding-block: var(--s-2); }
+.choice input { width: 1.125rem; height: 1.125rem; accent-color: var(--violet); }
+
+.form-hp { position: absolute; left: -9999px; top: -9999px; }
+
+/* ⚠ ESTA REGLA NO ES DECORATIVA.
+   Venia de css/webflow.css, que este redisenio borra. js/form-submit.js solo
+   hace display:block al enviar; nunca los oculta al cargar. Sin esta regla
+   los mensajes de exito Y de error se ven a la vez, permanentemente, en las
+   dos paginas con formulario, y sin lanzar ningun error en consola. */
+.w-form-done, .w-form-fail { display: none; }
+
+.w-form-done, .w-form-fail { padding: var(--s-5); border-radius: var(--r-control); }
+.w-form-done { background: var(--violet-mist); color: var(--ink); }
+.w-form-fail { background: #fdecea; color: var(--danger); }
+
+/* ----------------------------------------------------------------- pie */
+.site-footer { background: var(--ink); color: var(--on-violet); }
+.site-footer a { color: var(--on-violet-2); text-decoration: none; }
+.site-footer a:hover { color: var(--on-violet); text-decoration: underline; }
+.footer-grid {
+  display: grid;
+  gap: var(--s-7);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+.footer-title {
+  margin-bottom: var(--s-4);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--on-violet);
+}
+.footer-list li + li { margin-top: var(--s-3); }
+.footer-list a { font-size: var(--fs-sm); }
+.footer-bottom {
+  display: flex; flex-wrap: wrap; gap: var(--s-4);
+  align-items: center; justify-content: space-between;
+  margin-top: var(--s-8); padding-top: var(--s-5);
+  border-top: 1px solid rgb(255 255 255 / .16);
+  font-size: var(--fs-xs);
+  color: var(--on-violet-2);
+}
+.social { display: flex; gap: var(--s-4); }
+.social a { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
+.social svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }

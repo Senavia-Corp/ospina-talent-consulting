@@ -1,0 +1,143 @@
+/* ============================================================================
+   base — reset, elementos y primitivas de maquetacion
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ff);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  /* El body del export llevaba text-align: justify. Sin guionado eso abre
+     rios de blanco en cada parrafo, y en movil los abre enormes. */
+  text-align: left;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 700;
+  line-height: var(--lh-head);
+  letter-spacing: var(--tr-head);
+  text-wrap: balance;
+}
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+
+p { margin: 0; text-wrap: pretty; }
+p + p { margin-top: var(--s-4); }
+
+ul, ol { margin: 0; padding: 0; }
+li { list-style: none; }
+
+/* Outfit no tiene cursiva: el fichero variable latino solo trae la roman.
+   Sin esta regla el navegador sintetiza una oblicua inclinando los glifos,
+   que es peor que no tener cursiva. */
+em, i { font-style: normal; font-weight: 600; }
+
+strong, b { font-weight: 700; }
+
+a { color: inherit; }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: var(--focus-w) solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* ----------------------------------------------------------- maquetacion */
+
+.u-page {
+  width: 100%;
+  max-width: var(--w-page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.u-prose { max-width: var(--w-prose); }
+
+.u-lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  color: var(--mute);
+}
+
+.u-section { padding-block: var(--section-y); }
+
+.u-visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.u-skip {
+  position: absolute;
+  left: var(--s-4);
+  top: -100%;
+  z-index: 100;
+  padding: var(--s-3) var(--s-5);
+  background: var(--ink);
+  color: var(--on-violet);
+  text-decoration: none;
+}
+.u-skip:focus { top: var(--s-3); }
+
+/* ------------------------------------------------------- el chaflan
+   El gesto de marca, en una sola primitiva. Un cateto igual al otro y en
+   unidades absolutas: 45 grados exactos a cualquier ancho.
+
+   NO PONER NADA position:fixed DENTRO de un elemento con estas clases:
+   clip-path crea bloque contenedor para descendientes fijos, y lo fijo se
+   quedaria atrapado dentro de la caja recortada. La cabecera es hermana de
+   todas las secciones, asi que no puede pasar por construccion.
+   -------------------------------------------------------------------- */
+.notch-tr {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--notch)) 0,
+    100% var(--notch),
+    100% 100%,
+    0 100%);
+}
+.notch-bl {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    var(--notch) 100%,
+    0 calc(100% - var(--notch)));
+}
+.notch-tr-bl {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--notch)) 0,
+    100% var(--notch),
+    100% 100%,
+    var(--notch) 100%,
+    0 calc(100% - var(--notch)));
+}
+
+/* --------------------------------------------------------------- planos */
+
+.plane-violet { background: var(--violet); color: var(--on-violet); }
+.plane-deep   { background: var(--violet-deep); color: var(--on-violet); }
+.plane-mist   { background: var(--violet-mist); color: var(--ink); }
+.plane-paper2 { background: var(--paper-2); color: var(--ink); }
+
+.plane-violet .u-lead,
+.plane-deep .u-lead { color: var(--on-violet-2); }

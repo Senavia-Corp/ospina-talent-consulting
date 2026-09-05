@@ -102,6 +102,8 @@
 .page-head--services     { --head-img: url(../images/head-services-1600.webp); }
 .page-head--case-studies { --head-img: url(../images/head-case-studies-1600.webp); }
 .page-head--partner      { --head-img: url(../images/head-partner-1600.webp); }
+.page-head--about        { --head-img: url(../images/head-about-1600.webp); }
+.page-head--leadership   { --head-img: url(../images/head-leadership-1600.webp); }
 
 /* ------------------------------------------------------- bloque de texto */
 .section-head { margin-bottom: var(--s-7); }

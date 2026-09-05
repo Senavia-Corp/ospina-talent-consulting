@@ -5,10 +5,17 @@
    visual lo dice con dos recursos y nada mas: PLANOS VIOLETA PLANOS y una
    ESQUINA ACHAFLANADA, como la de un conector con clave o una tarjeta perforada.
 
-   Lo que este sistema NO hace, a proposito, porque es justo lo que hacia el
-   sitio anterior: degradados de violeta al 70 % encima de cada fotografia. El
-   export tenia cinco. La fotografia va a plena fuerza o no va; el violeta es un
-   plano al lado, no un filtro encima.
+   El sitio anterior ponia degradados de violeta encima de CADA fotografia; el
+   export traia cinco. Para las fotos de contenido la regla sigue en pie: van a
+   plena fuerza, con el violeta como plano al lado y no como filtro encima.
+   Ninguna foto de seccion lleva velo.
+
+   La excepcion, pedida y acotada, son las cabeceras de las interiores. Ahi la
+   foto si va debajo de un velo violeta: .page-head--photo en pages.css, al
+   84 %. No es una vuelta al patron viejo por dos razones. El velo es opaco de
+   mas a proposito, para que la foto ambiente sin disputarle el sitio al titulo,
+   y la cifra esta medida contra el peor pixel posible y sujeta por
+   test/contraste.test.js, que rompe la build si alguien la aclara.
 
    REGLAS DE CONTRASTE — si no estan escritas aqui, se incumplen.
    Todos los pares medidos, no estimados:

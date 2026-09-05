@@ -142,6 +142,39 @@
 }
 .cta-phone:hover { text-decoration: underline; }
 
+/* Variante con fotografia. El padding baja al cuerpo: sobre .cta-panel impide que
+   la imagen llegue a los bordes del plano. La diagonal no se repite aqui, que
+   clip-path recorta tambien a los hijos y la foto entra ya mordida. */
+.cta-panel--media { padding: 0; display: grid; }
+.cta-panel--media .cta-panel__body { padding: clamp(var(--s-6), 5vw, var(--s-8)); }
+
+/* La relacion de aspecto vive en el contenedor y la foto va absoluta dentro. En el
+   <img>, con la altura ya resuelta, calcularia el ANCHO y desbordaria la columna. */
+.cta-panel__media { position: relative; aspect-ratio: 16 / 10; }
+.cta-panel__media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+/* El encuadre va horneado en el fichero: la foto se recorto a 16:10 centrada en el
+   sujeto, asi que el cover recorta por los lados y nunca por la cabeza. Por eso no
+   hace falta object-position. */
+
+/* Fundido contra el morado para que la foto no llegue al copy con un corte duro. */
+.cta-panel__media::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, var(--violet), transparent 2rem);
+}
+
+@media (min-width: 56rem) {
+  .cta-panel--media { grid-template-columns: minmax(0, 56fr) minmax(0, 44fr); }
+  .cta-panel__media { aspect-ratio: auto; min-height: 22rem; }
+  .cta-panel__media::after {
+    background: linear-gradient(to right, var(--violet), transparent 6rem);
+  }
+}
+
 /* ------------------------------------------------------------ liderazgo */
 .leader { display: grid; gap: var(--s-7); }
 @media (min-width: 56rem) { .leader { grid-template-columns: 20rem 1fr; gap: var(--s-9); } }

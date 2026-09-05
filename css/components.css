@@ -166,9 +166,9 @@ html:not(.js) .nav-toggle { display: none; }
   color: inherit;
 }
 @media (min-width: 48rem) {
-  .service-row { grid-template-columns: minmax(14rem, 20rem) 1fr auto; align-items: baseline; }
+  .service-row { grid-template-columns: auto minmax(14rem, 20rem) 1fr auto; align-items: baseline; }
 }
-.service-row__icon { width: 2rem; height: 2rem; }
+.service-row__icon { width: 2rem; height: 2rem; align-self: center; }
 
 .service-row__name {
   font-size: var(--fs-h3);
@@ -188,7 +188,6 @@ html:not(.js) .nav-toggle { display: none; }
 }
 .service-row:hover .service-row__mark,
 .service-row:focus-visible .service-row__mark { background: var(--amber); }
-.service-row:hover .service-row__icon { width: 2rem; height: 2rem; }
 
 .service-row__name { text-decoration: underline; text-underline-offset: 4px; }
 
@@ -345,7 +344,25 @@ textarea.field { min-height: 8rem; resize: vertical; }
 .link-list a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* ----------------------------------------------------------------- pie */
-.site-footer { background: var(--ink); color: var(--on-violet); }
+/* overflow: clip es lo que recorta el mosaico contra los bordes (ver mas abajo);
+   ademas es lo unico que impide que el sangrado derecho genere scroll horizontal,
+   porque body no lleva overflow-x. CLIP y no HIDDEN: hidden convierte el pie en
+   contenedor de scroll, y al tabular hasta un enlace el navegador puede desplazarlo
+   con scrollIntoView; clip recorta igual sin crear contenedor. Y el arreglo NUNCA es
+   overflow-x en html/body: la cabecera es sticky y scroll-padding-top vive en :root,
+   asi que eso romperia las anclas de /services.
+   isolation crea el contexto de apilamiento sin el cual ::after pintaria por encima
+   del texto: el orden de pintado es ::before, .u-page, ::after, y los tres son
+   elementos posicionados. */
+.site-footer {
+  position: relative;
+  overflow: hidden;   /* respaldo para Safari < 16, que no conoce clip y tiraria la linea */
+  overflow: clip;
+  isolation: isolate;
+  background: var(--ink);
+  color: var(--on-violet);
+}
+.site-footer > .u-page { position: relative; z-index: 1; }
 .site-footer a { color: var(--on-violet-2); text-decoration: none; }
 .site-footer a:hover { color: var(--on-violet); text-decoration: underline; }
 .footer-grid {
@@ -379,3 +396,59 @@ textarea.field { min-height: 8rem; resize: vertical; }
 .social { display: flex; gap: var(--s-4); }
 .social a { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
 .social svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+
+/* ------------------------------------------------ el mosaico del pie
+   El isotipo es un triangulo subdividido en triangulos. Aqui se pinta ENORME y
+   recortado por los bordes del pie, para que se lea como una esquina de algo mucho
+   mayor y no como una textura. Es el mismo SVG dos veces, girado distinto.
+
+   Va en pseudo-elementos y no en markup porque el pie esta duplicado en las 8
+   paginas, byte a byte: en CSS entra una vez y no se desincroniza.
+
+   EL 26 % NO ES UN NUMERO DECORATIVO. Sobre --ink, el tinte mas claro del mosaico
+   compuesto al 26 % deja el texto al 78 % en 6,2:1 y el anillo de foco ambar en
+   4,3:1. El que rompe antes es el ANILLO (WCAG 1.4.11 le pide 3:1, no 4,5:1): a
+   partir de 0,37 el mosaico incumple. Lo sujeta test/contraste.test.js, que lee
+   esta cifra de aqui, asi que subirla rompe la build. Si hace falta que se vea
+   mas, se cambia el encuadre, no la opacidad.
+
+   Los apices van hacia FUERA: el tinte claro se sale de cuadro y el fragmento se
+   disuelve en la tinta segun se acerca al texto. */
+.site-footer::before,
+.site-footer::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .26;
+  aspect-ratio: 720 / 623.54;   /* el del SVG; alto derivado del ancho, nunca al reves */
+  /* cover y no contain: con la caja y el viewBox en la misma proporcion son
+     equivalentes, salvo que el redondeo deje medio pixel transparente en un lado.
+     En un fragmento que sangra, recortar ese medio pixel es gratis; el hueco se ve. */
+  background: url('../images/footer-mosaic.svg') no-repeat center / cover;
+}
+
+/* Movil: solo el fragmento inferior izquierdo, y por debajo del bloque de
+   direccion y horario. El segundo entra a partir de 48rem. */
+.site-footer::before {
+  left: -16vw;
+  bottom: -26vw;
+  width: clamp(15rem, 52vw, 22rem);
+  transform: rotate(198deg);
+}
+.site-footer::after { display: none; }
+
+@media (min-width: 48rem) {
+  .site-footer::before {
+    left: -10vw;
+    bottom: -7vw;
+    width: clamp(15rem, 26vw, 30rem);
+  }
+  .site-footer::after {
+    display: block;
+    right: -13vw;
+    top: -11vw;
+    width: clamp(20rem, 36vw, 46rem);
+    transform: rotate(26deg) scaleX(-1);
+  }
+}

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 623.54" fill="none">
+  <!-- Mosaico de 36 triangulos derivado del isotipo de Ospina Talent Consulting.
+       Rejilla equilatera de 6 filas: lado 120, altura de fila 103.92 (= lado*raiz(3)/2).
+       Fila r: borde superior en x = 360 +- (r-1)*60, inferior en x = 360 +- r*60.
+       Reparto de tintes segun el isotipo: apice con el mas claro, las dos esquinas
+       inferiores con el mas oscuro, cuna clara bajando por el centro-derecha y
+       ningun tinte tocando a otro igual. Decorativo: se pinta desde components.css
+       y no lleva ni title ni role. -->
+  <g fill="#E9DBF2">
+    <polygon points="360,0 300,103.92 420,103.92"/>
+  </g>
+  <g fill="#CFB8E4">
+    <polygon points="300,103.92 240,207.85 360,207.85"/>
+    <polygon points="360,207.85 480,207.85 420,311.77"/>
+    <polygon points="300,311.77 420,311.77 360,415.69"/>
+    <polygon points="480,415.69 420,519.62 540,519.62"/>
+    <polygon points="420,519.62 360,623.54 480,623.54"/>
+  </g>
+  <g fill="#C0A1DC">
+    <polygon points="300,103.92 420,103.92 360,207.85"/>
+    <polygon points="360,207.85 300,311.77 420,311.77"/>
+    <polygon points="420,311.77 360,415.69 480,415.69"/>
+    <polygon points="480,415.69 600,415.69 540,519.62"/>
+    <polygon points="300,519.62 420,519.62 360,623.54"/>
+    <polygon points="540,519.62 480,623.54 600,623.54"/>
+  </g>
+  <g fill="#A172CC">
+    <polygon points="420,103.92 360,207.85 480,207.85"/>
+    <polygon points="300,311.77 240,415.69 360,415.69"/>
+    <polygon points="420,311.77 540,311.77 480,415.69"/>
+    <polygon points="240,415.69 180,519.62 300,519.62"/>
+    <polygon points="360,415.69 480,415.69 420,519.62"/>
+    <polygon points="180,519.62 120,623.54 240,623.54"/>
+    <polygon points="420,519.62 540,519.62 480,623.54"/>
+  </g>
+  <g fill="#8243B8">
+    <polygon points="240,207.85 360,207.85 300,311.77"/>
+    <polygon points="180,311.77 300,311.77 240,415.69"/>
+    <polygon points="120,415.69 240,415.69 180,519.62"/>
+    <polygon points="360,415.69 300,519.62 420,519.62"/>
+    <polygon points="60,519.62 180,519.62 120,623.54"/>
+    <polygon points="300,519.62 240,623.54 360,623.54"/>
+    <polygon points="540,519.62 660,519.62 600,623.54"/>
+  </g>
+  <g fill="#6215A8">
+    <polygon points="240,207.85 180,311.77 300,311.77"/>
+    <polygon points="480,207.85 420,311.77 540,311.77"/>
+    <polygon points="180,311.77 120,415.69 240,415.69"/>
+    <polygon points="540,311.77 480,415.69 600,415.69"/>
+    <polygon points="120,415.69 60,519.62 180,519.62"/>
+    <polygon points="240,415.69 360,415.69 300,519.62"/>
+    <polygon points="600,415.69 540,519.62 660,519.62"/>
+    <polygon points="60,519.62 0,623.54 120,623.54"/>
+    <polygon points="180,519.62 300,519.62 240,623.54"/>
+    <polygon points="660,519.62 600,623.54 720,623.54"/>
+  </g>
+</svg>

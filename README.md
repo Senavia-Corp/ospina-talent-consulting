@@ -156,17 +156,28 @@ La respuesta debe pasar de `500 {"error":"Mail not configured"}` a
 
 Sobre el build servido, no a ojo:
 
-- **7 páginas × 375, 768, 1023, 1024 y 1440**: 0 scroll horizontal, 0 elementos en
-  `opacity:0` (con las animaciones terminadas), un solo `<h1>` por página, sin
-  saltos de nivel de encabezado, ninguna `<img>` sin `alt`, 0 errores de consola.
+- **7 páginas × 375, 768, 1023, 1024 y 1440**: 0 scroll horizontal, un solo `<h1>`
+  por página, sin saltos de nivel de encabezado, ninguna `<img>` sin `alt`, 0
+  errores de consola.
+- **0 elementos con texto en `opacity:0` SIN terminar las animaciones**, en las 8
+  páginas (las 7 más la 404) × 375 y 1440. La distinción importa: midiendo con
+  `getAnimations().forEach(a => a.finish())` se ve el estado final y se **oculta**
+  el problema. La animación de entrada de la portada iba de `opacity` 0 a 1 con
+  `fill-mode: both`, así que con la página sin pintar el titular se quedaba
+  invisible — el mismo fallo del que venía el sitio, en CSS en vez de en IX2. Lo
+  cazó accesslint contra producción, no mis mediciones. Ahora la animación mueve
+  solo `transform`, y `npm test` tiene un gate que rechaza cualquier `@keyframes`
+  que arranque en `opacity: 0`.
 - **Contraste de texto**: todos los pares de las 7 páginas pasan AA. El peor es
   4,62:1, el teléfono en ámbar sobre violeta, que va a 24px.
 - **Contraste del anillo de foco** (WCAG 1.4.11, 3:1): los 23 pares de las 7
   páginas pasan. El color sale de `--focus-c` porque **ningún color solo servía**:
   el ámbar da 2,08:1 sobre blanco y el violeta 1,00:1 sobre los planos violeta.
   Violeta sobre claro, ámbar sobre oscuro.
-- **accesslint** sobre las 7 páginas servidas: 0 violaciones. Ojo: eso ya salía en
-  verde con las 141 imágenes en `alt=""`, así que **no sustituye a mirarlo a mano**.
+- **accesslint sobre las 8 páginas en producción**: 0 violaciones. Dos avisos:
+  ya salía en verde con las 141 imágenes en `alt=""` (así que **no sustituye a
+  mirarlo a mano**), y en cambio sí cazó el `opacity` de la animación del hero,
+  que mis propias mediciones no veían.
 - **Cero peticiones a terceros** en producción, comprobado en el panel de red.
 - **Anclas de `/services`**: las 5 caen a 139px bajo la barra fija, el mismo valor
   en las cinco. El `scroll-padding` y la altura de la cabecera salen del mismo

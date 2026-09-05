@@ -137,3 +137,36 @@ test('cada candidata de cada srcset existe en disco', () => {
   assert.ok(candidatas > 0, 'no se ha parseado ninguna srcset: el gate no ha corrido')
   assert.deepStrictEqual(rotas, [], `Candidatas de srcset rotas:\n${rotas.join('\n')}`)
 })
+
+// La visibilidad del contenido no puede depender de que algo se dispare. Es el
+// fallo del que venia este sitio (28 elementos con style="opacity:0" que revelaba
+// un SCROLL_INTO_VIEW de Webflow IX2, y que no dispara para lo que ya esta en
+// pantalla) y volvio a colarse en CSS: la animacion del hero iba de opacity 0 a 1
+// con fill-mode both, asi que con la pagina sin pintar el titular se quedaba
+// invisible. accesslint lo canto como 2,76:1 contra produccion.
+test('nada esconde contenido con opacity 0 a la espera de un disparador', () => {
+  const restos = []
+
+  // (a) en el HTML, ni un opacity:0 en linea
+  for (const file of html) {
+    const s = fs.readFileSync(path.join(ROOT, file), 'utf8')
+    for (const m of s.matchAll(/style="[^"]*opacity:\s*0[^.\d][^"]*"/g)) {
+      restos.push(`${file}: ${m[0].slice(0, 60)}`)
+    }
+  }
+
+  // (b) en el CSS, ningun @keyframes arranca en opacity 0
+  for (const file of css) {
+    const s = fs.readFileSync(path.join(ROOT, file), 'utf8')
+    for (const m of s.matchAll(/@keyframes\s+([\w-]+)\s*\{([^]*?)\n\}/g)) {
+      const [, nombre, cuerpo] = m
+      const inicio = cuerpo.match(/(?:from|0%)\s*\{([^}]*)\}/)
+      if (inicio && /opacity:\s*0(?![.\d])/.test(inicio[1])) {
+        restos.push(`${file}: @keyframes ${nombre} arranca en opacity 0`)
+      }
+    }
+  }
+
+  assert.deepStrictEqual(restos, [],
+    `Contenido escondido a la espera de un disparador:\n${restos.join('\n')}`)
+})

@@ -464,3 +464,142 @@ textarea.field { min-height: 8rem; resize: vertical; }
     transform: rotate(26deg) scaleX(-1);
   }
 }
+
+/* ------------------------------------------------- franja de logos (marquesina)
+   Las diez empresas donde trabajo la fundadora, en movimiento continuo.
+
+   OJO CON EL ENCABEZADO. Dice "has worked with ... before founding the firm",
+   no "our clients" ni "trusted by". Son marcas de terceros y lo unico que
+   sostiene mostrarlas es que la frase describe un hecho de la carrera de
+   Yohanna sin insinuar patrocinio ni relacion comercial. Si alguien reescribe
+   ese encabezado en clave de clientela, hay que retirar los logos y volver a
+   .wordmarks. Esta franja sustituyo a esa lista en la home; leadership.html
+   la sigue usando, asi que .wordmarks NO es codigo muerto.
+
+   Sin flechas ni puntos a proposito: no es contenido que haya que recorrer,
+   es fondo de credibilidad. La unica interaccion es parar al pasar el raton
+   para poder mirar uno.
+
+   LAS ALTURAS NO SON IGUALES, y es deliberado. Se renderizo cada SVG, se
+   midio el area de tinta real y se interpolo a medias (media geometrica)
+   entre "misma altura" y "misma area de tinta":
+     - con misma altura, el circulo macizo de Dell pesa ~4x lo que el
+       logotipo de Oracle, que es una linea de letras finas;
+     - con misma area, Oracle bajaba a 13 px de alto y dejaba de leerse.
+   Y ademas --k corrige el RELLENO INTERNO del fichero: se mide la tinta,
+   pero quien recibe la altura es la caja del <img>. El SVG de Cisco trae un
+   13 % de aire dentro del viewBox y sin esa correccion se veia un 13 % mas
+   pequeno que el resto; los otros nueve vienen a hueso.
+
+   El resultado por logo va en --k, inline en el HTML, junto al logo que
+   describe. Hay que RECALCULARLO si se cambia algun SVG, porque depende del
+   recorte del fichero y no de la marca: se dibuja cada logo en un canvas
+   normalizado a 100 px de tinta, se mide area y caja, se interpola y se
+   divide por la fraccion de alto que ocupa la tinta.
+
+   UNA EXCEPCION MEDIDA A OJO: AT&T. Es el unico lockup APILADO (globo arriba,
+   nombre debajo) y la formula lo compara con logotipos horizontales, asi que
+   le daba 26 px de alto y 19 de ancho: ilegible. Va a 1.45, que lo pone a la
+   altura de los otros dos marcos redondos, Dell y HP. Cualquier logo apilado
+   que se anada tendra el mismo problema y la misma solucion.
+   -------------------------------------------------------------------------- */
+.clients {
+  background: var(--paper-2);
+  padding-block: clamp(var(--s-6), 4vw, var(--s-8));
+  /* corta el track, que es mas ancho que la pagina, antes de que llegue a
+     provocar scroll horizontal en el documento */
+  overflow: hidden;
+}
+
+/* Es el encabezado de la seccion, no una etiqueta decorativa encima de otra
+   cosa: por eso es h2 de verdad y va en caja baja al tamano del cuerpo
+   pequeno. El hero esta justo encima y no admite competencia. */
+.clients__title {
+  font-size: var(--fs-sm);
+  text-wrap: balance;
+  font-weight: 400;
+  line-height: var(--lh-body);
+  letter-spacing: 0;
+  color: var(--mute);
+  max-width: var(--w-prose);
+  margin: 0 0 var(--s-5);
+}
+
+.clients__viewport {
+  /* El desvanecido lateral es funcional, no adorno: sin el, los logos se
+     cortan a hachazo contra el borde de la pantalla al entrar y salir. */
+  --fade: clamp(1.5rem, 6vw, 5rem);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade), #000 calc(100% - var(--fade)), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade), #000 calc(100% - var(--fade)), transparent 100%);
+}
+
+.clients__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+/* TRES tandas identicas, no dos. El bucle desplaza el track un tercio de su
+   ancho, o sea exactamente una tanda, asi que por detras del borde derecho
+   tiene que quedar siempre al menos una tanda entera. Una tanda mide 1410 px
+   en escritorio (medido a 1440): con solo dos copias, cualquier pantalla de
+   mas de 1410 px veria el hueco justo antes de que el ciclo reinicie.
+
+   ponytail: con tres tandas el techo es un viewport de 2*1410 = 2820 px CSS,
+   que cubre cualquier portatil y un monitor de 2560. Un 4K a escala 100 %
+   (3840 px CSS) enseñaria hueco: la solucion es duplicar una cuarta tanda en
+   el HTML y pasar el fotograma a calc(-100% / 4). */
+.clients__row {
+  --clients-gap: clamp(2rem, 5vw, 3.5rem);
+  display: flex;
+  align-items: center;
+  gap: var(--clients-gap);
+  /* el hueco final va DENTRO de la tanda: asi las tres miden exactamente lo
+     mismo y el -33.3333% cae en el inicio de la siguiente, no a medio hueco */
+  padding: 0 var(--clients-gap) 0 0;
+  margin: 0;
+  list-style: none;
+  flex: 0 0 auto;
+}
+
+.clients__logo {
+  --lh: clamp(1.5rem, 1.15rem + 1.1vw, 2rem);   /* 24 -> 32 */
+  display: block;
+  height: calc(var(--lh) * var(--k, 1));
+  width: auto;
+  flex: 0 0 auto;
+  /* Gris y bajados de intensidad: son respaldo de fondo, no reclamos. El
+     color vuelve al pasar el raton, que es tambien cuando se para la cinta. */
+  filter: grayscale(1);
+  opacity: .58;
+  transition: filter var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .clients__logo:hover { filter: none; opacity: 1; }
+}
+
+/* El sitio anade movimiento bajo no-preference en vez de quitarlo bajo
+   reduce (misma convencion que .timeline en pages.css). */
+@media (prefers-reduced-motion: no-preference) {
+  .clients__track { animation: clients-marquee 60s linear infinite; }
+  .clients:hover .clients__track,
+  .clients:focus-within .clients__track { animation-play-state: paused; }
+}
+
+/* Quieto no puede significar inaccesible: sin animacion solo caben tres o
+   cuatro logos en un movil, asi que la cinta pasa a ser deslizable a mano y
+   las copias sobran. */
+@media (prefers-reduced-motion: reduce) {
+  .clients__viewport { overflow-x: auto; }
+  .clients__row + .clients__row { display: none; }
+}
+
+@keyframes clients-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  /* calc(-100% / 3), no -33.3333%: el literal deja 0,01 px de desajuste
+     contra el ancho de una tanda y el bucle podria enseñar una costura de
+     un pixel al reiniciar. Dividido, es exacto a cualquier ancho. */
+  to   { transform: translate3d(calc(-100% / 3), 0, 0); }
+}

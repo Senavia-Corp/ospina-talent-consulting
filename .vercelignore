@@ -4,6 +4,7 @@ node_modules/
 .env*
 scripts/
 code.html
+_real.html
 
 # El traspaso y las notas no se despliegan
 README.md

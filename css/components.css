@@ -155,6 +155,8 @@ html:not(.js) .nav-toggle { display: none; }
 @media (min-width: 48rem) {
   .service-row { grid-template-columns: minmax(14rem, 20rem) 1fr auto; align-items: baseline; }
 }
+.service-row__icon { width: 2rem; height: 2rem; }
+
 .service-row__name {
   font-size: var(--fs-h3);
   font-weight: 700;
@@ -173,7 +175,9 @@ html:not(.js) .nav-toggle { display: none; }
 }
 .service-row:hover .service-row__mark,
 .service-row:focus-visible .service-row__mark { background: var(--amber); }
-.service-row:hover .service-row__name { text-decoration: underline; text-underline-offset: 4px; }
+.service-row:hover .service-row__icon { width: 2rem; height: 2rem; }
+
+.service-row__name { text-decoration: underline; text-underline-offset: 4px; }
 
 /* --------------------------------------------------------------- franjas
    Dos franjas tipograficas: certificaciones del equipo y empresas con las
@@ -215,6 +219,7 @@ html:not(.js) .nav-toggle { display: none; }
   background: var(--paper-2);
   border-top: 3px solid var(--violet);
 }
+.value__icon { width: 2.5rem; height: 2.5rem; margin-bottom: var(--s-4); }
 .value__name { font-size: var(--fs-h3); margin-bottom: var(--s-2); }
 .value__desc { color: var(--mute); font-size: var(--fs-sm); }
 

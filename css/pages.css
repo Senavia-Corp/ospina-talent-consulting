@@ -143,7 +143,19 @@
   .hero__lede    { animation-delay: 60ms; }
   .hero__actions { animation-delay: 120ms; }
 }
+
+/* La animacion mueve SOLO transform. No toca opacity a proposito.
+   Con `opacity: 0` en el fotograma inicial y fill-mode both, el texto se queda
+   invisible mientras la animacion no corra: y no corre cuando el documento no
+   se esta pintando (pestana en segundo plano, sesion restaurada, un rastreador
+   que renderiza sin viewport). Medido: el h1 se quedo en opacity 0 durante mas
+   de 7 segundos con la pagina sin pintar, y accesslint lo canto como 2,76:1.
+
+   Es exactamente el fallo del que venia el sitio anterior, solo que en CSS en
+   vez de en IX2: contenido que no se ve hasta que algo lo dispara. Moviendo
+   solo transform, si la animacion no corre el texto sigue legible y como mucho
+   se queda 12px mas abajo. */
 @keyframes subir {
-  from { opacity: 0; transform: translateY(0.75rem); }
-  to   { opacity: 1; transform: none; }
+  from { transform: translateY(0.75rem); }
+  to   { transform: none; }
 }

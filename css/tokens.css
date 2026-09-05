@@ -63,6 +63,7 @@
   --on-violet:    #ffffff;
   --on-violet-2:  rgb(255 255 255 / .78);
   --danger:       #b3261e;
+  --danger-bg:    #fdecea;   /* --danger encima da 5,72:1 */
 
   /* ---- tipografia -------------------------------------------------------
      Una sola familia. La personalidad sale del ajuste, no de una segunda
@@ -95,7 +96,11 @@
   --section-y: clamp(3.5rem, 2rem + 6.4vw, 8.5rem);   /* 56 -> 136 */
   --gutter:    clamp(1.25rem, .6rem + 2.8vw, 2.5rem);
   --w-page:    78rem;    /* 1248 */
-  --w-prose:   64ch;
+  /* OJO: 1ch en Outfit son 0,656em, pero el ancho medio de caracter en texto
+     corrido es 0,411em. La unidad ch mide el "0", que es mas ancho que la
+     media: 64ch daban 91 caracteres por linea. 40ch dan ~64, que es la medida
+     que se busca. */
+  --w-prose:   40ch;
 
   /* ---- la esquina achaflanada -------------------------------------------
      El gesto de marca. Las dos catetos miden LO MISMO y en unidades

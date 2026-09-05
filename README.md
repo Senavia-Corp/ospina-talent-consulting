@@ -236,8 +236,12 @@ falta verlo con un teclado de verdad.
    mejora la página que más tiene que sostener la credibilidad de la consultora.
 8. **Testimonios.** Los cuatro del export se retiraron: eran texto de plantilla con
    nombres inventados («Jhon Smith»), dos de ellos casi idénticos, etiquetados como
-   clientes cuando hablaban como empleados. El carrusel (`scroll-snap` + flechas)
-   está escrito y esperando testimonios reales con nombre y cargo verificables.
+   clientes cuando hablaban como empleados. Hacen falta testimonios reales con
+   nombre y cargo verificables.
+   El carrusel (`scroll-snap` + flechas + puntos, con `IntersectionObserver`) se
+   escribió y funciona, pero **se retiró del código desplegado** porque eran 4,4 KB
+   que ninguna página usaba. Se recupera con
+   `git show 2cbe1f8:css/components.css` y `git show 2cbe1f8:js/site.js`.
 9. **`/api/submit` es un relé de correo público.** El honeypot y el límite por IP
    cortan el abuso trivial; el límite en memoria no se comparte entre instancias.
    Con DUNS y datos de empresa en el formulario de partners, conviene decidir

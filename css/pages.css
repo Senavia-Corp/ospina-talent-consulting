@@ -8,17 +8,29 @@
    imagen quedaba de textura y el titular perdia contraste real. */
 .hero { background: var(--violet); color: var(--on-violet); }
 .hero__grid { display: grid; gap: 0; align-items: stretch; }
-@media (min-width: 56rem) { .hero__grid { grid-template-columns: 1.05fr .95fr; } }
+/* 1fr 1fr y max-width de --w-page/2 EXACTO: con esos dos valores el borde
+   izquierdo del titular cae en (W - --w-page)/2 + --gutter, que es justo donde
+   empieza el contenido de .u-page, a cualquier ancho y sin usar vw (que
+   incluiria la barra de scroll). Antes era 1.05fr con +--gutter en el
+   max-width, y solo coincidia exactamente a 1600px: -8px a 1280, -4px a 1440,
+   +8px a 1920. */
+@media (min-width: 56rem) { .hero__grid { grid-template-columns: 1fr 1fr; } }
 
 .hero__copy {
   padding-block: clamp(var(--s-8), 8vw, var(--s-10));
   padding-inline: var(--gutter);
-  max-width: calc(var(--w-page) / 2 + var(--gutter));
+  max-width: calc(var(--w-page) / 2);
   margin-left: auto;
   width: 100%;
+  /* El cuerpo del titular se mide contra ESTA columna, no contra el viewport. */
+  container-type: inline-size;
 }
 .hero__title {
-  font-size: var(--fs-display);
+  /* --fs-display escala con vw, pero el titular vive en una columna que es la
+     mitad del viewport: a 1024 daba 76px sobre 461px de medida, o sea 6em, y
+     partia en 5 lineas con tres de una sola palabra. En cqi la medida se
+     mantiene en ~10em a cualquier ancho. */
+  font-size: clamp(2.375rem, 10.3cqi, 3.75rem);
   font-weight: 800;
   line-height: var(--lh-display);
   letter-spacing: var(--tr-display);

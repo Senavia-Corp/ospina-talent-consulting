@@ -1,6 +1,7 @@
 /* ============================================================================
    Ospina Talent Consulting — JS propio. Sin dependencias, sin build.
-   Dos cosas: el menu movil y las flechas/puntos del carrusel de testimonios.
+   Una sola cosa: el menu movil. El carrusel de testimonios se retiro al no
+   quedar testimonios publicables; esta en la historia de git si vuelve.
 
    Lo que NO hay aqui, a proposito: revelado al hacer scroll. El contenido es
    visible siempre y su visibilidad no depende de JavaScript en ningun
@@ -12,8 +13,6 @@
    ========================================================================== */
 (() => {
   'use strict'
-
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)')
 
   /* ------------------------------------------------------------- menu movil */
   const btn = document.querySelector('[data-nav-toggle]')
@@ -31,7 +30,13 @@
     // esto el lector de pantalla se pasea por el contenido tapado.
     const detras = [document.querySelector('.site-main'), document.querySelector('.site-footer')]
     const marcarInerte = () => {
-      for (const el of detras) if (el) el.inert = open && !desktop.matches
+      const tapando = open && !desktop.matches
+      for (const el of detras) if (el) el.inert = tapando
+      // inert bloquea interaccion y lector de pantalla, pero NO el scroll. Sin
+      // esta linea el gesto sobre el panel encadenaba al documento de detras y
+      // al cerrar el menu aparecias 1.200px mas abajo. El complemento en CSS es
+      // overscroll-behavior: contain en .site-nav.
+      document.documentElement.style.overflow = tapando ? 'hidden' : ''
     }
 
     const setOpen = (next) => {
@@ -84,74 +89,4 @@
     sync()
   }
 
-  /* --------------------------------------------------- carrusel de testimonios
-     El desplazamiento es CSS (scroll-snap). Esto solo anade flechas y puntos:
-     si se borra el fichero, el carrusel sigue arrastrandose con el dedo. */
-  document.querySelectorAll('[data-carousel]').forEach((root) => {
-    const track = root.querySelector('[data-carousel-track]')
-    const dots = root.querySelector('[data-carousel-dots]')
-    const prev = root.querySelector('[data-carousel-prev]')
-    const next = root.querySelector('[data-carousel-next]')
-    if (!track) return
-
-    const slides = [...track.children]
-    if (slides.length < 2) {
-      root.querySelector('[data-carousel-nav]')?.setAttribute('hidden', '')
-      return
-    }
-
-    let active = 0
-
-    const go = (i) => {
-      const target = slides[Math.max(0, Math.min(slides.length - 1, i))]
-      track.scrollTo({
-        left: target.offsetLeft - track.offsetLeft,
-        behavior: reduce.matches ? 'auto' : 'smooth',
-      })
-    }
-
-    prev?.addEventListener('click', () => go(active - 1))
-    next?.addEventListener('click', () => go(active + 1))
-
-    if (dots) {
-      slides.forEach((_, i) => {
-        const b = document.createElement('button')
-        b.type = 'button'
-        b.className = 'quotes__dot'
-        b.setAttribute('aria-label', `Testimonial ${i + 1} of ${slides.length}`)
-        b.addEventListener('click', () => go(i))
-        dots.append(b)
-      })
-    }
-
-    // Las flechas se deciden por posicion de scroll, no por indice: a >=64rem
-    // se ven tres tarjetas a la vez, asi que active === slides.length - 1 no
-    // se cumpliria nunca y next no se deshabilitaria jamas.
-    const atStart = () => track.scrollLeft <= 2
-    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 2
-
-    const paint = () => {
-      dots?.querySelectorAll('button').forEach((d, i) =>
-        d.setAttribute('aria-current', String(i === active)))
-      prev?.toggleAttribute('disabled', atStart())
-      next?.toggleAttribute('disabled', atEnd())
-    }
-
-    // Se queda con la PRIMERA visible. Quedandose con la ultima entrada del
-    // bucle, y viendose tres tarjetas a la vez en escritorio, en la posicion 0
-    // se encenderia el punto 3 y prev quedaria habilitado apuntando a una
-    // tarjeta ya visible.
-    if ('IntersectionObserver' in window) {
-      const visible = new Set()
-      const spy = new IntersectionObserver((entries) => {
-        for (const e of entries) e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)
-        if (visible.size) active = Math.min(...[...visible].map((s) => slides.indexOf(s)))
-        paint()
-      }, { root: track, threshold: 0.6 })
-      slides.forEach((s) => spy.observe(s))
-    }
-    track.addEventListener('scroll', paint, { passive: true })
-
-    paint()
-  })
 })()

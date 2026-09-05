@@ -67,11 +67,19 @@
   .nav-toggle { display: block; }
   .site-nav {
     position: fixed;
-    inset: var(--header-h) 0 0 0;
+    /* +1px: la cabecera mide --header-h de min-height MAS su borde inferior.
+       Sin esto el panel se comia esa linea y la cabecera se quedaba sin
+       separacion mientras el menu estaba abierto. */
+    inset: calc(var(--header-h) + 1px) 0 0 0;
     z-index: 40;
     padding: var(--s-6) var(--gutter) var(--s-8);
     background: var(--paper);
     overflow-y: auto;
+    /* Sin esto, cuando el contenido del panel cabe entero y no tiene scroll
+       propio, el gesto encadena al documento de detras: se cierra el menu y
+       estas 1.200px mas abajo de donde estabas. inert no lo evita, porque
+       bloquea interaccion y lector de pantalla, no el scroll. */
+    overscroll-behavior: contain;
   }
   .site-nav__list {
     flex-direction: column;
@@ -140,6 +148,8 @@ html:not(.js) .nav-toggle { display: none; }
   --focus-c: var(--amber);
 }
 
+.btn:disabled, .btn[disabled] { opacity: .55; cursor: progress; }
+
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--s-4); }
 
 /* ------------------------------------------------- filas de servicio
@@ -201,7 +211,9 @@ html:not(.js) .nav-toggle { display: none; }
 .wordmarks {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-4) var(--s-7);
+  /* El hueco entre columnas era --s-7 (3rem) y en una columna de 548px dejaba
+     la ultima fila con un solo nombre y el 87 % vacio. */
+  gap: var(--s-3) var(--s-5);
   align-items: baseline;
 }
 .wordmarks li {
@@ -212,11 +224,15 @@ html:not(.js) .nav-toggle { display: none; }
 }
 
 /* --------------------------------------------------- valores y pasos */
+/* Flex y no grid a proposito. Con auto-fit, 7 valores dejaban una tarjeta
+   huerfana ocupando el 32 % de la fila a 1024 y el 48 % a 768. Con flex, las
+   de la ultima fila crecen y no queda hueco. */
 .grid-cards {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--s-5);
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
+.grid-cards > * { flex: 1 1 15rem; }
 .value {
   padding: var(--s-5) var(--s-5) var(--s-6);
   background: var(--paper-2);
@@ -271,50 +287,6 @@ html:not(.js) .nav-toggle { display: none; }
 }
 .case__title { margin-bottom: var(--s-5); }
 
-/* ------------------------------------------------------- testimonios
-   El desplazamiento es CSS. El JS solo anade flechas y puntos: si se borra
-   el fichero, el carrusel se sigue arrastrando con el dedo. */
-.quotes__track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(min(19rem, 82vw), 1fr);
-  gap: var(--s-5);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding-bottom: var(--s-2);
-}
-.quotes__track::-webkit-scrollbar { display: none; }
-@media (min-width: 64rem) { .quotes__track { grid-auto-columns: minmax(0, calc((100% - 2 * var(--s-5)) / 3)); } }
-.quote {
-  scroll-snap-align: start;
-  padding: var(--s-6);
-  background: var(--paper);
-  border: 1px solid var(--line);
-}
-.quote__stars { width: 6.5rem; margin-bottom: var(--s-4); }
-.quote__text { margin-bottom: var(--s-5); }
-.quote__who { font-weight: 600; font-size: var(--fs-sm); }
-
-.quotes__nav { display: flex; gap: var(--s-3); margin-top: var(--s-5); }
-.quotes__arrow {
-  width: 2.75rem; height: 2.75rem;
-  display: grid; place-items: center;
-  border: 1px solid var(--violet);
-  background: transparent;
-  color: var(--violet);
-  border-radius: var(--r-control);
-  cursor: pointer;
-}
-.quotes__arrow:hover:not([disabled]) { background: var(--violet); color: var(--on-violet); }
-.quotes__arrow[disabled] { opacity: .35; cursor: default; }
-.quotes__dots { display: flex; gap: var(--s-2); margin-left: auto; align-items: center; }
-.quotes__dot {
-  width: .5rem; height: .5rem; padding: 0;
-  border: 0; background: var(--line); cursor: pointer;
-}
-.quotes__dot[aria-current="true"] { background: var(--violet); }
-
 /* ---------------------------------------------------------- formularios */
 .field-row { display: grid; gap: var(--s-4); }
 @media (min-width: 40rem) { .field-row--2 { grid-template-columns: 1fr 1fr; } }
@@ -359,7 +331,7 @@ textarea.field { min-height: 8rem; resize: vertical; }
 
 .w-form-done, .w-form-fail { padding: var(--s-5); border-radius: var(--r-control); }
 .w-form-done { background: var(--violet-mist); color: var(--ink); }
-.w-form-fail { background: #fdecea; color: var(--danger); }
+.w-form-fail { background: var(--danger-bg); color: var(--danger); }
 
 /* Lista de enlaces sobre fondo claro. .footer-list solo vale sobre el pie oscuro. */
 .link-list li + li { margin-top: var(--s-3); }

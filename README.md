@@ -159,8 +159,12 @@ Sobre el build servido, no a ojo:
 - **7 páginas × 375, 768, 1023, 1024 y 1440**: 0 scroll horizontal, 0 elementos en
   `opacity:0` (con las animaciones terminadas), un solo `<h1>` por página, sin
   saltos de nivel de encabezado, ninguna `<img>` sin `alt`, 0 errores de consola.
-- **Contraste**: todos los pares de las 7 páginas pasan AA. El peor es 4,62:1, el
-  teléfono en ámbar sobre violeta, que va a 24px.
+- **Contraste de texto**: todos los pares de las 7 páginas pasan AA. El peor es
+  4,62:1, el teléfono en ámbar sobre violeta, que va a 24px.
+- **Contraste del anillo de foco** (WCAG 1.4.11, 3:1): los 23 pares de las 7
+  páginas pasan. El color sale de `--focus-c` porque **ningún color solo servía**:
+  el ámbar da 2,08:1 sobre blanco y el violeta 1,00:1 sobre los planos violeta.
+  Violeta sobre claro, ámbar sobre oscuro.
 - **accesslint** sobre las 7 páginas servidas: 0 violaciones. Ojo: eso ya salía en
   verde con las 141 imágenes en `alt=""`, así que **no sustituye a mirarlo a mano**.
 - **Cero peticiones a terceros** en producción, comprobado en el panel de red.
@@ -180,6 +184,20 @@ Sobre el build servido, no a ojo:
   compartía `name` y uno pisaba al otro.
 - **Peso**: 1,09 MB el sitio entero, desde 9,7 MB de export. La página más pesada
   transfiere ~290 KB.
+- **`srcset`**: a 375px las 8 fotografías bajan la variante de 800w (24–67 KB); a
+  1440px bajan la de 1200w o 1600w, a ~2,2× del tamaño en pantalla.
+- **Todos los assets en producción**: 49 URLs referenciadas, las 49 a 200.
+- **Compartir**: `og:image` es 1200×630 (la relación 1,91:1 que piden las redes) y
+  responde 200. Los 7 `title` y las 7 `description` son únicos y caben sin que
+  Google los corte.
+- **404**: una URL inexistente devuelve HTTP 404 con la página del sitio, no la
+  genérica de Vercel con su identificador interno de infraestructura.
+
+**Lo que NO se pudo verificar renderizado:** el aspecto del anillo de foco y del
+enlace de salto. El panel del navegador de la sesión nunca recibe foco
+(`document.hasFocus()` es `false` siempre), así que `:focus` y `:focus-visible` no
+casan con nada. Se verificó por inspección de la regla y calculando el contraste;
+falta verlo con un teclado de verdad.
 
 ## Pendiente
 

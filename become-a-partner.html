@@ -59,21 +59,21 @@
       <div>
         <div>Join the Ospina Talent Consulting network as a staffing partner. We invite you to invest a few moments in registering your business for partnership evaluation. Following your submission, you will promptly receive an email confirmation.While registration does not guarantee future business, it does grant your company visibility within Ospina Talent Consulting. Should a promising business relationship emerge, we will promptly notify you.Furthermore, we encourage you to consider becoming a Diversity Partner. <br><br>Please complete the form below, and upon submission, we will connect with you if an opportunity for partnership arises. Note that fields marked with an asterisk (*) are mandatory. </div>
         <div class="form-block-3 w-form">
-          <form id="wf-form-Partner-Form" name="wf-form-Partner-Form" data-name="Partner Form" method="get" data-wf-page-id="6a95a7e9d506502e51ebb774" data-wf-element-id="dae6bf2f-ef00-c661-07f1-15eb5cc30035">
+          <form id="wf-form-Partner-Form" name="wf-form-Partner-Form" data-name="Partner Form" method="post" action="/api/submit?f=partner">
             <div class="section-form-1">
               <div class="title-field-big">Section I. Company Information<br></div>
               <div class="company-information">
                 <div>
-                  <div class="title-field">Legal Company Name *</div><input class="field w-input" maxlength="256" name="Legal-Company-Name" data-name="Legal Company Name" placeholder="" type="text" id="Legal-Company-Name" required="">
+                  <label class="title-field" for="legal-company-name">Legal Company Name *</label><input class="field w-input" maxlength="256" name="legal-company-name" data-name="Legal Company Name" placeholder="" type="text" id="legal-company-name" required="">
                 </div>
                 <div>
-                  <div class="title-field">Full Name *</div><input class="field w-input" maxlength="256" name="Full-Name" data-name="Full Name" placeholder="" type="text" id="Full-Name" required="">
+                  <label class="title-field" for="full-name">Full Name *</label><input class="field w-input" maxlength="256" name="full-name" data-name="Full Name" placeholder="" type="text" id="full-name" required="">
                 </div>
                 <div>
-                  <div class="title-field">DBA Company Name:</div><input class="field w-input" maxlength="256" name="DBA-Company-Name" data-name="DBA Company Name:" placeholder="" type="text" id="DBA-Company-Name" required="">
+                  <label class="title-field" for="dba-company-name">DBA Company Name</label><input class="field w-input" maxlength="256" name="dba-company-name" data-name="DBA Company Name" placeholder="" type="text" id="dba-company-name">
                 </div>
                 <div>
-                  <div class="title-field">D&amp;B DUNS Number:</div><input class="field w-input" maxlength="256" name="D-B-DUNS-Number" data-name="D&amp;B DUNS Number:" placeholder="" type="text" id="D-B-DUNS-Number" required="">
+                  <label class="title-field" for="duns-number">D&amp;B DUNS Number</label><input class="field w-input" maxlength="256" name="duns-number" data-name="D&amp;B DUNS Number" placeholder="" type="text" id="duns-number">
                 </div>
               </div>
             </div>
@@ -81,29 +81,29 @@
               <div class="title-field-big">Physical Address<br></div>
               <div class="company-information">
                 <div>
-                  <div class="title-field">Address *</div><input class="field w-input" maxlength="256" name="name-5" data-name="Name 5" placeholder="" type="text" id="name-5">
+                  <label class="title-field" for="address">Address *</label><input class="field w-input" maxlength="256" name="address" data-name="Address" placeholder="" type="text" id="address" required="">
                 </div>
                 <div>
-                  <div class="title-field">Country *</div><input class="field w-input" maxlength="256" name="name-4" data-name="Name 4" placeholder="" type="text" id="name-4">
+                  <label class="title-field" for="country">Country *</label><input class="field w-input" maxlength="256" name="country" data-name="Country" placeholder="" type="text" id="country" required="">
                 </div>
               </div>
               <div class="div-block-20">
                 <div>
-                  <div class="title-field">City *</div><input class="field w-input" maxlength="256" name="name-3" data-name="Name 3" placeholder="" type="text" id="name-3">
+                  <label class="title-field" for="city">City *</label><input class="field w-input" maxlength="256" name="city" data-name="City" placeholder="" type="text" id="city" required="">
                 </div>
                 <div>
-                  <div class="title-field">State *</div><input class="field w-input" maxlength="256" name="name-2" data-name="Name 2" placeholder="" type="text" id="name-2">
+                  <label class="title-field" for="state">State *</label><input class="field w-input" maxlength="256" name="state" data-name="State" placeholder="" type="text" id="state" required="">
                 </div>
                 <div>
-                  <div class="title-field">Zip Code *</div><input class="field w-input" maxlength="256" name="name-2" data-name="Name 2" placeholder="" type="text" id="name-2">
+                  <label class="title-field" for="zip-code">Zip Code *</label><input class="field w-input" maxlength="256" name="zip-code" data-name="Zip Code" placeholder="" type="text" id="zip-code" required="">
                 </div>
               </div>
               <div class="company-information">
                 <div>
-                  <div class="title-field">Company Phone Number *</div><input class="field w-input" maxlength="256" name="name-5" data-name="Name 5" placeholder="" type="text" id="name-5">
+                  <label class="title-field" for="company-phone">Company Phone Number *</label><input class="field w-input" maxlength="256" name="company-phone" data-name="Company Phone Number" placeholder="" type="tel" id="company-phone" required="">
                 </div>
                 <div>
-                  <div class="title-field">Company Website (URL) *</div><input class="field w-input" maxlength="256" name="name-4" data-name="Name 4" placeholder="" type="text" id="name-4">
+                  <label class="title-field" for="website">Company Website (URL) *</label><input class="field w-input" maxlength="256" name="website" data-name="Company Website (URL)" placeholder="" type="url" id="website" required="">
                 </div>
               </div>
             </div>
@@ -111,16 +111,16 @@
               <div class="title-field-big">Contact Information<br></div>
               <div class="company-information">
                 <div>
-                  <div class="title-field">Contact Name *</div><input class="field w-input" maxlength="256" name="Legal-Company-Name-2" data-name="Legal Company Name 2" placeholder="" type="text" id="Legal-Company-Name-2" required="">
+                  <label class="title-field" for="contact-name">Contact Name *</label><input class="field w-input" maxlength="256" name="contact-name" data-name="Contact Name" placeholder="" type="text" id="contact-name" required="">
                 </div>
                 <div>
-                  <div class="title-field">Title *</div><input class="field w-input" maxlength="256" name="Full-Name-2" data-name="Full Name 2" placeholder="" type="text" id="Full-Name-2" required="">
+                  <label class="title-field" for="title">Title *</label><input class="field w-input" maxlength="256" name="title" data-name="Title" placeholder="" type="text" id="title" required="">
                 </div>
                 <div>
-                  <div class="title-field">Phone Number *</div><input class="field w-input" maxlength="256" name="DBA-Company-Name-2" data-name="DBA Company Name 2" placeholder="" type="text" id="DBA-Company-Name-2" required="">
+                  <label class="title-field" for="contact-phone">Phone Number *</label><input class="field w-input" maxlength="256" name="contact-phone" data-name="Phone Number" placeholder="" type="tel" id="contact-phone" required="">
                 </div>
                 <div>
-                  <div class="title-field">Email *</div><input class="field w-input" maxlength="256" name="D-B-DUNS-Number-2" data-name="D B DUNS Number 2" placeholder="" type="text" id="D-B-DUNS-Number-2" required="">
+                  <label class="title-field" for="contact-email">Email *</label><input class="field w-input" maxlength="256" name="contact-email" data-name="Email" placeholder="" type="email" id="contact-email" required="">
                 </div>
               </div>
             </div>
@@ -128,37 +128,43 @@
               <div class="title-field-big">Section II. Products and Services<br></div>
               <div class="company-information">
                 <div>
-                  <div class="title-field">Please list IT areas that you specialize in</div><input class="field w-input" maxlength="256" name="Legal-Company-Name-3" data-name="Legal Company Name 3" placeholder="" type="text" id="Legal-Company-Name-3" required="">
+                  <label class="title-field" for="it-areas">Please list IT areas that you specialize in</label><input class="field w-input" maxlength="256" name="it-areas" data-name="Please list IT areas that you specialize in" placeholder="" type="text" id="it-areas">
                 </div>
                 <div>
-                  <div class="title-field">Number of Employees</div><input class="field w-input" maxlength="256" name="Full-Name-3" data-name="Full Name 3" placeholder="" type="text" id="Full-Name-3" required="">
+                  <label class="title-field" for="number-of-employees">Number of Employees</label><input class="field w-input" maxlength="256" name="number-of-employees" data-name="Number of Employees" placeholder="" type="text" id="number-of-employees">
                 </div>
               </div>
             </div>
             <div class="section-form-1">
-              <div class="title-field-big">Section II. Products and Services<br></div>
+              <div class="title-field-big">Section III. Diversity and Certifications<br></div>
               <div class="title-field">If your company is a minority-owned, woman-owned, or small business enterprise, please check the appropriate checkbox(s) below and follow the prompts.</div>
               <div class="company-information">
                 <div>
-                  <div class="title-field">- Small Business Enterprise<br>- Minority Business Enterprise Ethnicity</div>
+                  <label class="w-checkbox"><input type="checkbox" id="small-business" name="small-business" value="yes" class="w-checkbox-input"><span class="w-form-label">Small Business Enterprise</span></label>
+                  <label class="w-checkbox"><input type="checkbox" id="minority-business" name="minority-business" value="yes" class="w-checkbox-input"><span class="w-form-label">Minority Business Enterprise</span></label>
+                  <label class="w-checkbox"><input type="checkbox" id="woman-owned" name="woman-owned" value="yes" class="w-checkbox-input"><span class="w-form-label">Woman-Owned Business Enterprise</span></label>
                 </div>
                 <div>
-                  <div class="title-field"><strong>Are you certified by a certifying agency?<br></strong></div><label class="w-radio"><input type="radio" data-name="Radio" id="radio" name="radio" class="w-form-formradioinput w-radio-input" value="Radio"><span class="w-form-label" for="radio">Yes</span></label><label class="w-radio"><input type="radio" data-name="Radio 2" id="radio-2" name="radio" class="w-form-formradioinput w-radio-input" value="Radio"><span class="w-form-label" for="radio-2">No</span></label>
+                  <div class="title-field"><strong>Are you certified by a certifying agency?<br></strong></div>
+                  <label class="w-radio"><input type="radio" id="certified-yes" name="certified" value="yes" class="w-form-formradioinput w-radio-input"><span class="w-form-label">Yes</span></label>
+                  <label class="w-radio"><input type="radio" id="certified-no" name="certified" value="no" class="w-form-formradioinput w-radio-input"><span class="w-form-label">No</span></label>
                 </div>
                 <div>
-                  <div class="title-field">Certification Type</div><input class="field w-input" maxlength="256" name="Legal-Company-Name-3" data-name="Legal Company Name 3" placeholder="" type="text" id="Legal-Company-Name-3" required="">
+                  <label class="title-field" for="certification-type">Certification Type</label><input class="field w-input" maxlength="256" name="certification-type" data-name="Certification Type" placeholder="" type="text" id="certification-type">
                 </div>
                 <div>
-                  <div class="title-field">Certifying Agency</div><input class="field w-input" maxlength="256" name="Full-Name-3" data-name="Full Name 3" placeholder="" type="text" id="Full-Name-3" required="">
+                  <label class="title-field" for="certifying-agency">Certifying Agency</label><input class="field w-input" maxlength="256" name="certifying-agency" data-name="Certifying Agency" placeholder="" type="text" id="certifying-agency">
                 </div>
                 <div>
-                  <div class="title-field">Expiration Date</div><input class="field w-input" maxlength="256" name="Full-Name-3" data-name="Full Name 3" placeholder="" type="text" id="Full-Name-3" required="">
+                  <label class="title-field" for="certification-expiration">Expiration Date</label><input class="field w-input" maxlength="256" name="certification-expiration" data-name="Expiration Date" placeholder="" type="date" id="certification-expiration">
                 </div>
                 <div>
-                  <div class="title-field">Certification No.</div><input class="field w-input" maxlength="256" name="Full-Name-3" data-name="Full Name 3" placeholder="" type="text" id="Full-Name-3" required="">
+                  <label class="title-field" for="certification-number">Certification No.</label><input class="field w-input" maxlength="256" name="certification-number" data-name="Certification No." placeholder="" type="text" id="certification-number">
                 </div>
               </div>
-            </div><input type="submit" data-wait="Please wait..." class="button w-button" value="Submit">
+            </div>
+            <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px"><label for="fax-partner">Fax</label><input type="text" id="fax-partner" name="fax" tabindex="-1" autocomplete="off"></div>
+            <input type="submit" data-wait="Please wait..." class="button w-button" value="Submit">
           </form>
           <div class="w-form-done">
             <div>Thank you! Your submission has been received!</div>
@@ -238,19 +244,9 @@
           </ul>
         </div>
         <div id="w-node-_38e3e3b2-0c42-5b6e-ef76-2a2ba678d6e3-a678d6bb" class="block-footer">
-          <h3 class="h3">Email subscription</h3>
-          <div>Sign up for our newsletter to receive updates on our services.<br></div>
-          <div class="footer-form w-form">
-            <form id="wf-form-Footer-Form" name="wf-form-Footer-Form" data-name="Footer Form" method="get" class="footer-form-container" data-wf-page-id="6a95a7e9d506502e51ebb774" data-wf-element-id="38e3e3b2-0c42-5b6e-ef76-2a2ba678d6ea">
-              <div class="footer-form-block"><input class="footer-form-field w-input" maxlength="256" name="Footer-Email-4" data-name="Footer Email 4" aria-label="Get product updates" placeholder="Get product updates" type="email" id="Footer-Email-4" required=""><input type="submit" data-wait="Please wait..." class="footer-form-submit w-button" value=""></div>
-            </form>
-            <div class="w-form-done">
-              <div>Thank you! Your submission has been received!</div>
-            </div>
-            <div class="w-form-fail">
-              <div>Oops! Something went wrong while submitting the form.</div>
-            </div>
-          </div>
+                    <h3 class="h3">Talk to us</h3>
+          <div>Tell us what your team needs and we will come back to you with a shortlist.<br></div>
+          <a href="/contact" class="button w-button">Request a consultation</a>
         </div>
       </div>
       <div data-w-id="38e3e3b2-0c42-5b6e-ef76-2a2ba678d6f4" class="footer-line"></div>
@@ -271,5 +267,6 @@
   </section>
   <script src="js/jquery-3.5.1.min.js" type="text/javascript"></script>
   <script src="js/webflow.js" type="text/javascript"></script>
+  <script src="js/form-submit.js"></script>
 </body>
 </html>

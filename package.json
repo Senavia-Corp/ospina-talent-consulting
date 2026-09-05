@@ -1,0 +1,12 @@
+{
+  "name": "ospina-talent-consulting",
+  "private": true,
+  "description": "Sitio de Ospina Talent Consulting, migrado de Webflow a Vercel. Estatico, sin build.",
+  "dependencies": {
+    "nodemailer": "^10.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check-smtp": "node scripts/check-smtp.js"
+  }
+}

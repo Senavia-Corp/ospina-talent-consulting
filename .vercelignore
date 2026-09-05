@@ -1,0 +1,6 @@
+test/
+node_modules/
+.claude/
+.env*
+scripts/
+code.html

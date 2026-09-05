@@ -166,9 +166,21 @@ html:not(.js) .nav-toggle { display: none; }
   color: inherit;
 }
 @media (min-width: 48rem) {
-  .service-row { grid-template-columns: auto minmax(14rem, 20rem) 1fr auto; align-items: baseline; }
+  .service-row { grid-template-columns: minmax(14rem, 20rem) 1fr auto; align-items: baseline; }
+  /* El icono COMPARTE columna con el nombre, no lleva carril propio. Con carril
+     propio sus 2rem mas el gap salen enteros de la descripcion, porque el 1fr es
+     la unica pista flexible de las tres: la medida caia de ~44 a ~35 caracteres
+     en todo el rango 768-1134px, y ahi el max-width de 52ch todavia no ata nada.
+     Encima del nombre cuesta alto, que sobra, en vez de ancho, que no.
+     De paso repite el orden que ya usa services.html: icono sobre el titulo.
+     La marca abarca las dos filas para seguir centrada contra la fila entera,
+     que es lo que hacia cuando la rejilla tenia una sola. */
+  .service-row__icon { grid-column: 1; grid-row: 1; }
+  .service-row__name { grid-column: 1; grid-row: 2; }
+  .service-row__desc { grid-column: 2; grid-row: 2; }
+  .service-row__mark { grid-column: 3; grid-row: 1 / span 2; }
 }
-.service-row__icon { width: 2rem; height: 2rem; align-self: center; }
+.service-row__icon { width: 2rem; height: 2rem; }
 
 .service-row__name {
   font-size: var(--fs-h3);

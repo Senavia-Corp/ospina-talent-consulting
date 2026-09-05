@@ -358,6 +358,11 @@ textarea.field { min-height: 8rem; resize: vertical; }
 .w-form-done { background: var(--violet-mist); color: var(--ink); }
 .w-form-fail { background: #fdecea; color: var(--danger); }
 
+/* Lista de enlaces sobre fondo claro. .footer-list solo vale sobre el pie oscuro. */
+.link-list li + li { margin-top: var(--s-3); }
+.link-list a { color: var(--violet); font-weight: 600; text-decoration: none; }
+.link-list a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
 /* ----------------------------------------------------------------- pie */
 .site-footer { background: var(--ink); color: var(--on-violet); }
 .site-footer a { color: var(--on-violet-2); text-decoration: none; }

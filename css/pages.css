@@ -75,6 +75,34 @@
   max-width: 42ch;
 }
 
+/* Cabecera con fotografia detras. El plano violeta deja de ser opaco y pasa a
+   ser un velo, que es justo lo que tokens.css descarta por defecto; queda aqui
+   como excepcion pedida y acotada a las interiores que la piden, no como el
+   patron del sistema.
+
+   Peor caso MEDIDO, suponiendo un pixel blanco de la foto justo debajo del
+   texto (velo .84 sobre blanco compone #7b3ab6):
+     blanco sobre ese fondo ............ 6,74:1   el titulo
+     blanco al 78 % sobre ese fondo .... 4,77:1   la entradilla, AA
+   Con el velo por debajo de .82 la entradilla cae de 4,5:1. Por eso no se
+   aclara mas: la foto se ve, pero el texto manda. test/contraste.test.js lo
+   comprueba y rompe la build si alguien lo baja.
+
+   El velo va como capa de background sobre el color de .page-head, asi que si
+   el webp no carga queda el plano violeta de siempre, sin perder contraste.
+   Sin image-set() a 2x a proposito: detras de un velo del 84 % la falta de
+   nitidez no se aprecia y son 70 kB menos por pagina. */
+.page-head--photo {
+  background-image:
+    linear-gradient(rgb(98 20 168 / .84), rgb(98 20 168 / .84)),
+    var(--head-img);
+  background-size: cover;
+  background-position: center;
+}
+.page-head--services     { --head-img: url(../images/head-services-1600.webp); }
+.page-head--case-studies { --head-img: url(../images/head-case-studies-1600.webp); }
+.page-head--partner      { --head-img: url(../images/head-partner-1600.webp); }
+
 /* ------------------------------------------------------- bloque de texto */
 .section-head { margin-bottom: var(--s-7); }
 .section-icon { width: 3rem; height: 3rem; margin-bottom: var(--s-4); }

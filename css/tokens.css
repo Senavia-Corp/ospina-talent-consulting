@@ -6,16 +6,9 @@
    ESQUINA ACHAFLANADA, como la de un conector con clave o una tarjeta perforada.
 
    El sitio anterior ponia degradados de violeta encima de CADA fotografia; el
-   export traia cinco. Para las fotos de contenido la regla sigue en pie: van a
-   plena fuerza, con el violeta como plano al lado y no como filtro encima.
-   Ninguna foto de seccion lleva velo.
-
-   La excepcion, pedida y acotada, son las cabeceras de las interiores. Ahi la
-   foto si va debajo de un velo violeta: .page-head--photo en pages.css, al
-   84 %. No es una vuelta al patron viejo por dos razones. El velo es opaco de
-   mas a proposito, para que la foto ambiente sin disputarle el sitio al titulo,
-   y la cifra esta medida contra el peor pixel posible y sujeta por
-   test/contraste.test.js, que rompe la build si alguien la aclara.
+   export traia cinco. Aqui NINGUNA foto lleva velo: van a plena fuerza, con el
+   violeta como plano al lado y no como filtro encima. Las cabeceras de las
+   interiores son plano violeta liso, sin fotografia detras.
 
    REGLAS DE CONTRASTE — si no estan escritas aqui, se incumplen.
    Todos los pares medidos, no estimados:

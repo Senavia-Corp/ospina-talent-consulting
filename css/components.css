@@ -468,13 +468,21 @@ textarea.field { min-height: 8rem; resize: vertical; }
 /* ------------------------------------------------- franja de logos (marquesina)
    Las diez empresas donde trabajo la fundadora, en movimiento continuo.
 
-   OJO CON EL ENCABEZADO. Dice "has worked with ... before founding the firm",
-   no "our clients" ni "trusted by". Son marcas de terceros y lo unico que
-   sostiene mostrarlas es que la frase describe un hecho de la carrera de
-   Yohanna sin insinuar patrocinio ni relacion comercial. Si alguien reescribe
-   ese encabezado en clave de clientela, hay que retirar los logos y volver a
-   .wordmarks. Esta franja sustituyo a esa lista en la home; leadership.html
-   la sigue usando, asi que .wordmarks NO es codigo muerto.
+   EL ENCABEZADO SIGUE AHI, pero solo para lectores de pantalla
+   (.u-visually-hidden). Dice "has worked with ... before founding the firm",
+   no "our clients" ni "trusted by": son marcas de terceros y esa frase es lo
+   unico que las situa como un hecho de la carrera de Yohanna y no como una
+   cartera de clientes. NO se borra el h2 aunque no se vea, por dos motivos:
+   nombra la seccion via aria-labelledby, y es el unico sitio del documento
+   donde queda dicho por que estan esos logos ahi.
+
+   Se quito de la vista a peticion. El riesgo que eso deja abierto es de
+   lectura: diez logos corporativos bajo el hero y sin pie se leen por
+   convencion como clientela. Si alguna vez hay que responder por ello, la
+   respuesta es el h2, y por eso tiene que seguir diciendo lo que dice.
+
+   Esta franja sustituyo a la lista .wordmarks en la home; leadership.html la
+   sigue usando, asi que .wordmarks NO es codigo muerto.
 
    Sin flechas ni puntos a proposito: no es contenido que haya que recorrer,
    es fondo de credibilidad. La unica interaccion es parar al pasar el raton
@@ -511,19 +519,6 @@ textarea.field { min-height: 8rem; resize: vertical; }
   overflow: hidden;
 }
 
-/* Es el encabezado de la seccion, no una etiqueta decorativa encima de otra
-   cosa: por eso es h2 de verdad y va en caja baja al tamano del cuerpo
-   pequeno. El hero esta justo encima y no admite competencia. */
-.clients__title {
-  font-size: var(--fs-sm);
-  text-wrap: balance;
-  font-weight: 400;
-  line-height: var(--lh-body);
-  letter-spacing: 0;
-  color: var(--mute);
-  max-width: var(--w-prose);
-  margin: 0 0 var(--s-5);
-}
 
 .clients__viewport {
   /* El desvanecido lateral es funcional, no adorno: sin el, los logos se

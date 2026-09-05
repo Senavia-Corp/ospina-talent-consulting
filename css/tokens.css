@@ -1,0 +1,143 @@
+/* ============================================================================
+   Ospina Talent Consulting — tokens del sistema
+   ----------------------------------------------------------------------------
+   El negocio es poner a la persona correcta en el sitio correcto. El sistema
+   visual lo dice con dos recursos y nada mas: PLANOS VIOLETA PLANOS y una
+   ESQUINA ACHAFLANADA, como la de un conector con clave o una tarjeta perforada.
+
+   Lo que este sistema NO hace, a proposito, porque es justo lo que hacia el
+   sitio anterior: degradados de violeta al 70 % encima de cada fotografia. El
+   export tenia cinco. La fotografia va a plena fuerza o no va; el violeta es un
+   plano al lado, no un filtro encima.
+
+   REGLAS DE CONTRASTE — si no estan escritas aqui, se incumplen.
+   Todos los pares medidos, no estimados:
+
+     --violet #6214a8 es el caso raro: sirve de TINTA y de SUPERFICIE.
+       #6214a8 sobre blanco ............ 9,67:1   texto normal, AAA
+       blanco sobre #6214a8 ............ 9,67:1   texto normal, AAA
+       #6214a8 sobre --violet-mist ..... 7,85:1   AAA
+     --ink #1d1029 sobre blanco ........ 18,2:1
+     --ink sobre --violet-mist ......... 14,8:1
+     --mute #5b5170 sobre blanco ....... 7,35:1   sobre --paper-2: 6,83:1
+     blanco al 78 % sobre --violet ..... 6,35:1   texto secundario en plano
+     blanco sobre --violet-deep ........ 14,4:1
+
+     --amber #f2a413 es SENAL, nunca texto sobre claro:
+       #f2a413 sobre blanco ............ 2,08:1   FALLA. No usar como texto.
+       --ink sobre #f2a413 ............. 11,1:1   asi si: relleno ambar, tinta oscura
+       #f2a413 sobre --violet .......... 4,65:1   AA normal, AAA grande. Vale como
+                                                  grafico y como texto grande.
+
+   En una palabra: sobre ambar va tinta oscura; el ambar sobre claro solo pinta
+   formas, nunca letras.
+   ========================================================================== */
+
+/* Outfit, subconjunto latino, variable 300-800 en un solo fichero de 31 KB.
+   SIL OFL 1.1, auto-alojada. Sustituye a los 7 .ttf de Campton (756 KB), que
+   era comercial y se servia descargable desde /fonts/. */
+@font-face {
+  font-family: 'Outfit';
+  src: url('../fonts/Outfit-Variable.woff2') format('woff2-variations');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- color ------------------------------------------------------------
+     El violeta de marca es #6214a8. En el export vivia en una variable
+     llamada --663399, que es el morado por defecto de Webflow: alguien
+     cambio el color y el nombre se quedo fosilizado mintiendo.
+     -------------------------------------------------------------------- */
+  --violet:       #6214a8;
+  --violet-deep:  #3d0b6b;
+  --violet-mist:  #ede4f7;
+  --amber:        #f2a413;
+  --amber-press:  #d98f08;
+  --ink:          #1d1029;
+  --mute:         #5b5170;
+  --line:         #ded6e8;
+  --paper:        #ffffff;
+  --paper-2:      #f7f5fa;
+  --on-violet:    #ffffff;
+  --on-violet-2:  rgb(255 255 255 / .78);
+  --danger:       #b3261e;
+
+  /* ---- tipografia -------------------------------------------------------
+     Una sola familia. La personalidad sale del ajuste, no de una segunda
+     fuente: mucho contraste de tamano, interlineado corto en display y
+     tracking negativo solo donde el cuerpo es grande.
+     -------------------------------------------------------------------- */
+  --ff: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Fluidas de 375 a 1440. Todas conservan un termino en rem para que el
+     zoom del navegador siga funcionando (WCAG 1.4.4). */
+  --fs-display: clamp(2.5rem,   1.19rem + 5.60vw, 5.5rem);    /* 40 -> 88 */
+  --fs-h1:      clamp(2rem,     1.34rem + 2.80vw, 3.5rem);    /* 32 -> 56 */
+  --fs-h2:      clamp(1.625rem, 1.35rem + 1.17vw, 2.25rem);   /* 26 -> 36 */
+  --fs-h3:      clamp(1.25rem,  1.14rem + 0.47vw, 1.5rem);    /* 20 -> 24 */
+  --fs-lead:    clamp(1.125rem, 1.03rem + 0.40vw, 1.34rem);   /* 18 -> 21 */
+  --fs-body:    clamp(1rem,     0.97rem + 0.13vw, 1.09rem);   /* 16 -> 17 */
+  --fs-sm:      0.9375rem;
+  --fs-xs:      0.8125rem;
+
+  --lh-display: 0.94;
+  --lh-head:    1.08;
+  --lh-lead:    1.45;
+  --lh-body:    1.62;
+  --tr-display: -0.035em;   /* Outfit es geometrica y abre mucho en tamano grande */
+  --tr-head:    -0.02em;
+
+  /* ---- espacio: base 4px ------------------------------------------------ */
+  --s-1: .25rem;  --s-2: .5rem;   --s-3: .75rem;  --s-4: 1rem;   --s-5: 1.5rem;
+  --s-6: 2rem;    --s-7: 3rem;    --s-8: 4rem;    --s-9: 6rem;   --s-10: 8rem;
+  --section-y: clamp(3.5rem, 2rem + 6.4vw, 8.5rem);   /* 56 -> 136 */
+  --gutter:    clamp(1.25rem, .6rem + 2.8vw, 2.5rem);
+  --w-page:    78rem;    /* 1248 */
+  --w-prose:   64ch;
+
+  /* ---- la esquina achaflanada -------------------------------------------
+     El gesto de marca. Las dos catetos miden LO MISMO y en unidades
+     absolutas, asi que el corte es de 45 grados a cualquier ancho.
+     Con porcentajes no: clip-path los resuelve por eje contra la caja del
+     elemento, y el angulo se movria con la relacion de aspecto.
+
+     OJO: clip-path crea bloque contenedor para descendientes position:fixed.
+     Nada fijo puede vivir dentro de un elemento achaflanado. La cabecera es
+     hermana de todas las secciones, asi que se cumple por estructura.
+     -------------------------------------------------------------------- */
+  --notch: clamp(1.25rem, 3.5vw, 3rem);
+
+  /* ---- forma ------------------------------------------------------------
+     Radio casi cero: la marca es angular. Solo los controles llevan radio,
+     para que se sigan leyendo como controles y no como bloques de texto. */
+  --r-control: 3px;
+
+  /* ---- elevacion --------------------------------------------------------
+     El sistema separa con planos y chaflanes, no con sombras. Hay UNA sombra
+     en todo el sitio, la del panel de contacto, que se monta sobre el borde
+     de dos planos y necesita despegarse de los dos a la vez. */
+  --shadow-1: 0 1px 2px rgb(29 16 41 / .06), 0 12px 32px -16px rgb(29 16 41 / .28);
+  --focus-w:  3px;
+
+  /* ---- movimiento -------------------------------------------------------- */
+  --dur-1: 120ms; --dur-2: 220ms; --dur-3: 520ms;
+  --ease-out: cubic-bezier(.22,.61,.36,1);
+
+  /* ---- cabecera ---------------------------------------------------------
+     Altura CONSTANTE a proposito, y atada al scroll-padding con el mismo
+     token: si la barra encogiera al hacer scroll, las anclas de /services
+     aterrizarian debajo de ella justo al llegar. */
+  --header-h: 4rem;
+
+  scroll-padding-top: calc(var(--header-h) + var(--s-4));
+}
+
+@media (min-width: 64rem) {
+  :root { --header-h: 4.75rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root { scroll-behavior: smooth; }
+}

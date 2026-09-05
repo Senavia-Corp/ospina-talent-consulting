@@ -15,11 +15,11 @@ const ROOT = path.join(__dirname, '..')
 const html = fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'))
 const css = fs.readdirSync(path.join(ROOT, 'css')).map((f) => path.join('css', f))
 
-// Los dos terceros que siguen sirviendo assets, a la espera de la fase 2: Splide
-// (carrusel) y el widget de Elfsight. Cuando se retiren, esta lista pasa a [] EN EL
-// MISMO COMMIT: el test compara un conjunto exacto y cualquiera de las dos mitades
-// sola lo deja en rojo.
-const EXTERNOS_OK = ['cdn.jsdelivr.net', 'apps.elfsight.com']
+// Ya no queda ningun tercero sirviendo assets. Splide se fue con el carrusel propio
+// (scroll-snap en CSS) y el widget de Elfsight llevaba roto desde antes de migrar:
+// devolvia WIDGET_NOT_FOUND y pintaba 0 hijos y 0px de alto, tambien en el sitio de
+// Webflow. El conjunto vacio es mas estricto que la lista anterior, no menos.
+const EXTERNOS_OK = []
 
 function refs(file) {
   const s = fs.readFileSync(path.join(ROOT, file), 'utf8')

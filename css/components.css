@@ -117,14 +117,25 @@ html:not(.js) .nav-toggle { display: none; }
 .btn--violet { background: var(--violet); color: var(--on-violet); }
 .btn--violet:hover { background: var(--violet-deep); }
 
-.btn--outline { background: transparent; color: var(--violet); border-color: var(--violet); }
-.btn--outline:hover { background: var(--violet); color: var(--on-violet); }
+/* El contorno se pinta con --outline-c, que cada superficie oscura redefine.
+   Listar los selectores uno a uno (.plane-violet .btn--outline, ...) fallaba en
+   cuanto aparecia una superficie oscura nueva: el hero no lleva .plane-violet, y
+   el boton salia violeta sobre violeta, invisible. */
+.btn--outline {
+  background: transparent;
+  color: var(--outline-c, var(--violet));
+  border-color: var(--outline-c, var(--violet));
+}
+.btn--outline:hover {
+  background: var(--outline-c, var(--violet));
+  color: var(--outline-on, var(--on-violet));
+}
 
-/* Sobre plano violeta el contorno se dibuja en blanco, no en violeta. */
-.plane-violet .btn--outline,
-.plane-deep .btn--outline { color: var(--on-violet); border-color: var(--on-violet); }
-.plane-violet .btn--outline:hover,
-.plane-deep .btn--outline:hover { background: var(--on-violet); color: var(--violet); }
+/* Toda superficie sobre la que el texto va en blanco declara aqui su contorno. */
+.plane-violet, .plane-deep, .hero, .page-head, .cta-panel, .site-footer {
+  --outline-c: var(--on-violet);
+  --outline-on: var(--violet);
+}
 
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--s-4); }
 
@@ -206,6 +217,16 @@ html:not(.js) .nav-toggle { display: none; }
 }
 .value__name { font-size: var(--fs-h3); margin-bottom: var(--s-2); }
 .value__desc { color: var(--mute); font-size: var(--fs-sm); }
+
+/* Sobre plano violeta. El velo blanco al 8 % compuesto sobre #6214a8 da
+   rgb(111 39 175): blanco encima 8,12:1 y blanco al 78 % 5,56:1, los dos AA.
+   Hay que componer el alfa a mano para saberlo; un medidor que lea
+   rgba(255,255,255,.08) como si fuera opaco da 1:1 y miente. */
+.value--on-violet {
+  background: rgb(255 255 255 / .08);
+  border-top-color: var(--amber);
+}
+.value--on-violet .value__desc { color: var(--on-violet-2); }
 
 /* El proceso SI es una secuencia, asi que aqui el numero informa. En el
    resto del sitio no hay marcadores numerados. */
@@ -333,6 +354,13 @@ textarea.field { min-height: 8rem; resize: vertical; }
   gap: var(--s-7);
   grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
 }
+.footer-brand img { width: 11rem; }
+.footer-brand p {
+  margin-top: var(--s-5);
+  font-size: var(--fs-sm);
+  color: var(--on-violet-2);
+}
+
 .footer-title {
   margin-bottom: var(--s-4);
   font-size: var(--fs-sm);

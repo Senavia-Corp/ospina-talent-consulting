@@ -76,6 +76,12 @@ button, input, textarea, select { font: inherit; color: inherit; }
 
 .u-section { padding-block: var(--section-y); }
 
+/* Ritmo vertical entre hermanos. El hueco se ajusta con --flow en el padre,
+   asi que no hacen falta margenes sueltos repartidos por el markup. */
+.u-flow > * + * { margin-top: var(--flow, var(--s-5)); }
+.u-flow--tight { --flow: var(--s-4); }
+.u-flow--wide  { --flow: var(--s-7); }
+
 .u-visually-hidden {
   position: absolute;
   width: 1px; height: 1px;

@@ -204,6 +204,22 @@ Sobre el build servido, no a ojo:
 - **404**: una URL inexistente devuelve HTTP 404 con la página del sitio, no la
   genérica de Vercel con su identificador interno de infraestructura.
 
+- **Medida de línea**: ninguna página pasa de 69 caracteres por línea en 375, 768,
+  1024 y 1440. Cuidado al tocar los topes: **`ch` no es un carácter**. En Outfit
+  `1ch = 0,656em` pero el ancho medio real en texto corrido es `0,411em`, así que
+  un `max-width: 64ch` da 91 caracteres. La regla práctica: pide en `ch` unos dos
+  tercios de los caracteres que quieres.
+- **Menú móvil**: con el panel abierto el documento queda con `overflow: hidden` y
+  el panel con `overscroll-behavior: contain`, y al cerrar se restaura. Sin las dos
+  cosas el gesto encadenaba al fondo y al cerrar el menú aparecías 1.200px más
+  abajo — `inert` no lo evita, porque bloquea interacción y lector de pantalla,
+  no scroll.
+- **Titular de la portada**: 3 líneas de 375 a 1920, con la última al 85–86 % de la
+  más larga. Antes eran 5 líneas entre 896 y 1180px, tres de ellas de una sola
+  palabra. El cuerpo se mide en `cqi` contra su propia columna, no en `vw`.
+- **Alineación**: el borde izquierdo del titular coincide con el del contenido de
+  `.u-page` a 1280, 1366, 1440, 1600 y 1920. Antes solo a 1600 exactamente.
+
 **Lo que NO se pudo verificar renderizado:** el aspecto del anillo de foco y del
 enlace de salto. El panel del navegador de la sesión nunca recibe foco
 (`document.hasFocus()` es `false` siempre), así que `:focus` y `:focus-visible` no

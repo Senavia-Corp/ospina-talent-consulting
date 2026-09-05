@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ospina-talent-consulting.vercel.app/sitemap.xml

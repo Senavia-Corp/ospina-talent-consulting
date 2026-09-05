@@ -46,7 +46,9 @@ test('ninguna referencia local apunta a un fichero que no existe', () => {
   for (const file of [...html, ...css]) {
     const base = path.dirname(path.join(ROOT, file))
     for (const ref of refs(file)) {
-      if (/^(https?:|mailto:|tel:|data:|#|\/api\/)/.test(ref)) continue
+      // /api/ y /_vercel/ las sirve la plataforma en runtime, no hay fichero en disco.
+      // Son misma-origen, asi que no cuentan como tercero.
+      if (/^(https?:|mailto:|tel:|data:|#|\/api\/|\/_vercel\/)/.test(ref)) continue
       const limpio = ref.split(/[?#]/)[0]
       if (!limpio) continue                        // href="#algo" ya filtrado arriba
       // Una ruta absoluta cuelga de la raiz del sitio, no de la carpeta del fichero.

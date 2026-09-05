@@ -44,9 +44,9 @@
   margin-bottom: var(--s-7);
 }
 .hero__media { position: relative; min-height: clamp(15rem, 42vw, 30rem); }
-/* La fotografia es 2,64:1 y la caja ronda 1,2:1, asi que cover recorta por
-   los lados. El portatil y las manos estan en la mitad derecha, de modo que
-   el recorte centrado se los comia a medias. */
+/* La fotografia es 1,90:1 y la caja ronda 1,2:1, asi que cover recorta por
+   los lados. El portatil esta en la mitad derecha, de modo que el recorte
+   centrado se lo comia a medias. */
 .hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 62% center; }
 
 /* El chaflan muerde la esquina del medio hacia el plano violeta. */

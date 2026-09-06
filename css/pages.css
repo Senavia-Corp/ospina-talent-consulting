@@ -166,6 +166,26 @@
    no aporta nada y el texto si. */
 @media print {
   .u-page:has(> .cta-panel) { filter: none; }
+
+  /* Las bandas violeta y el pie llevan el texto en BLANCO. El dialogo de impresion trae
+     "graficos de fondo" desactivado por defecto, y en ese modo el navegador descarta el
+     plano pero conserva el color del texto: la pagina saldria en blanco sobre blanco.
+     No he conseguido reproducirlo con --print-to-pdf, que si imprime los fondos y da una
+     banda correcta; forzarlos es la unica forma de que lo que ya sale bien salga bien
+     tambien con el ajuste en contra, sin depender de lo que marque quien imprime. */
+  .hero, .page-head, .plane-violet, .plane-deep, .cta-panel, .site-footer {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* La decoracion si se retira, por lo mismo que el filtro de aqui arriba: en papel no
+     aporta y gasta tinta. El plano se queda porque sostiene la legibilidad del texto. */
+  .hero__copy::after,
+  .hero::after,
+  .plane-violet::after,
+  .page-head::after,
+  .site-footer::before,
+  .site-footer::after { display: none; }
 }
 
 /* ------------------------------------------------------------ liderazgo */

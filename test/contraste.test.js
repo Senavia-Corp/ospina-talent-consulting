@@ -191,3 +191,35 @@ test('el apilado de tres capas cumple AA celda a celda, no solo en el caso comod
 
   assert.ok(comprobadas > 1, 'se comprobo una sola celda: el apilado tiene que medirse en todas')
 })
+
+// Y el reverso del suelo: que la celda mas profunda MEJORE los tres pares. Es lo que el
+// diseno promete —"hundir sube el contraste"— y hasta ahora no lo afirmaba nadie. Sin
+// este aserto, un SVG con las 36 celdas pintadas del color del plano pasaria en verde
+// siendo un fichero que no hace nada.
+test('la celda mas profunda mejora los tres pares, que es lo que promete el diseno', () => {
+  const op = opacidadFacetas()
+  const colores = coloresFacetas().slice().sort((a, b) => luminancia(a) - luminancia(b))
+  const honda = colores[0]
+
+  const pares = (celda) => {
+    const plano = mezcla(celda, VIOLET, op)
+    const tarjeta = mezcla(WHITE, plano, VELO)
+    return [
+      contraste(mezcla(WHITE, plano, LEDE), plano),
+      contraste(mezcla(WHITE, tarjeta, LEDE), tarjeta),
+      contraste(AMBER_TOKEN, tarjeta),
+    ]
+  }
+
+  const conFaceta = pares(honda)
+  const desnudo = pares(VIOLET)
+  const nombres = ['entradilla sobre el plano', 'entradilla en la tarjeta', 'borde ambar']
+
+  for (let i = 0; i < 3; i++) {
+    assert.ok(
+      conFaceta[i] > desnudo[i],
+      `${nombres[i]}: la celda mas profunda deja ${conFaceta[i].toFixed(2)}:1 y el plano desnudo ` +
+      `${desnudo[i].toFixed(2)}:1. El recurso no esta hundiendo nada.`,
+    )
+  }
+})

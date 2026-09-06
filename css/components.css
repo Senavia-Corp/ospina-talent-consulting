@@ -598,3 +598,88 @@ textarea.field { min-height: 8rem; resize: vertical; }
      un pixel al reiniciar. Dividido, es exacto a cualquier ancho. */
   to   { transform: translate3d(calc(-100% / 3), 0, 0); }
 }
+
+/* ------------------------------------- las facetas de los planos violeta
+   Hermano del mosaico del pie, y su OPUESTO. Sobre --ink el mosaico aclara;
+   sobre --violet hundir es lo unico que se puede hacer sin pagar contraste.
+
+   POR QUE NO SE COPIA EL RECURSO DEL PIE. Medido, no supuesto: sobre violeta el
+   que rompe primero NO es el anillo de foco sino el texto al 78 %, y las dos
+   superficies violeta no comparten techo. Con un mosaico de tinte claro el hero
+   aguanta hasta opacidad .22, pero el plano de las tarjetas solo .138, porque el
+   velo blanco del 8 % de .value--on-violet SUMA su aclarado al del mosaico: el
+   par de dentro de la tarjeta parte de 5,57 en vez de 6,33 y gasta 0,76 puntos
+   antes de empezar. El .26 del pie trasplantado aqui deja esa entradilla en
+   3,66:1 y el borde ambar de la tarjeta en 2,36:1. Incumple las dos.
+
+   POR QUE ESTE SI VALE A CUALQUIER OPACIDAD. images/facet-violet.svg esta hecho
+   con la rampa --violet -> --violet-deep. Todas sus celdas tienen luminancia
+   menor o igual que el plano, asi que componerlas solo puede SUBIR el contraste:
+   sobre el plano el texto al 78 % pasa de 6,33 a 9,09, dentro de la tarjeta de
+   5,57 a 7,80, y el borde ambar de 3,92 a 5,71. Por eso el recurso puede pasar
+   POR DEBAJO de las tarjetas sin recortarlo, que era la otra salida y costaba
+   markup. Lo sujeta test/contraste.test.js midiendo el apilado de tres capas.
+
+   Los tintes claros del logo NO son intercambiables aqui: #8243B8 tiene el doble
+   de luminancia que --violet y al 100 % ya incumple; #6215A8 ES --violet.
+   -------------------------------------------------------------------------- */
+.hero, .plane-violet, .page-head { position: relative; isolation: isolate; }
+
+/* LAS TRES lo necesitan, .plane-violet incluida. Su clip-path de .notch-tr recorta
+   lo que se PINTA, pero no quita al pseudo-elemento del area de scroll: medido, sin
+   esta linea el documento se iba 55px a 375 y 243px a 1920. Y no vale arreglarlo con
+   overflow-x en html/body, porque la cabecera es sticky y scroll-padding-top vive en
+   :root: eso romperia las anclas de /services. clip y no hidden, por lo mismo que el
+   pie — hidden convierte la seccion en contenedor de scroll y al tabular hacia dentro
+   el navegador puede desplazarla. */
+.hero, .plane-violet, .page-head { overflow: hidden; overflow: clip; }
+
+.hero > *, .plane-violet > *, .page-head > * { position: relative; z-index: 1; }
+
+.hero::after,
+.plane-violet::after,
+.page-head::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .62;
+  aspect-ratio: 720 / 623.54;   /* el del SVG; alto derivado del ancho, nunca al reves */
+  background: url('../images/facet-violet.svg') no-repeat center / cover;
+}
+
+/* Las tres superficies tienen el mismo hueco: el texto se acaba mucho antes que
+   el plano. En .page-head y .plane-violet ese hueco es la MITAD DERECHA (51 % y
+   60 % libres a 1440), asi que la faceta entra por ahi y crece del chaflan. El
+   hero es la excepcion: a la derecha esta la fotografia, de modo que alli entra
+   por abajo a la izquierda, en la banda de 115 px que queda bajo los botones. */
+.page-head::after {
+  right: -12vw;
+  top: -18vw;
+  width: clamp(18rem, 42vw, 40rem);
+  transform: rotate(18deg);
+}
+
+.plane-violet::after {
+  right: -10vw;
+  bottom: -10vw;
+  width: clamp(20rem, 52vw, 58rem);
+  transform: rotate(-8deg) scaleX(-1);
+}
+
+.hero::after {
+  left: -14vw;
+  bottom: -18vw;
+  width: clamp(17rem, 44vw, 34rem);
+  transform: rotate(202deg);
+}
+
+@media (min-width: 56rem) {
+  /* Por encima de 56rem el hero parte en dos columnas y la faceta se queda en la
+     violeta: la foto empieza exactamente en el 50 %. */
+  .hero::after {
+    left: -10vw;
+    bottom: -8vw;
+    width: clamp(18rem, 34vw, 40rem);
+  }
+}

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 623.54" fill="none">
+  <!-- Facetas de 36 triangulos para las superficies violeta (.hero, .plane-violet,
+       .page-head). MISMA rejilla equilatera que images/footer-mosaic.svg, rampa OPUESTA:
+       alli el mosaico ACLARA sobre tinta; aqui HUNDE sobre violeta.
+
+       Los 6 pasos van del violeta de marca #6214a8 (se funde con el plano, invisible) al
+       violeta profundo #3d0b6b. Todos tienen luminancia menor o igual que el plano, asi
+       que cada celda solo puede SUBIR el contraste de lo que quede encima. Por eso este
+       recurso no tiene techo de opacidad, a diferencia del del pie.
+
+       NO sustituir por los tintes claros del logo: #8243B8 tiene el DOBLE de luminancia
+       que el violeta de marca y al 100% ya incumple (blanco al 78% 4,39:1, ambar 2,93:1),
+       y #6215A8 es ese mismo violeta con un punto mas de verde, o sea que no pinta nada.
+
+       OJO AL EDITAR ESTE COMENTARIO: un comentario XML no admite dos guiones seguidos.
+       Escribir aqui el nombre de una custom property de CSS rompe el parseo del SVG
+       ENTERO, y el fallo es invisible: no hay 404, no hay error en consola, el
+       background-image computa bien y no se pinta nada. Lo sujeta test/assets.test.js.
+
+       Rejilla: lado 120, altura de fila 103.92 (= lado por raiz(3)/2), 6 filas.
+       Fila r: borde superior en x = 360 +- (r-1)*60, inferior en x = 360 +- r*60.
+       Reparto segun el criterio del isotipo: el apice lleva el tono que se funde, las dos
+       esquinas inferiores el mas profundo, una cuna baja por el centro-derecha y ningun
+       tono toca a otro igual. Decorativo: se pinta desde components.css, sin title ni role. -->
+  <g fill="#6214a8">
+    <polygon points="360,0 300,103.92 420,103.92"/>
+  </g>
+  <g fill="#5b129c">
+    <polygon points="300,103.92 240,207.85 360,207.85"/>
+    <polygon points="360,207.85 480,207.85 420,311.77"/>
+    <polygon points="300,311.77 420,311.77 360,415.69"/>
+    <polygon points="480,415.69 420,519.62 540,519.62"/>
+    <polygon points="420,519.62 360,623.54 480,623.54"/>
+  </g>
+  <g fill="#531090">
+    <polygon points="300,103.92 420,103.92 360,207.85"/>
+    <polygon points="360,207.85 300,311.77 420,311.77"/>
+    <polygon points="420,311.77 360,415.69 480,415.69"/>
+    <polygon points="480,415.69 600,415.69 540,519.62"/>
+    <polygon points="300,519.62 420,519.62 360,623.54"/>
+    <polygon points="540,519.62 480,623.54 600,623.54"/>
+  </g>
+  <g fill="#4c0f83">
+    <polygon points="420,103.92 360,207.85 480,207.85"/>
+    <polygon points="300,311.77 240,415.69 360,415.69"/>
+    <polygon points="420,311.77 540,311.77 480,415.69"/>
+    <polygon points="240,415.69 180,519.62 300,519.62"/>
+    <polygon points="360,415.69 480,415.69 420,519.62"/>
+    <polygon points="180,519.62 120,623.54 240,623.54"/>
+    <polygon points="420,519.62 540,519.62 480,623.54"/>
+  </g>
+  <g fill="#440d77">
+    <polygon points="240,207.85 360,207.85 300,311.77"/>
+    <polygon points="180,311.77 300,311.77 240,415.69"/>
+    <polygon points="120,415.69 240,415.69 180,519.62"/>
+    <polygon points="360,415.69 300,519.62 420,519.62"/>
+    <polygon points="60,519.62 180,519.62 120,623.54"/>
+    <polygon points="300,519.62 240,623.54 360,623.54"/>
+    <polygon points="540,519.62 660,519.62 600,623.54"/>
+  </g>
+  <g fill="#3d0b6b">
+    <polygon points="240,207.85 180,311.77 300,311.77"/>
+    <polygon points="480,207.85 420,311.77 540,311.77"/>
+    <polygon points="180,311.77 120,415.69 240,415.69"/>
+    <polygon points="540,311.77 480,415.69 600,415.69"/>
+    <polygon points="120,415.69 60,519.62 180,519.62"/>
+    <polygon points="240,415.69 360,415.69 300,519.62"/>
+    <polygon points="600,415.69 540,519.62 660,519.62"/>
+    <polygon points="60,519.62 0,623.54 120,623.54"/>
+    <polygon points="180,519.62 300,519.62 240,623.54"/>
+    <polygon points="660,519.62 600,623.54 720,623.54"/>
+  </g>
+</svg>

@@ -170,3 +170,32 @@ test('nada esconde contenido con opacity 0 a la espera de un disparador', () => 
   assert.deepStrictEqual(restos, [],
     `Contenido escondido a la espera de un disparador:\n${restos.join('\n')}`)
 })
+
+// Un SVG mal formado no da 404 ni error en consola: el background-image computa bien, el
+// fichero se sirve con 200, y no se pinta NADA. Esto ya paso una vez, con el comentario de
+// images/facet-violet.svg: llevaba escritos los nombres de las custom properties
+// (--violet, --ink) y un comentario XML no admite dos guiones seguidos, asi que el parseo
+// del documento entero fallaba en silencio. Se tardo mas en encontrarlo que en escribirlo.
+//
+// Se comprueban las dos formas de romper un SVG que no avisan: el doble guion dentro de un
+// comentario y el ampersand suelto fuera de una entidad.
+test('ningun SVG se rompe en silencio por XML mal formado', () => {
+  const dir = path.join(ROOT, 'images')
+  const svgs = fs.readdirSync(dir).filter((f) => f.endsWith('.svg'))
+  assert.ok(svgs.length, 'no se encontro ningun SVG en images/')
+
+  for (const f of svgs) {
+    const s = fs.readFileSync(path.join(dir, f), 'utf8')
+
+    for (const m of s.matchAll(/<!--([\s\S]*?)-->/g)) {
+      assert.ok(
+        !m[1].includes('--'),
+        `images/${f}: un comentario XML lleva dos guiones seguidos. El documento no parsea y el SVG ` +
+        'no se pinta, sin 404 ni error en consola. Escribe el nombre del token sin los guiones.',
+      )
+    }
+
+    const suelto = s.match(/&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#x[0-9a-fA-F]+);)/)
+    assert.ok(!suelto, `images/${f}: hay un & que no abre una entidad; el XML no parsea`)
+  }
+})

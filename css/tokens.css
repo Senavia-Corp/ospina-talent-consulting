@@ -25,7 +25,7 @@
 
      --amber #f2a413 es SENAL, nunca texto sobre claro:
        #f2a413 sobre blanco ............ 2,08:1   FALLA. No usar como texto.
-       --ink sobre #f2a413 ............. 11,1:1   asi si: relleno ambar, tinta oscura
+       --ink sobre #f2a413 ............. 8,71:1   asi si: relleno ambar, tinta oscura
        #f2a413 sobre --violet .......... 4,65:1   AA normal, AAA grande. Vale como
                                                   grafico y como texto grande.
 

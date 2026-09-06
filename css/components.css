@@ -615,8 +615,10 @@ textarea.field { min-height: 8rem; resize: vertical; }
    POR QUE ESTE SI VALE A CUALQUIER OPACIDAD. images/facet-violet.svg esta hecho
    con la rampa --violet -> --violet-deep. Todas sus celdas tienen luminancia
    menor o igual que el plano, asi que componerlas solo puede SUBIR el contraste:
-   sobre el plano el texto al 78 % pasa de 6,33 a 9,09, dentro de la tarjeta de
-   5,57 a 7,80, y el borde ambar de 3,92 a 5,71. Por eso el recurso puede pasar
+   a la opacidad que se envia (.62) el texto al 78 % pasa de 6,33 a 7,98 sobre el plano y
+   de 5,57 a 6,88 dentro de la tarjeta, y el borde ambar de 3,92 a 4,96. En el PEOR pixel
+   la ganancia es cero, porque la celda del apice ES --violet: el minimo del sistema lo
+   sigue marcando el plano desnudo, y por eso la puerta mide celda a celda. Por eso el recurso puede pasar
    POR DEBAJO de las tarjetas sin recortarlo, que era la otra salida y costaba
    markup. Lo sujeta test/contraste.test.js midiendo el apilado de tres capas.
 
@@ -667,27 +669,50 @@ textarea.field { min-height: 8rem; resize: vertical; }
 
 /* Las tres superficies tienen el mismo hueco: el texto se acaba mucho antes que
    el plano. En .page-head y .plane-violet ese hueco es la MITAD DERECHA (51 % y
-   60 % libres a 1440), asi que la faceta entra por ahi y crece del chaflan. El
+   60 % libres a 1440), asi que la faceta entra por ahi. Ojo, no nace del chaflan:
+   ninguna .page-head lleva clase notch-*, y en .plane-violet el chaflan es notch-tr,
+   arriba a la derecha, mientras la faceta entra por abajo. El
    hero es la excepcion: a la derecha esta la fotografia, de modo que alli entra
    por abajo a la izquierda, en la banda de 115 px que queda bajo los botones. */
+/* EL INSET SE CONGELA DONDE SE CONGELA EL ANCHO. El ancho topa con el maximo del
+   clamp, asi que si el desplazamiento sigue en vw puro son dos escalas distintas en la
+   misma regla y el encuadre se desliza fuera segun crece la ventana. Medido con la
+   version anterior en .page-head: ocupaba el 85 % de la banda a 1440, el 63 % a 1920,
+   el 28 % a 2560 y el 0 % a 3440, donde la faceta desaparecia entera de las siete
+   interiores. El max() deja mandar al vw por debajo del cruce —o sea que de 375 a
+   1524 no cambia ni un pixel— y congela por encima. La fraccion de --w es el valor
+   que tiene el vw JUSTO en el cruce, asi que la transicion es continua y no hay salto
+   a ningun ancho. */
 .page-head::after {
-  right: -12vw;
-  top: -18vw;
-  width: clamp(18rem, 42vw, 40rem);
+  --w: clamp(18rem, 42vw, 40rem);
+  width: var(--w);
+  right: max(calc(var(--w) * -.286), -12vw);
+  top: max(calc(var(--w) * -.429), -18vw);
   transform: rotate(18deg);
 }
 
 .plane-violet::after {
-  right: -10vw;
-  bottom: -10vw;
-  width: clamp(20rem, 52vw, 58rem);
+  --w: clamp(20rem, 52vw, 58rem);
+  width: var(--w);
+  right: max(calc(var(--w) * -.192), -10vw);
+  bottom: max(calc(var(--w) * -.192), -10vw);
   transform: rotate(-8deg) scaleX(-1);
 }
 
 .hero__copy::after {
-  left: -16vw;
-  bottom: -12vw;
-  width: clamp(17rem, 76vw, 26rem);
+  --w: clamp(17rem, 76vw, 26rem);
+  width: var(--w);
+  /* Tres regimenes en una linea, y los tres hacen falta. De 375 a 547 manda el vw. De
+     547 a ~600 el ancho ya topo en 26rem y congela el inset, como en las otras tres.
+     Y de 624 en adelante manda el tercer termino: .hero__copy tiene max-width 39rem y
+     margin-left auto, asi que deja de llenar la ventana y se va a la derecha llevandose
+     la faceta con el — a 820 lo pintado arrancaba en x=190, sin morder ningun borde, y
+     se leia como un sello y no como una esquina. El termino deshace ese desplazamiento
+     y sangra 7rem mas, de modo que el corte por la izquierda se mantiene hasta que a
+     56rem toma el relevo .hero::after. min() y max() hacen las dos transiciones
+     continuas: no hay salto a ningun ancho, y por eso no hace falta media query. */
+  left: min(max(calc(var(--w) * -.211), -16vw), calc(var(--w-page) / 2 - 100vw - 7rem));
+  bottom: max(calc(var(--w) * -.158), -12vw);
   transform: rotate(202deg);
 }
 .hero::after { display: none; }
@@ -698,9 +723,25 @@ textarea.field { min-height: 8rem; resize: vertical; }
   .hero__copy::after { display: none; }
   .hero::after {
     display: block;
-    left: -10vw;
-    bottom: -8vw;
-    width: clamp(18rem, 34vw, 40rem);
+    --w: clamp(18rem, 34vw, 40rem);
+    width: var(--w);
+    left: max(calc(var(--w) * -.294), -10vw);
+    bottom: max(calc(var(--w) * -.235), -8vw);
     transform: rotate(202deg);
   }
+}
+
+/* En forced-colors el navegador fuerza background-color y color, pero NO quita
+   background-image: las facetas seguirian pintando sus violetas cableados sobre el
+   Canvas del sistema. Y ahi hundir SI cuesta, porque el primer plano pasa a ser oscuro:
+   negro sobre la celda mas profunda al .62 da 4,53:1, y a opacidad 1 cae a 1,46:1. Es
+   decoracion pura y en ese modo no aporta nada, asi que se retira entera, tambien la
+   del pie. */
+@media (forced-colors: active) {
+  .hero__copy::after,
+  .hero::after,
+  .plane-violet::after,
+  .page-head::after,
+  .site-footer::before,
+  .site-footer::after { display: none; }
 }

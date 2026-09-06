@@ -5,6 +5,7 @@ node_modules/
 scripts/
 code.html
 _real.html
+_probe*.html
 
 # El traspaso y las notas no se despliegan
 README.md

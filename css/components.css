@@ -636,6 +636,23 @@ textarea.field { min-height: 8rem; resize: vertical; }
 
 .hero > *, .plane-violet > *, .page-head > * { position: relative; z-index: 1; }
 
+/* Y el copy tambien, por su cuenta: .hero__copy lleva container-type, que implica
+   contencion de layout y por tanto ES un contexto de apilamiento propio. Dentro de el
+   su ::after posicionado pinta por delante del texto en flujo, asi que sin esta linea
+   la faceta de movil sale ENCIMA del titular y del boton ambar. */
+.hero__copy > * { position: relative; z-index: 1; }
+
+/* El hero necesita DOS anclajes porque cambia de forma con el ancho, y el resto no.
+   Por debajo de 56rem es UNA columna, asi que .hero abarca el copy Y la fotografia:
+   anclar por bottom al hero deja la faceta detras de la foto, que es exactamente
+   donde no se ve. A ese ancho cuelga del propio bloque de copy, que es el unico que
+   lleva violeta. Por encima de 56rem el copy es la columna izquierda y el bottom del
+   hero ya es el bottom del plano, asi que vuelve a .hero para poder sangrar por el
+   borde de la ventana: .hero__copy tiene max-width y esta metido hacia dentro (96px
+   a 1440, 336px a 1920), y recortar ahi dejaria un corte vertical a media pantalla. */
+.hero__copy { position: relative; }
+
+.hero__copy::after,
 .hero::after,
 .plane-violet::after,
 .page-head::after {
@@ -667,19 +684,23 @@ textarea.field { min-height: 8rem; resize: vertical; }
   transform: rotate(-8deg) scaleX(-1);
 }
 
-.hero::after {
-  left: -14vw;
-  bottom: -18vw;
-  width: clamp(17rem, 44vw, 34rem);
+.hero__copy::after {
+  left: -16vw;
+  bottom: -12vw;
+  width: clamp(17rem, 76vw, 26rem);
   transform: rotate(202deg);
 }
+.hero::after { display: none; }
 
 @media (min-width: 56rem) {
   /* Por encima de 56rem el hero parte en dos columnas y la faceta se queda en la
      violeta: la foto empieza exactamente en el 50 %. */
+  .hero__copy::after { display: none; }
   .hero::after {
+    display: block;
     left: -10vw;
     bottom: -8vw;
     width: clamp(18rem, 34vw, 40rem);
+    transform: rotate(202deg);
   }
 }

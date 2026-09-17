@@ -15,12 +15,12 @@
   <meta property="og:image" content="https://ospina-talent-consulting.vercel.app/images/og-ospina-talent-consulting.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Hands typing on a laptop keyboard overlaid with blue data-visualisation graphics">
+  <meta property="og:image:alt" content="Hands typing on a laptop keyboard overlaid with blue data-visualization graphics">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="IT Staffing and Consulting in Doral, FL | Ospina Talent Consulting">
   <meta name="twitter:description" content="IT staffing, consulting and system integration for small businesses in Doral and South Florida. Certified professionals, matched to your team.">
   <meta name="twitter:image" content="https://ospina-talent-consulting.vercel.app/images/og-ospina-talent-consulting.jpg">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://ospina-talent-consulting.vercel.app/#organization","name":"Ospina Talent Consulting","url":"https://ospina-talent-consulting.vercel.app/","logo":"https://ospina-talent-consulting.vercel.app/images/Logo.svg","image":"https://ospina-talent-consulting.vercel.app/images/og-ospina-talent-consulting.jpg","description":"IT staffing, consulting and system integration for companies in Doral and South Florida.","telephone":"+1-786-376-2195","email":"cio@ospinatalentconsulting.com","address":{"@type":"PostalAddress","streetAddress":"8400 NW 36th Street, Suite 450","addressLocality":"Doral","addressRegion":"FL","postalCode":"33178","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":25.8092038,"longitude":-80.3330607},"areaServed":[{"@type":"City","name":"Doral"},{"@type":"City","name":"Miami"},{"@type":"State","name":"Florida"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"18:00"}],"sameAs":["https://www.facebook.com/profile.php?id=61551379450757","https://www.instagram.com/ospinatalent/","https://www.linkedin.com/company/97204468/"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://ospina-talent-consulting.vercel.app/#organization","name":"Ospina Talent Consulting","url":"https://ospina-talent-consulting.vercel.app/","logo":"https://ospina-talent-consulting.vercel.app/images/Logo.svg","image":"https://ospina-talent-consulting.vercel.app/images/og-ospina-talent-consulting.jpg","description":"IT staffing, consulting and system integration for companies in Doral and South Florida.","telephone":"+1-786-376-2195","email":"cio@ospinatalentconsulting.com","areaServed":[{"@type":"City","name":"Doral"},{"@type":"City","name":"Miami"},{"@type":"State","name":"Florida"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"18:00"}],"sameAs":["https://www.facebook.com/profile.php?id=61551379450757","https://www.instagram.com/ospinatalent/","https://www.linkedin.com/company/97204468/"]}</script>
   <link rel="preload" as="font" type="font/woff2" href="fonts/Outfit-Variable.woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -59,6 +59,7 @@
     <section class="hero">
       <div class="hero__grid">
         <div class="hero__copy">
+          <p class="hero__eyebrow">Empowering your digital future</p>
           <h1 class="hero__title">Hire the IT people your roadmap actually needs.</h1>
           <p class="hero__lede">Consulting, staffing, direct hire, system integration and application management &mdash; from a team in Doral that works inside yours, not alongside it.</p>
           <div class="hero__actions btn-row">
@@ -71,51 +72,147 @@
                srcset="images/hero-it-solutions-v2-800.webp 800w, images/hero-it-solutions-v2-1200.webp 1200w, images/hero-it-solutions-v2-1600.webp 1600w"
                sizes="(min-width: 56rem) 48vw, 100vw"
                width="1600" height="844" fetchpriority="high" decoding="async"
-               alt="Two IT engineers reviewing server racks in a data centre while a laptop on a cart displays system monitoring dashboards">
+               alt="Two IT engineers reviewing server racks in a data center while a laptop on a cart displays system monitoring dashboards">
         </div>
       </div>
     </section>
 
+    <!-- Las mismas 22 empresas salen en /leadership, dentro de .company-grid. No
+         hay forma de compartir la lista: sin build y sin CMS, y la visibilidad del
+         contenido no puede depender de JavaScript. Si se toca una, se toca la otra. -->
     <section class="clients" aria-labelledby="clients-title">
-      <h2 class="u-visually-hidden" id="clients-title">Companies Yohanna has worked with across her career, before founding the firm.</h2>
+      <div class="u-page">
+        <h2 class="section-head__title" id="clients-title">Companies Yohanna has worked with</h2>
+        <p class="section-head__lede">Across her career, before and up to founding the firm.</p>
+      </div>
       <div class="clients__viewport">
         <div class="clients__track">
-          <ul class="clients__row">
-            <li><img class="clients__logo" style="--k:0.81" src="images/logos/microsoft.svg" width="469" height="100" decoding="async" alt="Microsoft"></li>
-            <li><img class="clients__logo" style="--k:0.94" src="images/logos/ibm.svg" width="191" height="100" decoding="async" alt="IBM"></li>
-            <li><img class="clients__logo" style="--k:1.09" src="images/logos/hp.svg" width="100" height="100" decoding="async" alt="HP"></li>
-            <li><img class="clients__logo" style="--k:0.7" src="images/logos/oracle.svg" width="762" height="100" decoding="async" alt="Oracle"></li>
-            <li><img class="clients__logo" style="--k:1.3" src="images/logos/dell.svg" width="100" height="100" decoding="async" alt="Dell"></li>
-            <li><img class="clients__logo" style="--k:1.31" src="images/logos/cisco.svg" width="112" height="100" decoding="async" alt="Cisco"></li>
-            <li><img class="clients__logo" style="--k:0.99" src="images/logos/google.svg" width="303" height="100" decoding="async" alt="Google"></li>
-            <li><img class="clients__logo" style="--k:1.45" src="images/logos/att.svg" width="72" height="100" decoding="async" alt="AT&amp;T"></li>
-            <li><img class="clients__logo" style="--k:1.1" src="images/logos/aws.svg" width="167" height="100" decoding="async" alt="Amazon Web Services"></li>
-            <li><img class="clients__logo" style="--k:0.92" src="images/logos/latam.svg" width="429" height="100" decoding="async" alt="LATAM"></li>
-          </ul>
-          <ul class="clients__row" aria-hidden="true">
-            <li><img class="clients__logo" style="--k:0.81" src="images/logos/microsoft.svg" width="469" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.94" src="images/logos/ibm.svg" width="191" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.09" src="images/logos/hp.svg" width="100" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.7" src="images/logos/oracle.svg" width="762" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.3" src="images/logos/dell.svg" width="100" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.31" src="images/logos/cisco.svg" width="112" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.99" src="images/logos/google.svg" width="303" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.45" src="images/logos/att.svg" width="72" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.1" src="images/logos/aws.svg" width="167" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.92" src="images/logos/latam.svg" width="429" height="100" decoding="async" alt=""></li>
-          </ul>
-          <ul class="clients__row" aria-hidden="true">
-            <li><img class="clients__logo" style="--k:0.81" src="images/logos/microsoft.svg" width="469" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.94" src="images/logos/ibm.svg" width="191" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.09" src="images/logos/hp.svg" width="100" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.7" src="images/logos/oracle.svg" width="762" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.3" src="images/logos/dell.svg" width="100" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.31" src="images/logos/cisco.svg" width="112" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.99" src="images/logos/google.svg" width="303" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.45" src="images/logos/att.svg" width="72" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:1.1" src="images/logos/aws.svg" width="167" height="100" decoding="async" alt=""></li>
-            <li><img class="clients__logo" style="--k:0.92" src="images/logos/latam.svg" width="429" height="100" decoding="async" alt=""></li>
-          </ul>
+        <ul class="clients__row">
+          <li class="company"><img class="company__logo" style="--k:0.94" src="images/logos/ibm.svg"
+              width="191" height="100" decoding="async" alt=""><span class="company__name">IBM</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.81" src="images/logos/microsoft.svg"
+              width="469" height="100" decoding="async" alt=""><span class="company__name">Microsoft</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.09" src="images/logos/hp.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">Hewlett Packard</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.45" src="images/logos/att-v2.svg"
+              width="72" height="100" decoding="async" alt=""><span class="company__name">AT&amp;T</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.79" src="images/logos/mobil.svg"
+              width="328" height="100" decoding="async" alt=""><span class="company__name">Mobil</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.92" src="images/logos/latam.svg"
+              width="429" height="100" decoding="async" alt=""><span class="company__name">LATAM</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.31" src="images/logos/cisco.svg"
+              width="112" height="100" decoding="async" alt=""><span class="company__name">Cisco</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.7" src="images/logos/oracle.svg"
+              width="762" height="100" decoding="async" alt=""><span class="company__name">Oracle</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.99" src="images/logos/google.svg"
+              width="303" height="100" decoding="async" alt=""><span class="company__name">Google</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.3" src="images/logos/dell.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">Dell</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.1" src="images/logos/aws.svg"
+              width="167" height="100" decoding="async" alt=""><span class="company__name">AWS</span></li>
+          <li class="company company--text"><span class="company__name">Support Staff Solutions USA LLC</span></li>
+          <li class="company company--text"><span class="company__name">Traza Design &amp; Manufacturing</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.91" src="images/logos/coca-cola.svg"
+              width="319" height="100" decoding="async" alt=""><span class="company__name">Coca-Cola</span></li>
+          <li class="company company--text"><span class="company__name">Tech US</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.08" src="images/logos/jpmorgan-chase.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">JPMorgan Chase</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.11" src="images/logos/bank-of-america.svg"
+              width="184" height="100" decoding="async" alt=""><span class="company__name">Bank of America</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.06" src="images/logos/barclays.svg"
+              width="93" height="100" decoding="async" alt=""><span class="company__name">Barclays</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.98" src="images/logos/lloyds-banking-group.svg"
+              width="325" height="100" decoding="async" alt=""><span class="company__name">Lloyds Banking Group</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.87" src="images/logos/hsbc.svg"
+              width="372" height="100" decoding="async" alt=""><span class="company__name">HSBC</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.94" src="images/logos/rbs.svg"
+              width="234" height="100" decoding="async" alt=""><span class="company__name">RBS</span></li>
+          <li class="company company--text"><span class="company__name">Sainsbury&rsquo;s Bank</span></li>
+        </ul>
+        <ul class="clients__row" aria-hidden="true">
+          <li class="company"><img class="company__logo" style="--k:0.94" src="images/logos/ibm.svg"
+              width="191" height="100" decoding="async" alt=""><span class="company__name">IBM</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.81" src="images/logos/microsoft.svg"
+              width="469" height="100" decoding="async" alt=""><span class="company__name">Microsoft</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.09" src="images/logos/hp.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">Hewlett Packard</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.45" src="images/logos/att-v2.svg"
+              width="72" height="100" decoding="async" alt=""><span class="company__name">AT&amp;T</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.79" src="images/logos/mobil.svg"
+              width="328" height="100" decoding="async" alt=""><span class="company__name">Mobil</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.92" src="images/logos/latam.svg"
+              width="429" height="100" decoding="async" alt=""><span class="company__name">LATAM</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.31" src="images/logos/cisco.svg"
+              width="112" height="100" decoding="async" alt=""><span class="company__name">Cisco</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.7" src="images/logos/oracle.svg"
+              width="762" height="100" decoding="async" alt=""><span class="company__name">Oracle</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.99" src="images/logos/google.svg"
+              width="303" height="100" decoding="async" alt=""><span class="company__name">Google</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.3" src="images/logos/dell.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">Dell</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.1" src="images/logos/aws.svg"
+              width="167" height="100" decoding="async" alt=""><span class="company__name">AWS</span></li>
+          <li class="company company--text"><span class="company__name">Support Staff Solutions USA LLC</span></li>
+          <li class="company company--text"><span class="company__name">Traza Design &amp; Manufacturing</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.91" src="images/logos/coca-cola.svg"
+              width="319" height="100" decoding="async" alt=""><span class="company__name">Coca-Cola</span></li>
+          <li class="company company--text"><span class="company__name">Tech US</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.08" src="images/logos/jpmorgan-chase.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">JPMorgan Chase</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.11" src="images/logos/bank-of-america.svg"
+              width="184" height="100" decoding="async" alt=""><span class="company__name">Bank of America</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.06" src="images/logos/barclays.svg"
+              width="93" height="100" decoding="async" alt=""><span class="company__name">Barclays</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.98" src="images/logos/lloyds-banking-group.svg"
+              width="325" height="100" decoding="async" alt=""><span class="company__name">Lloyds Banking Group</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.87" src="images/logos/hsbc.svg"
+              width="372" height="100" decoding="async" alt=""><span class="company__name">HSBC</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.94" src="images/logos/rbs.svg"
+              width="234" height="100" decoding="async" alt=""><span class="company__name">RBS</span></li>
+          <li class="company company--text"><span class="company__name">Sainsbury&rsquo;s Bank</span></li>
+        </ul>
+        <ul class="clients__row" aria-hidden="true">
+          <li class="company"><img class="company__logo" style="--k:0.94" src="images/logos/ibm.svg"
+              width="191" height="100" decoding="async" alt=""><span class="company__name">IBM</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.81" src="images/logos/microsoft.svg"
+              width="469" height="100" decoding="async" alt=""><span class="company__name">Microsoft</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.09" src="images/logos/hp.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">Hewlett Packard</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.45" src="images/logos/att-v2.svg"
+              width="72" height="100" decoding="async" alt=""><span class="company__name">AT&amp;T</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.79" src="images/logos/mobil.svg"
+              width="328" height="100" decoding="async" alt=""><span class="company__name">Mobil</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.92" src="images/logos/latam.svg"
+              width="429" height="100" decoding="async" alt=""><span class="company__name">LATAM</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.31" src="images/logos/cisco.svg"
+              width="112" height="100" decoding="async" alt=""><span class="company__name">Cisco</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.7" src="images/logos/oracle.svg"
+              width="762" height="100" decoding="async" alt=""><span class="company__name">Oracle</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.99" src="images/logos/google.svg"
+              width="303" height="100" decoding="async" alt=""><span class="company__name">Google</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.3" src="images/logos/dell.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">Dell</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.1" src="images/logos/aws.svg"
+              width="167" height="100" decoding="async" alt=""><span class="company__name">AWS</span></li>
+          <li class="company company--text"><span class="company__name">Support Staff Solutions USA LLC</span></li>
+          <li class="company company--text"><span class="company__name">Traza Design &amp; Manufacturing</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.91" src="images/logos/coca-cola.svg"
+              width="319" height="100" decoding="async" alt=""><span class="company__name">Coca-Cola</span></li>
+          <li class="company company--text"><span class="company__name">Tech US</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.08" src="images/logos/jpmorgan-chase.svg"
+              width="100" height="100" decoding="async" alt=""><span class="company__name">JPMorgan Chase</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.11" src="images/logos/bank-of-america.svg"
+              width="184" height="100" decoding="async" alt=""><span class="company__name">Bank of America</span></li>
+          <li class="company"><img class="company__logo" style="--k:1.06" src="images/logos/barclays.svg"
+              width="93" height="100" decoding="async" alt=""><span class="company__name">Barclays</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.98" src="images/logos/lloyds-banking-group.svg"
+              width="325" height="100" decoding="async" alt=""><span class="company__name">Lloyds Banking Group</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.87" src="images/logos/hsbc.svg"
+              width="372" height="100" decoding="async" alt=""><span class="company__name">HSBC</span></li>
+          <li class="company"><img class="company__logo" style="--k:0.94" src="images/logos/rbs.svg"
+              width="234" height="100" decoding="async" alt=""><span class="company__name">RBS</span></li>
+          <li class="company company--text"><span class="company__name">Sainsbury&rsquo;s Bank</span></li>
+        </ul>
         </div>
       </div>
     </section>
@@ -123,7 +220,7 @@
     <section class="u-section">
       <div class="u-page">
         <div class="section-head">
-          <h2 class="section-head__title">Five ways we put IT people to work</h2>
+          <h2 class="section-head__title">How we put IT people to work</h2>
           <p class="section-head__lede">Every engagement starts the same way: we work out which of these the problem actually needs.</p>
         </div>
         <div class="service-list">
@@ -157,6 +254,12 @@
           <span class="service-row__desc">Scaling, extending, monitoring and supporting the applications your business runs on.</span>
           <span class="service-row__mark" aria-hidden="true"></span>
         </a>
+        <a class="service-row" href="/services#US-Financial-Services-Technology">
+          <img class="service-row__icon" src="images/svc-financial-services.svg" width="32" height="32" alt="" aria-hidden="true">
+          <span class="service-row__name">US Financial-Services Technology</span>
+          <span class="service-row__desc">Technology consulting and engineering for US financial services.</span>
+          <span class="service-row__mark" aria-hidden="true"></span>
+        </a>
         </div>
       </div>
     </section>
@@ -175,7 +278,7 @@
           </div>
           <div class="value value--on-violet">
             <img class="value__icon" src="images/value-specialisation.svg" width="40" height="40" alt="" aria-hidden="true">
-            <h3 class="value__name">Specialisation</h3>
+            <h3 class="value__name">Specialization</h3>
             <p class="value__desc">We serve small businesses and startups, with solutions sized and priced for them.</p>
           </div>
           <div class="value value--on-violet">
@@ -192,7 +295,7 @@
         <div class="split">
           <div class="u-flow">
             <h2 class="section-head__title">Built on twenty years of doing the work</h2>
-            <p class="u-lead">Ospina Talent Consulting was founded in January 2022 by Yohanna Ospina, a systems engineer who spent more than two decades running service delivery, infrastructure and CRM programmes before starting the firm.</p>
+            <p class="u-lead">Ospina Talent Consulting was founded in January 2022 by Yohanna Ospina, a systems engineer who spent more than two decades running service delivery, infrastructure and CRM programs before starting the firm.</p>
             <div class="btn-row">
               <a class="btn btn--outline" href="/about-us">About the company</a>
               <a class="btn btn--outline" href="/leadership">Meet Yohanna</a>
@@ -205,7 +308,7 @@
             <li class="strip__item">ITIL V4</li>
             <li class="strip__item">IBM WebSphere</li>
             <li class="strip__item">IBM AIX</li>
-            <li class="strip__item">Data Centre Infrastructure</li>
+            <li class="strip__item">Data Center Infrastructure</li>
             <li class="strip__item">Project Management</li>
             </ul>
           </div>
@@ -229,7 +332,7 @@
                  srcset="images/cta-datacenter-800.webp 800w, images/cta-datacenter-1200.webp 1200w"
                  sizes="(min-width: 56rem) 44vw, 100vw"
                  width="1200" height="750" loading="lazy" decoding="async"
-                 alt="IT technician in a white shirt checking a server rack in a data centre aisle">
+                 alt="IT technician in a white shirt checking a server rack in a data center aisle">
           </div>
         </div>
       </div>
@@ -241,6 +344,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="images/Logo.svg" width="301" height="106" alt="Ospina Talent Consulting">
+          <p class="footer-brand__slogan">Empowering your digital future</p>
           <p>IT staffing and consulting for small businesses and startups in South Florida.</p>
         </div>
         <div>
@@ -251,6 +355,7 @@
             <li><a href="/services#IT-Direct-Hire-Placement">IT Direct Hire Placement</a></li>
             <li><a href="/services#System-Integration">System Integration</a></li>
             <li><a href="/services#Application-Outsourcing-and-Management">Application Outsourcing and Management</a></li>
+            <li><a href="/services#US-Financial-Services-Technology">US Financial-Services Technology</a></li>
           </ul>
         </div>
         <div>
@@ -267,7 +372,6 @@
           <ul class="footer-list">
             <li><a href="tel:+17863762195">(786) 376-2195</a></li>
             <li><a href="mailto:cio@ospinatalentconsulting.com">cio@ospinatalentconsulting.com</a></li>
-            <li>8400 NW 36th Street, Suite 450<br>Doral, FL 33178</li>
             <li>Monday to Friday, 8am&ndash;6pm</li>
           </ul>
         </div>

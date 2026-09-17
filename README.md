@@ -1,7 +1,7 @@
 # Ospina Talent Consulting
 
 Sitio de Ospina Talent Consulting, migrado de Webflow a Vercel.
-7 páginas estáticas, sin CMS, sin build, **sin una sola dependencia de terceros
+8 páginas estáticas, sin CMS, sin build, **sin una sola dependencia de terceros
 en runtime**.
 
 Desplegado en <https://ospina-talent-consulting.vercel.app>
@@ -20,7 +20,7 @@ git diff a61abf4 --stat
 
 | | |
 |---|---|
-| `*.html` | Las 7 páginas. HTML escrito a mano, sin generador |
+| `*.html` | Las 8 páginas, 404 incluida. HTML escrito a mano, sin generador |
 | `css/tokens.css` | Tipografía, paleta, escala y el chaflán. **Las reglas de contraste están escritas aquí** |
 | `css/base.css` | Reset, elementos, primitivas de maquetación y las tres variantes del chaflán |
 | `css/components.css` | Cabecera, botones, filas de servicio, franjas, valores, pasos, casos, formularios y pie |
@@ -179,8 +179,8 @@ Sobre el build servido, no a ojo:
   mirarlo a mano**), y en cambio sí cazó el `opacity` de la animación del hero,
   que mis propias mediciones no veían.
 - **Cero peticiones a terceros** en producción, comprobado en el panel de red.
-- **Anclas de `/services`**: las 5 caen a 139px bajo la barra fija, el mismo valor
-  en las cinco. El `scroll-padding` y la altura de la cabecera salen del mismo
+- **Anclas de `/services`**: las 6 caen al mismo offset bajo la barra fija, con
+  dispersión 0. El `scroll-padding` y la altura de la cabecera salen del mismo
   token, así que no pueden desincronizarse.
 - **Sin zona muerta de media query**: en 1023px el botón de menú existe y el panel
   es `fixed`; en 1024px el botón desaparece y el nav es `static` y visible.

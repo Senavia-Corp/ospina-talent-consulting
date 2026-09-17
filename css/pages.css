@@ -25,6 +25,19 @@
   /* El cuerpo del titular se mide contra ESTA columna, no contra el viewport. */
   container-type: inline-size;
 }
+/* El eslogan de marca, encima del titular.
+   AMBAR SOBRE VIOLETA: 4,62:1 medido sobre el pixel pintado, que es el peor par
+   del sitio y aun asi pasa AA como texto normal. Donde la faceta hunde el plano
+   sube a 5,98:1. Sobre claro el mismo ambar daria 2,08:1 y no seria texto: aqui
+   vale porque debajo hay violeta, no papel. */
+.hero__eyebrow {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: var(--s-3);
+}
 .hero__title {
   /* --fs-display escala con vw, pero el titular vive en una columna que es la
      mitad del viewport: a 1024 daba 76px sobre 461px de medida, o sea 6em, y
@@ -90,6 +103,11 @@
   .split--flip .split__media { order: -1; }
 }
 .split__media img { width: 100%; }
+/* Dos columnas de TEXTO, sin foto. .split centra en vertical, que es lo que
+   quiere una foto al lado de un parrafo; con dos columnas de alto muy distinto
+   los dos encabezados quedan a alturas distintas y se lee como un descuadre.
+   Alineadas arriba arrancan juntas. */
+.split--top { align-items: start; }
 
 /* --------------------------------------------------------- panel de CTA
    La UNICA sombra del sitio: se monta sobre el borde de dos planos y

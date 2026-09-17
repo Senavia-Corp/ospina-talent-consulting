@@ -153,8 +153,9 @@ html:not(.js) .nav-toggle { display: none; }
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--s-4); }
 
 /* ------------------------------------------------- filas de servicio
-   Cinco servicios con nombres largos. Como filas se leen; troceados en
-   cinco tarjetas identicas se convierten en un muestrario. */
+   Servicios con nombres largos. Como filas se leen; troceados en tarjetas
+   identicas se convierten en un muestrario. La lista no tiene tope: es una
+   pila de filas con borde, y anadir una no pide tocar nada de aqui. */
 .service-list { border-top: 1px solid var(--line); }
 .service-row {
   display: grid;
@@ -204,9 +205,9 @@ html:not(.js) .nav-toggle { display: none; }
 .service-row__name { text-decoration: underline; text-underline-offset: 4px; }
 
 /* --------------------------------------------------------------- franjas
-   Dos franjas tipograficas: certificaciones del equipo y empresas con las
-   que ha trabajado la fundadora. Sin logos: los de terceros son marcas
-   registradas con sus propias normas de uso. */
+   Una franja tipografica: las certificaciones del equipo. La segunda, la de
+   empresas, se fue a .company: alli las marcas SI llevan logo, y el nombre
+   escrito al lado es lo que permite listar tambien a las que no lo tienen. */
 .strip { display: flex; flex-wrap: wrap; gap: var(--s-3); }
 .strip__item {
   padding: var(--s-2) var(--s-5);
@@ -219,23 +220,6 @@ html:not(.js) .nav-toggle { display: none; }
 .plane-violet .strip__item,
 .plane-deep .strip__item { background: rgb(255 255 255 / .12); color: var(--on-violet); }
 
-.wordmarks {
-  display: flex;
-  flex-wrap: wrap;
-  /* El hueco entre columnas era --s-7 (3rem) y en una columna de 548px dejaba
-     la ultima fila con un solo nombre y el 87 % vacio. */
-  gap: var(--s-3) var(--s-5);
-  align-items: baseline;
-}
-.wordmarks li {
-  /* Crecen para repartirse el sobrante de su fila. Con ancho fijo, diez
-     nombres dejaban la ultima fila al 82 % vacia a 768px. */
-  flex: 1 1 auto;
-  font-size: clamp(1.0625rem, .95rem + .5vw, 1.375rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--mute);
-}
 
 /* --------------------------------------------------- valores y pasos */
 /* Flex y no grid a proposito. Con auto-fit, 7 valores dejaban una tarjeta
@@ -355,6 +339,21 @@ textarea.field { min-height: 8rem; resize: vertical; }
 .link-list a { color: var(--violet); font-weight: 600; text-decoration: none; }
 .link-list a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
+/* Enumeracion sin enlaces. .link-list da el mismo hueco, pero todo lo demas que
+   trae es para anclas y aqui no hay ninguna; y el reset quita el boliche a
+   todos los li, asi que sin marca propia esto seria un parrafo troceado. La
+   marca repite el chaflan de .service-row__mark, que es el gesto de la casa. */
+.core-list li { position: relative; padding-left: var(--s-5); }
+.core-list li + li { margin-top: var(--s-3); }
+.core-list li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .55em;
+  width: .5rem; height: .5rem;
+  background: var(--violet);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 35% 100%, 0 65%);
+}
+
 /* ----------------------------------------------------------------- pie */
 /* overflow: clip es lo que recorta el mosaico contra los bordes (ver mas abajo);
    ademas es lo unico que impide que el sangrado derecho genere scroll horizontal,
@@ -388,6 +387,33 @@ textarea.field { min-height: 8rem; resize: vertical; }
   font-size: var(--fs-sm);
   color: var(--on-violet-2);
 }
+/* El eslogan de marca, encima del descriptor de siempre.
+   .footer-brand .footer-brand__slogan Y NO .footer-brand__slogan a secas:
+   la regla de arriba es una clase MAS un tipo, o sea (0,1,1), y le gana a una
+   clase sola. Escrito con un solo selector el color se pierde sin avisar y el
+   eslogan sale blanco como el descriptor.
+
+   EL AMBAR AQUI SE MIDIO SOBRE EL PIXEL PINTADO, no sobre la tabla. Componer
+   el tinte mas claro del mosaico al 26 % sobre --ink da 4,27:1 y asusta, pero
+   ese pixel NO EXISTE en el pie: las celdas claras son pequenas y se salen de
+   cuadro. Rasterizados los dos pseudo-elementos con su geometria real, el peor
+   pixel de todo el pie es rgb(75,59,89) y el ambar encima da 4,88:1; bajo el
+   eslogan, que cae en la columna de marca, el mosaico ni llega y el par es
+   8,71:1 sobre --ink desnudo.
+
+   Aun asi va a 20px/700, que pasa el umbral de texto grande de WCAG (18,66px
+   en negrita, minimo 3:1). Un eslogan pide cuerpo, y deja margen si algun dia
+   se reencuadra el mosaico: lo que no puede cambiar es que se mida antes. */
+.footer-brand .footer-brand__slogan {
+  margin-top: var(--s-5);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: var(--lh-head);
+  letter-spacing: var(--tr-head);
+  color: var(--amber);
+}
+/* el descriptor sigue al eslogan: los dos son un bloque, no dos parrafos */
+.footer-brand .footer-brand__slogan + p { margin-top: var(--s-2); }
 
 .footer-title {
   margin-bottom: var(--s-4);
@@ -466,23 +492,27 @@ textarea.field { min-height: 8rem; resize: vertical; }
 }
 
 /* ------------------------------------------------- franja de logos (marquesina)
-   Las diez empresas donde trabajo la fundadora, en movimiento continuo.
+   Las 22 empresas donde trabajo la fundadora, en movimiento continuo. Cada
+   celda es un .company: la marca arriba y el nombre debajo.
 
-   EL ENCABEZADO SIGUE AHI, pero solo para lectores de pantalla
-   (.u-visually-hidden). Dice "has worked with ... before founding the firm",
-   no "our clients" ni "trusted by": son marcas de terceros y esa frase es lo
-   unico que las situa como un hecho de la carrera de Yohanna y no como una
-   cartera de clientes. NO se borra el h2 aunque no se vea, por dos motivos:
-   nombra la seccion via aria-labelledby, y es el unico sitio del documento
-   donde queda dicho por que estan esos logos ahi.
+   EL ENCABEZADO SE VE. Dice "Companies Yohanna has worked with", no "our
+   clients" ni "trusted by": son marcas de terceros y esa frase es lo unico
+   que las situa como un hecho de la carrera de Yohanna y no como una cartera
+   de clientes. Estuvo en .u-visually-hidden y se ha sacado a la vista porque
+   el riesgo que dejaba abierto era de lectura: una fila de logos corporativos
+   bajo el hero y sin pie se lee por convencion como clientela. Ahora de eso
+   responde el propio h2, delante y a la vista, y por eso tiene que seguir
+   diciendo exactamente lo que dice.
 
-   Se quito de la vista a peticion. El riesgo que eso deja abierto es de
-   lectura: diez logos corporativos bajo el hero y sin pie se leen por
-   convencion como clientela. Si alguna vez hay que responder por ello, la
-   respuesta es el h2, y por eso tiene que seguir diciendo lo que dice.
+   Y LOS NOMBRES VAN EN TIPOGRAFIA dentro de cada celda, no solo en el alt.
+   Cuatro de las 22 no tienen logo que se pueda usar, y sin nombre escrito no
+   habria manera de ponerlas en la franja. Es texto de verdad, en --mute
+   (6,79:1 sobre --paper-2) y no bajado con opacidad, que es lo que se le hace
+   a un logo y no se le puede hacer a una palabra que hay que leer.
 
-   Esta franja sustituyo a la lista .wordmarks en la home; leadership.html la
-   sigue usando, asi que .wordmarks NO es codigo muerto.
+   Esta franja sustituyo a la lista .wordmarks en la home, y .company-grid la
+   sustituye tambien en leadership.html: .wordmarks se quedo sin un solo uso
+   en el repositorio y se borro con este cambio.
 
    Sin flechas ni puntos a proposito: no es contenido que haya que recorrer,
    es fondo de credibilidad. La unica interaccion es parar al pasar el raton
@@ -537,18 +567,22 @@ textarea.field { min-height: 8rem; resize: vertical; }
 
 /* TRES tandas identicas, no dos. El bucle desplaza el track un tercio de su
    ancho, o sea exactamente una tanda, asi que por detras del borde derecho
-   tiene que quedar siempre al menos una tanda entera. Una tanda mide 1410 px
-   en escritorio (medido a 1440): con solo dos copias, cualquier pantalla de
-   mas de 1410 px veria el hueco justo antes de que el ciclo reinicie.
+   tiene que quedar siempre al menos una tanda entera.
 
-   ponytail: con tres tandas el techo es un viewport de 2*1410 = 2820 px CSS,
-   que cubre cualquier portatil y un monitor de 2560. Un 4K a escala 100 %
-   (3840 px CSS) enseñaria hueco: la solucion es duplicar una cuarta tanda en
-   el HTML y pasar el fotograma a calc(-100% / 4). */
+   Con las celdas de .company una tanda mide 5104 px en escritorio (medido a
+   1440: 22 celdas de 11rem mas 22 huecos de 56 px), asi que con tres copias
+   el techo esta en un viewport de 2*5104 = 10208 px CSS. Con diez logos sueltos
+   la tanda media 1410 px y el techo se agotaba en un 4K; ahora no lo agota
+   ninguna pantalla que exista. Crecer la lista ENSANCHA la tanda, o sea que
+   sube el techo: anadir empresas es seguro. */
 .clients__row {
   --clients-gap: clamp(2rem, 5vw, 3.5rem);
   display: flex;
-  align-items: center;
+  /* stretch y no center: cada celda mide lo que la mas alta de su fila, y es
+     .company quien coloca dentro. Con center, una celda de nombre corto se
+     centraria dentro de esa altura y bajaria su logo Y su nombre respecto a
+     la celda cuyo nombre parte en dos lineas: se irian las dos bandas a la vez. */
+  align-items: stretch;
   gap: var(--clients-gap);
   /* el hueco final va DENTRO de la tanda: asi las tres miden exactamente lo
      mismo y el -33.3333% cae en el inicio de la siguiente, no a medio hueco */
@@ -558,36 +592,39 @@ textarea.field { min-height: 8rem; resize: vertical; }
   flex: 0 0 auto;
 }
 
-.clients__logo {
-  --lh: clamp(1.5rem, 1.15rem + 1.1vw, 2rem);   /* 24 -> 32 */
-  display: block;
-  height: calc(var(--lh) * var(--k, 1));
-  width: auto;
-  flex: 0 0 auto;
-  /* Gris y bajados de intensidad: son respaldo de fondo, no reclamos. El
-     color vuelve al pasar el raton, que es tambien cuando se para la cinta. */
-  filter: grayscale(1);
-  opacity: .58;
-  transition: filter var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
-}
-
-@media (hover: hover) {
-  .clients__logo:hover { filter: none; opacity: 1; }
-}
 
 /* El sitio anade movimiento bajo no-preference en vez de quitarlo bajo
    reduce (misma convencion que .timeline en pages.css). */
 @media (prefers-reduced-motion: no-preference) {
-  .clients__track { animation: clients-marquee 60s linear infinite; }
+  /* 220s, no 60s. La tanda paso de 1410 a 5104 px al meter nombre y ancho fijo
+     en cada celda: a 60s la cinta iria a 85 px/s, 3,6 veces mas rapido, y los
+     nombres -que antes no existian- no darian tiempo a leerse. La velocidad
+     lineal se mantiene en los 23,5 px/s que daban diez logos en 60s:
+     5104 / 23,5 = 217s, redondeado a 220. Si cambia el numero de empresas,
+     se vuelve a medir la tanda y se recalcula. */
+  .clients__track { animation: clients-marquee 220s linear infinite; }
   .clients:hover .clients__track,
   .clients:focus-within .clients__track { animation-play-state: paused; }
 }
 
-/* Quieto no puede significar inaccesible: sin animacion solo caben tres o
-   cuatro logos en un movil, asi que la cinta pasa a ser deslizable a mano y
-   las copias sobran. */
+/* Quieto no puede significar inaccesible. Antes la cinta pasaba a deslizarse
+   a mano, pero con 22 celdas una tanda mide 4576 px a 375: doce pantallas de
+   arrastre para llegar a la ultima empresa, y nadie llega. Se pliega, que es
+   exactamente lo que hace .company-grid en /leadership. El desvanecido lateral
+   se quita: plegado no entra ni sale nada por los bordes y solo taparia la
+   primera y la ultima celda de cada fila. */
 @media (prefers-reduced-motion: reduce) {
-  .clients__viewport { overflow-x: auto; }
+  .clients__viewport {
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+  .clients__track { width: auto; }
+  .clients__row {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: var(--s-6);
+    padding-right: 0;   /* el hueco de costura solo sirve con el bucle andando */
+  }
   .clients__row + .clients__row { display: none; }
 }
 
@@ -597,6 +634,117 @@ textarea.field { min-height: 8rem; resize: vertical; }
      contra el ancho de una tanda y el bucle podria enseñar una costura de
      un pixel al reiniciar. Dividido, es exacto a cualquier ancho. */
   to   { transform: translate3d(calc(-100% / 3), 0, 0); }
+}
+
+/* ------------------------------------------------ la celda de una empresa
+   UNA sola celda para los dos sitios donde salen las empresas: dentro de la
+   marquesina de la home y dentro de .company-grid en /leadership. La
+   presentacion cambia, los datos no.
+
+   No hay forma de compartir la lista: no hay build, no hay CMS, y la regla de
+   la casa es que la visibilidad del contenido no dependa de JavaScript. Las
+   dos listas son markup duplicado, igual que ya lo son el nav y el pie. Cada
+   una lleva un comentario apuntando a la otra.
+
+   Las DOS MEDIDAS viven en el padre y no en .company, porque .company-grid
+   necesita --company-w para su propio grid-template-columns y una custom
+   property no se lee hacia arriba. Si algun dia hay un .company fuera de
+   estos dos padres, hay que anadir su contenedor a esta lista. */
+.clients__row,
+.company-grid {
+  --company-slot: 3rem;   /* banda reservada a la marca. AT&T mide 46,4 px a 1440 */
+  --company-w:   11rem;   /* ancho de celda. Oracle mide 170,7 px a 1440 y es el mas ancho */
+}
+
+.company {
+  display: grid;
+  grid-template-rows: var(--company-slot) auto;
+  /* start, NO center. La fila es align-items:stretch, o sea que todas las
+     celdas miden lo que la mas alta. Con center, una celda de nombre corto se
+     centraria dentro de esa altura y bajaria su marca y su nombre ~9 px
+     respecto a la celda cuyo nombre parte en dos lineas: se romperian las dos
+     bandas a la vez, y a 220s de recorrido un nombre que se hunde al pasar se
+     ve como lo que seria, un fallo. Con start, la marca arranca siempre en 0
+     y el nombre siempre debajo de la banda, parta el nombre o no. */
+  align-content: start;
+  justify-items: center;
+  gap: var(--s-2);
+  width: var(--company-w);
+  text-align: center;
+}
+
+.company__logo {
+  --lh: clamp(1.5rem, 1.15rem + 1.1vw, 2rem);   /* 24 -> 32 */
+  height: calc(var(--lh) * var(--k, 1));
+  width: auto;
+  /* la banda mide 3rem y cada marca su propio alto: se centran entre ellas */
+  align-self: center;
+  /* la celda mide 11rem clavadas. Si un SVG futuro sale mas ancho, el
+     max-width del reset lo recorta, y con el height fijo del --k ese recorte
+     lo APLASTARIA en vez de encogerlo. contain lo encaja. El arreglo de
+     verdad, si pasa, es subir --company-w y no tocar el --k. */
+  object-fit: contain;
+  /* Gris y bajados de intensidad: son respaldo de fondo, no reclamos. El
+     color vuelve al pasar el raton, que es tambien cuando se para la cinta. */
+  filter: grayscale(1);
+  opacity: .58;
+  transition: filter var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .company__logo:hover { filter: none; opacity: 1; }
+}
+
+.company__name {
+  /* Fila 2 SIEMPRE, y a mano. En una celda sin <img> el colocado automatico
+     mete el nombre en la banda de la marca y su linea base sube 56 px respecto
+     a la de al lado. Puesto aqui y no en .company--text, la colocacion sigue
+     siendo correcta aunque alguien se deje la clase modificadora. */
+  grid-row: 2;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  /* --mute, NO opacidad. Sobre --paper-2 da 6,79:1 y cumple AA como texto; el
+     mismo --ink al 58 % que llevan los logos daria 4,36:1 y no llega. Una
+     imagen no tiene que cumplir el minimo de texto; un nombre escrito si. */
+  color: var(--mute);
+  /* --lh-body (1,62) abre 24,3 px por linea y un nombre de dos palabras se
+     desparrama; ademas encarece cada salto de linea dentro de la rejilla. */
+  line-height: 1.25;
+  text-wrap: balance;   /* si parte en dos, que parta por la mitad */
+}
+
+/* La empresa no tiene un logo que se pueda usar: su banda de marca queda
+   vacia. La clase es un marcador de markup y NO lleva declaraciones a
+   proposito: todo lo que hace falta para que el nombre caiga en su sitio esta
+   en .company__name, y la banda de 3rem es una pista FIJA, asi que ocupa su
+   alto haya algo dentro o no. Celda con logo y celda sin el miden igual. */
+
+/* Las mismas celdas, quietas y en rejilla, para /leadership.
+   El numero de columnas va a mano y nunca es 3: son 22 empresas (2 x 11), asi
+   que con 2, 4 o 5 la ultima fila sale entera o a medias, y con 3 se queda con
+   UNA sola celda y el 67 % del ancho vacio. Es el mismo defecto que ya obligo
+   a retocar la difunta .wordmarks. */
+.company-grid {
+  display: grid;
+  /* minmax(0, ...) y no la medida a secas: la celda cede ancho antes de
+     desbordar. A 1440 el contenido de .u-page mide 1168 px y cinco celdas de
+     11rem con --s-5 de hueco caben holgadas, pero a 1024 no, y sin minmax el
+     desborde saldria por la derecha. */
+  grid-template-columns: repeat(2, minmax(0, var(--company-w)));
+  justify-content: center;
+  gap: var(--s-6) var(--s-5);
+}
+
+@media (min-width: 48rem) {
+  .company-grid { grid-template-columns: repeat(4, minmax(0, var(--company-w))); }
+}
+
+@media (min-width: 64rem) {
+  /* Cinco y no seis: a 1024 el contenido mide 947 px y seis columnas dejarian
+     la celda en 138 px, por debajo de los 158 que mide Oracle ahi. Se
+     recortaria justo el logo que ya es el mas dificil de leer. */
+  .company-grid { grid-template-columns: repeat(5, minmax(0, var(--company-w))); }
 }
 
 /* ------------------------------------- las facetas de los planos violeta

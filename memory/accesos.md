@@ -38,7 +38,14 @@ correo y sin desplegar.
 ## Datos públicos del cliente (salen del propio sitio)
 
 - Teléfono: (786) 376-2195 · Email: cio@ospinatalentconsulting.com
-- 8400 NW 36th Street, Suite 450, Doral, FL 33178
+- ~~8400 NW 36th Street, Suite 450, Doral, FL 33178~~ — **RETIRADA del sitio a
+  petición del cliente (septiembre de 2026).** Ya no aparece en ninguna página:
+  ni en el pie, ni en la ficha de Office de /contact, ni en el JSON-LD de la
+  home, ni en las descripciones meta. **No volver a ponerla.** Lo que sí se
+  queda es «Doral, FL» como zona de servicio (títulos, descripciones y
+  `areaServed`): eso es cobertura, no domicilio. La foto de /about-us es de ese
+  edificio y se mantiene, con un `alt` que ya no dice dónde está ni afirma que
+  la empresa tenga ahí su sede.
 - Lunes a viernes, 8:00–18:00
 - LinkedIn: `/company/97204468/` — **ojo**, el export enlazaba a
   `/company/97204468/admin/feed/posts/`, que es el panel de administración y da

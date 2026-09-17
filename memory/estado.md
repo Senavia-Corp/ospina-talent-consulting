@@ -8,7 +8,7 @@
 <https://ospina-talent-consulting.vercel.app>.
 
 El sitio está migrado, rediseñado, verificado y no depende de Webflow para nada.
-`npm test` en verde (15 pruebas). 1,09 MB desde 9,7 MB de export.
+`npm test` en verde (22 pruebas). 1,09 MB desde 9,7 MB de export.
 
 ## Lo que falta, por orden
 

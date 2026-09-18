@@ -535,11 +535,17 @@ textarea.field { min-height: 8rem; resize: vertical; }
    normalizado a 100 px de tinta, se mide area y caja, se interpola y se
    divide por la fraccion de alto que ocupa la tinta.
 
-   UNA EXCEPCION MEDIDA A OJO: AT&T. Es el unico lockup APILADO (globo arriba,
-   nombre debajo) y la formula lo compara con logotipos horizontales, asi que
-   le daba 26 px de alto y 19 de ancho: ilegible. Va a 1.45, que lo pone a la
-   altura de los otros dos marcos redondos, Dell y HP. Cualquier logo apilado
-   que se anada tendra el mismo problema y la misma solucion.
+   DOS EXCEPCIONES MEDIDAS A OJO, y las dos por el mismo motivo: son los unicos
+   lockups APILADOS. La formula los compara con logotipos horizontales, que son
+   anchos y bajos, y al apilado le sale un alto ridiculo.
+     - AT&T (globo arriba, nombre debajo): la formula le daba 26 px de alto y 19
+       de ancho, ilegible. Va a 1.45, que lo pone a la altura de los otros dos
+       marcos redondos, Dell y HP.
+     - Tech.us ("tech" arriba, ".us" debajo): la formula le daba 1.102, o sea
+       35 px. Va a 1.41, que lo deja en 45 px de tinta, la misma que AT&T.
+   La banda mide 3rem (48 px), asi que ningun --k de un apilado puede pasar de
+   1.5. Cualquier logo apilado que se anada tendra el mismo problema, la misma
+   solucion y el mismo techo.
    -------------------------------------------------------------------------- */
 /* El encabezado ya no esta oculto, asi que necesita separarse de la cinta:
    pegados, la entradilla parecia el pie de la primera fila de logos. */

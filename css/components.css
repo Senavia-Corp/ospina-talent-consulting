@@ -541,6 +541,10 @@ textarea.field { min-height: 8rem; resize: vertical; }
    altura de los otros dos marcos redondos, Dell y HP. Cualquier logo apilado
    que se anada tendra el mismo problema y la misma solucion.
    -------------------------------------------------------------------------- */
+/* El encabezado ya no esta oculto, asi que necesita separarse de la cinta:
+   pegados, la entradilla parecia el pie de la primera fila de logos. */
+.clients > .u-page { margin-bottom: var(--s-6); }
+
 .clients {
   background: var(--paper-2);
   padding-block: clamp(var(--s-6), 4vw, var(--s-8));
@@ -569,12 +573,13 @@ textarea.field { min-height: 8rem; resize: vertical; }
    ancho, o sea exactamente una tanda, asi que por detras del borde derecho
    tiene que quedar siempre al menos una tanda entera.
 
-   Con las celdas de .company una tanda mide 5104 px en escritorio (medido a
-   1440: 22 celdas de 11rem mas 22 huecos de 56 px), asi que con tres copias
-   el techo esta en un viewport de 2*5104 = 10208 px CSS. Con diez logos sueltos
-   la tanda media 1410 px y el techo se agotaba en un 4K; ahora no lo agota
-   ninguna pantalla que exista. Crecer la lista ENSANCHA la tanda, o sea que
-   sube el techo: anadir empresas es seguro. */
+   Con las celdas de .company una tanda mide 3448 px en escritorio (medido a
+   1440: 22 celdas a su ancho de contenido mas 22 huecos de 56 px), asi que con
+   tres copias el techo esta en un viewport de 2*3448 = 6896 px CSS. Con diez
+   logos sueltos la tanda media 1410 px y el techo, 2820, se agotaba en un 4K a
+   escala 100 %; 6896 cubre de sobra un 4K y aun un 5K. Crecer la lista ENSANCHA
+   la tanda, o sea que sube el techo: anadir empresas es seguro. Encogerla no:
+   si algun dia se quedan menos de ~10, hay que volver a mirar este numero. */
 .clients__row {
   --clients-gap: clamp(2rem, 5vw, 3.5rem);
   display: flex;
@@ -596,13 +601,13 @@ textarea.field { min-height: 8rem; resize: vertical; }
 /* El sitio anade movimiento bajo no-preference en vez de quitarlo bajo
    reduce (misma convencion que .timeline en pages.css). */
 @media (prefers-reduced-motion: no-preference) {
-  /* 220s, no 60s. La tanda paso de 1410 a 5104 px al meter nombre y ancho fijo
-     en cada celda: a 60s la cinta iria a 85 px/s, 3,6 veces mas rapido, y los
-     nombres -que antes no existian- no darian tiempo a leerse. La velocidad
-     lineal se mantiene en los 23,5 px/s que daban diez logos en 60s:
-     5104 / 23,5 = 217s, redondeado a 220. Si cambia el numero de empresas,
-     se vuelve a medir la tanda y se recalcula. */
-  .clients__track { animation: clients-marquee 220s linear infinite; }
+  /* 150s, no 60s. Lo que manda es la VELOCIDAD LINEAL, no la duracion: 23,5 px/s
+     es lo que daban diez logos en 60s y es lo que deja leer un nombre al pasar.
+     La tanda mide 3448 px medidos a 1440, asi que 3448 / 23,5 = 147s, redondeado
+     a 150 (23,0 px/s). Si cambia el numero de empresas O el ancho de las celdas,
+     se vuelve a medir la tanda y se recalcula: a 60s esto iria a 57 px/s y los
+     nombres -que antes no existian- pasarian sin darte tiempo. */
+  .clients__track { animation: clients-marquee 150s linear infinite; }
   .clients:hover .clients__track,
   .clients:focus-within .clients__track { animation-play-state: paused; }
 }
@@ -669,7 +674,17 @@ textarea.field { min-height: 8rem; resize: vertical; }
   align-content: start;
   justify-items: center;
   gap: var(--s-2);
-  width: var(--company-w);
+  /* ANCHO DE CONTENIDO, no fijo, y --company-w pasa a ser solo el tope.
+     Con 11rem clavadas y el contenido centrado, el hueco de CAJA salia
+     perfecto (56 px siempre) y el hueco OPTICO no: cada marca deja dentro de
+     su propia celda el sobrante que no ocupa, asi que entre la tinta de HP
+     (35 px de ancho) y la de AT&T habia 182 px, y entre Oracle (172 px) y
+     Google 56. Mas del triple de diferencia leyendo la misma fila.
+     Ajustando la celda a su contenido, ese sobrante desaparece y el ritmo lo
+     marca el hueco, que es el mismo para todas. El tope sigue haciendo falta:
+     un nombre largo sin el se iria a 230 px y no partiria nunca de linea. */
+  width: max-content;
+  max-width: var(--company-w);
   text-align: center;
 }
 
@@ -725,6 +740,11 @@ textarea.field { min-height: 8rem; resize: vertical; }
    que con 2, 4 o 5 la ultima fila sale entera o a medias, y con 3 se queda con
    UNA sola celda y el 67 % del ancho vacio. Es el mismo defecto que ya obligo
    a retocar la difunta .wordmarks. */
+/* En la rejilla es al reves que en la cinta: lo que se lee es la COLUMNA, y
+   los nombres tienen que caer alineados unos debajo de otros. Asi que aqui la
+   celda ocupa su pista entera en vez de encogerse a su contenido. */
+.company-grid .company { width: 100%; max-width: none; }
+
 .company-grid {
   display: grid;
   /* minmax(0, ...) y no la medida a secas: la celda cede ancho antes de

@@ -505,10 +505,15 @@ textarea.field { min-height: 8rem; resize: vertical; }
    diciendo exactamente lo que dice.
 
    Y LOS NOMBRES VAN EN TIPOGRAFIA dentro de cada celda, no solo en el alt.
-   Tres de las 22 no tienen logo que se pueda usar, y sin nombre escrito no
-   habria manera de ponerlas en la franja. Es texto de verdad, en --mute
-   (6,79:1 sobre --paper-2) y no bajado con opacidad, que es lo que se le hace
-   a un logo y no se le puede hacer a una palabra que hay que leer.
+   Las 22 tienen ya su marca, pero el nombre se queda por tres motivos: media
+   docena de estos logos son monogramas sin palabra -Trazza, Dell, HP, AT&T- y
+   en gris al 58 % no los identifica nadie; la lista es dato editorial y
+   cualquier alta futura puede llegar sin fichero; y el alt va vacio a
+   proposito, porque el nombre ya esta al lado y un alt con texto haria que un
+   lector de pantalla dijera cada empresa dos veces.
+   Es texto de verdad, en --mute (6,79:1 sobre --paper-2) y no bajado con
+   opacidad, que es lo que se le hace a un logo y no se le puede hacer a una
+   palabra que hay que leer.
 
    Esta franja sustituyo a la lista .wordmarks en la home, y .company-grid la
    sustituye tambien en leadership.html: .wordmarks se quedo sin un solo uso
@@ -579,13 +584,17 @@ textarea.field { min-height: 8rem; resize: vertical; }
    ancho, o sea exactamente una tanda, asi que por detras del borde derecho
    tiene que quedar siempre al menos una tanda entera.
 
-   Con las celdas de .company una tanda mide 3448 px en escritorio (medido a
+   Con las celdas de .company una tanda mide 3494 px en escritorio (medido a
    1440: 22 celdas a su ancho de contenido mas 22 huecos de 56 px), asi que con
-   tres copias el techo esta en un viewport de 2*3448 = 6896 px CSS. Con diez
+   tres copias el techo esta en un viewport de 2*3494 = 6988 px CSS. Con diez
    logos sueltos la tanda media 1410 px y el techo, 2820, se agotaba en un 4K a
-   escala 100 %; 6896 cubre de sobra un 4K y aun un 5K. Crecer la lista ENSANCHA
+   escala 100 %; 6988 cubre de sobra un 4K y aun un 5K. Crecer la lista ENSANCHA
    la tanda, o sea que sube el techo: anadir empresas es seguro. Encogerla no:
-   si algun dia se quedan menos de ~10, hay que volver a mirar este numero. */
+   si algun dia se quedan menos de ~10, hay que volver a mirar este numero.
+
+   OJO: la tanda cambia de ancho tambien SIN tocar la lista, porque la celda se
+   ajusta a su contenido. Cambiar un logo por otro mas ancho, o una celda de
+   texto por una con marca, la mueve. Se mide y se recalcula la duracion. */
 .clients__row {
   --clients-gap: clamp(2rem, 5vw, 3.5rem);
   display: flex;
@@ -609,8 +618,8 @@ textarea.field { min-height: 8rem; resize: vertical; }
 @media (prefers-reduced-motion: no-preference) {
   /* 150s, no 60s. Lo que manda es la VELOCIDAD LINEAL, no la duracion: 23,5 px/s
      es lo que daban diez logos en 60s y es lo que deja leer un nombre al pasar.
-     La tanda mide 3448 px medidos a 1440, asi que 3448 / 23,5 = 147s, redondeado
-     a 150 (23,0 px/s). Si cambia el numero de empresas O el ancho de las celdas,
+     La tanda mide 3494 px medidos a 1440, asi que 3494 / 23,5 = 149s, que se deja
+     en 150 (23,3 px/s, dentro del 1 %). Si cambia el numero de empresas O el ancho de las celdas,
      se vuelve a medir la tanda y se recalcula: a 60s esto iria a 57 px/s y los
      nombres -que antes no existian- pasarian sin darte tiempo. */
   .clients__track { animation: clients-marquee 150s linear infinite; }
@@ -619,7 +628,7 @@ textarea.field { min-height: 8rem; resize: vertical; }
 }
 
 /* Quieto no puede significar inaccesible. Antes la cinta pasaba a deslizarse
-   a mano, pero con 22 celdas una tanda mide 4576 px a 375: doce pantallas de
+   a mano, pero con 22 celdas una tanda mide 2633 px a 375: siete pantallas de
    arrastre para llegar a la ultima empresa, y nadie llega. Se pliega, que es
    exactamente lo que hace .company-grid en /leadership. El desvanecido lateral
    se quita: plegado no entra ni sale nada por los bordes y solo taparia la
@@ -674,7 +683,7 @@ textarea.field { min-height: 8rem; resize: vertical; }
      celdas miden lo que la mas alta. Con center, una celda de nombre corto se
      centraria dentro de esa altura y bajaria su marca y su nombre ~9 px
      respecto a la celda cuyo nombre parte en dos lineas: se romperian las dos
-     bandas a la vez, y a 220s de recorrido un nombre que se hunde al pasar se
+     bandas a la vez, y a 150s de recorrido un nombre que se hunde al pasar se
      ve como lo que seria, un fallo. Con start, la marca arranca siempre en 0
      y el nombre siempre debajo de la banda, parta el nombre o no. */
   align-content: start;
@@ -735,11 +744,14 @@ textarea.field { min-height: 8rem; resize: vertical; }
   text-wrap: balance;   /* si parte en dos, que parta por la mitad */
 }
 
-/* La empresa no tiene un logo que se pueda usar: su banda de marca queda
-   vacia. La clase es un marcador de markup y NO lleva declaraciones a
-   proposito: todo lo que hace falta para que el nombre caiga en su sitio esta
-   en .company__name, y la banda de 3rem es una pista FIJA, asi que ocupa su
-   alto haya algo dentro o no. Celda con logo y celda sin el miden igual. */
+/* .company--text, para una empresa sin marca utilizable. HOY NO LA USA NADIE:
+   las 22 tienen logo. Se documenta porque la lista es dato editorial y la
+   proxima alta puede llegar sin fichero, y porque conviene saber que ya
+   funciona y no hay que inventarlo otra vez.
+   La clase es un marcador de markup y NO lleva declaraciones a proposito: todo
+   lo que hace falta para que el nombre caiga en su sitio esta en .company__name
+   (grid-row: 2), y la banda de 3rem es una pista FIJA, asi que ocupa su alto
+   haya algo dentro o no. Celda con logo y celda sin el miden igual. */
 
 /* Las mismas celdas, quietas y en rejilla, para /leadership.
    El numero de columnas va a mano y nunca es 3: son 22 empresas (2 x 11), asi

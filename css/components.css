@@ -431,6 +431,12 @@ textarea.field { min-height: 8rem; resize: vertical; }
   font-size: var(--fs-xs);
   color: var(--on-violet-2);
 }
+/* La firma de Senavia, debajo del copyright. .footer-credit gana a `p + p` de base.css,
+   que la separaria 1rem. El enlace va dentro de una frase y con el mismo color que el
+   texto, asi que el subrayado es lo unico que lo distingue (WCAG 1.4.1): tiene que ir
+   DESPUES de `.site-footer a`, que lo quita con la misma especificidad. */
+.footer-credit { margin-top: var(--s-1); }
+.footer-credit a { text-decoration: underline; text-underline-offset: .18em; }
 .social { display: flex; gap: var(--s-4); }
 .social a { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
 .social svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }

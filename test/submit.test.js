@@ -1,7 +1,8 @@
-// Comprobacion de api/submit.js sin tocar SMTP: se sustituye createTransport por un doble
-// que guarda lo que se habria enviado. Cubre lo que de verdad puede romperse en silencio:
-// que un GET no pase, que solo salgan los campos de la lista blanca, y que un Reply-To
-// manipulado no cuele cabeceras.
+// Comprobacion de api/submit.js sin tocar SMTP ni Cloudflare: createTransport y fetch se
+// sustituyen por dobles que guardan lo que se habria enviado. Cubre lo que de verdad puede
+// romperse en silencio: que un GET no pase, que solo salgan los campos de la lista blanca,
+// que un Reply-To manipulado no cuele cabeceras, y que sin un token de Turnstile valido
+// no salga ningun email.
 
 const test = require('node:test')
 const assert = require('node:assert')
@@ -12,12 +13,23 @@ Object.assign(process.env, {
   SMTP_USER: 'remitente@example.com',
   SMTP_PASS: 'x',
   MAIL_TO: 'destino@example.com',
+  TURNSTILE_SECRET_KEY: 'secreto-de-prueba',
 })
 
 const sent = []
 require('nodemailer').createTransport = () => ({
   sendMail: async (msg) => { sent.push(msg); return { messageId: 'test' } },
 })
+
+// Doble de siteverify: acepta el token 'bueno', simula una caida con 'cae' y rechaza el resto.
+const verificados = []
+global.fetch = async (url, opts) => {
+  const p = new URLSearchParams(opts.body)
+  verificados.push({ url, secret: p.get('secret'), response: p.get('response'), remoteip: p.get('remoteip') })
+  if (p.get('response') === 'cae') throw new Error('The operation was aborted due to timeout')
+  const ok = p.get('response') === 'bueno'
+  return { json: async () => ({ success: ok, 'error-codes': ok ? [] : ['invalid-input-response'] }) }
+}
 
 const handler = require('../api/submit.js')
 
@@ -35,9 +47,10 @@ function req(extra) {
   return { headers: { 'x-forwarded-for': `10.0.0.${++n}` }, ...extra }
 }
 
-const CONTACT = { name: 'Ana Perez', Phone: '786-357-9121', Email: 'ana@example.com', Message: 'Hola' }
+const CONTACT = { name: 'Ana Perez', Phone: '786-357-9121', Email: 'ana@example.com', Message: 'Hola', 'cf-turnstile-response': 'bueno' }
 
 const PARTNER = {
+  'cf-turnstile-response': 'bueno',
   'legal-company-name': 'Acme LLC', 'full-name': 'Ana Perez',
   address: '1 Main St', country: 'US', city: 'Doral', state: 'FL', 'zip-code': '33166',
   'company-phone': '305-000-0000', website: 'https://acme.example',
@@ -150,4 +163,58 @@ test('la misma IP no puede mandar sin limite', async () => {
     await handler({ ...ip, method: 'POST', query: { f: 'contact' }, body: CONTACT }, ultimo)
   }
   assert.strictEqual(ultimo.statusCode, 429)
+})
+
+test('sin token de Turnstile no sale ningun email', async () => {
+  sent.length = 0
+  const { 'cf-turnstile-response': _, ...sinToken } = CONTACT
+  const r = res()
+  await handler(req({ method: 'POST', query: { f: 'contact' }, body: sinToken }), r)
+  assert.strictEqual(r.statusCode, 403)
+  assert.deepStrictEqual(r.body.codes, ['missing-input-response'])
+  assert.strictEqual(sent.length, 0)
+})
+
+test('un token que Cloudflare rechaza no envia nada', async () => {
+  sent.length = 0
+  const r = res()
+  await handler(req({ method: 'POST', query: { f: 'partner' }, body: { ...PARTNER, 'cf-turnstile-response': 'robot' } }), r)
+  assert.strictEqual(r.statusCode, 403)
+  assert.deepStrictEqual(r.body.codes, ['invalid-input-response'])
+  assert.strictEqual(sent.length, 0)
+})
+
+test('si Cloudflare no contesta se rechaza: falla cerrado', async () => {
+  sent.length = 0
+  const r = res()
+  await handler(req({ method: 'POST', query: { f: 'contact' }, body: { ...CONTACT, 'cf-turnstile-response': 'cae' } }), r)
+  assert.strictEqual(r.statusCode, 403)
+  assert.strictEqual(sent.length, 0)
+})
+
+test('el token va a siteverify con el secreto y la IP, y no llega al email', async () => {
+  sent.length = 0
+  verificados.length = 0
+  const r = res()
+  await handler({ method: 'POST', query: { f: 'contact' }, body: CONTACT,
+    headers: { 'x-forwarded-for': '198.51.100.23, 10.0.0.1' } }, r)
+  assert.strictEqual(r.statusCode, 200)
+  const [v] = verificados
+  assert.strictEqual(v.url, 'https://challenges.cloudflare.com/turnstile/v0/siteverify')
+  assert.strictEqual(v.secret, 'secreto-de-prueba')
+  assert.strictEqual(v.response, 'bueno')
+  assert.strictEqual(v.remoteip, '198.51.100.23')
+  assert.doesNotMatch(sent[0].text, /bueno|turnstile/i)
+})
+
+test('sin TURNSTILE_SECRET_KEY la funcion no arranca: 500', async () => {
+  const antes = process.env.TURNSTILE_SECRET_KEY
+  delete process.env.TURNSTILE_SECRET_KEY
+  try {
+    const r = res()
+    await handler(req({ method: 'POST', query: { f: 'contact' }, body: CONTACT }), r)
+    assert.strictEqual(r.statusCode, 500)
+  } finally {
+    process.env.TURNSTILE_SECRET_KEY = antes
+  }
 })

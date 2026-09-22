@@ -76,6 +76,10 @@
           fail.setAttribute('tabindex', '-1')
           fail.focus()
         }
+        // El token de Turnstile es de un solo uso: sin reset, el reintento iria con el
+        // token ya gastado y la API lo rechazaria con 403.
+        var widget = form.querySelector('.cf-turnstile')
+        if (widget && window.turnstile) window.turnstile.reset(widget)
       })
       .finally(function () {
         if (btn) {

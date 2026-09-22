@@ -28,8 +28,12 @@ con qué identidad se llega.
 
 ## Variables de entorno
 
-Las cinco viven en el panel de Vercel, nunca en el repo:
-`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_TO`.
+Las seis viven en el panel de Vercel, nunca en el repo:
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_TO`, `TURNSTILE_SECRET_KEY`.
+
+Turnstile: widget en la cuenta de Cloudflare del cliente (Ospinatalentconsult...).
+La site key es pública y va en el HTML de /contact y /become-a-partner; la secret
+key solo en Vercel.
 
 `npm run check-smtp cuenta@dominio.com` verifica una credencial SMTP sin enviar
 correo y sin desplegar.

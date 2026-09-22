@@ -75,11 +75,36 @@ const FORMS = {
   },
 }
 
-const ENV = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'MAIL_TO']
+const ENV = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'MAIL_TO', 'TURNSTILE_SECRET_KEY']
+
+// Turnstile. El widget de los dos formularios mete su token en cf-turnstile-response, que
+// no esta en FORMS y por eso no viaja al email. Sin validarlo aqui el widget es decorado.
+// Devuelve los error-codes de Cloudflare (vacio = humano); no contienen nada secreto y
+// distinguen un token malo ('invalid-input-response') de un secreto mal puesto
+// ('invalid-input-secret').
+// ponytail: falla cerrado. Si Cloudflare no contesta en 8s, el envio se rechaza y el
+// visitante ve el panel de error con el telefono. Fallar abierto solo si eso molesta.
+async function turnstile(token, ip) {
+  if (!token) return ['missing-input-response']
+  const params = new URLSearchParams({ secret: process.env.TURNSTILE_SECRET_KEY, response: token })
+  if (ip) params.set('remoteip', ip)
+  try {
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: params,
+      signal: AbortSignal.timeout(8000),
+    })
+    const data = await r.json()
+    return data.success === true ? [] : data['error-codes'] || ['rejected']
+  } catch (err) {
+    console.error('Turnstile no respondio:', err && err.message)
+    return ['siteverify-unreachable']
+  }
+}
 
 // ponytail: contador en memoria. Fluid Compute reutiliza instancias pero no las comparte,
 // asi que el limite es por instancia y un atacante repartido lo supera. Corta el abuso
-// trivial sin anadir servicios; para algo serio, Turnstile o BotID (ver README).
+// trivial sin anadir servicios; el filtro serio es Turnstile, y esto queda como segunda capa.
 const VENTANA_MS = 10 * 60 * 1000
 const MAX_POR_VENTANA = 5
 const vistos = new Map()
@@ -143,6 +168,11 @@ module.exports = async (req, res) => {
     // Solo los nombres de campo, nunca lo que el usuario escribio.
     return res.status(400).json({ error: 'Missing required fields', fields: missing })
   }
+
+  // Despues de los campos a proposito: la sonda sin correo del README (name=solo -> 400)
+  // sigue funcionando sin token.
+  const codes = await turnstile(value('cf-turnstile-response'), ip === 'desconocida' ? '' : ip)
+  if (codes.length) return res.status(403).json({ error: 'Verification failed', codes })
 
   const text = Object.entries(spec.fields)
     .map(([name, label]) => `${label}: ${value(name) || '-'}`)

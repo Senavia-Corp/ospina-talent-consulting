@@ -152,6 +152,13 @@ html:not(.js) .nav-toggle { display: none; }
 
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--s-4); }
 
+/* Turnstile, primer hijo de la fila del boton de los dos formularios: flex-basis 100% lo
+   deja en su propia linea y el gap de .btn-row lo separa del boton. El alto es el del
+   widget en tamano normal (300x65), reservado para que el boton no salte cuando llega el
+   iframe de Cloudflare; line-height 0 porque el iframe es inline y hereda el interlineado
+   del cuerpo, y sin esto mide 75px. */
+.btn-row > .cf-turnstile { flex-basis: 100%; min-height: 65px; line-height: 0; }
+
 /* ------------------------------------------------- filas de servicio
    Servicios con nombres largos. Como filas se leen; troceados en tarjetas
    identicas se convierten en un muestrario. La lista no tiene tope: es una

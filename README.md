@@ -2,7 +2,7 @@
 
 Sitio de Ospina Talent Consulting, migrado de Webflow a Vercel.
 8 páginas estáticas, sin CMS, sin build, **sin una sola dependencia de terceros
-en runtime**.
+en runtime** salvo Turnstile en las dos páginas con formulario.
 
 Desplegado en <https://ospina-talent-consulting.vercel.app>
 
@@ -122,7 +122,8 @@ dos páginas hay que conservar:
   `<form>`**;
 - el `[type="submit"]` con `data-wait`;
 - **todos los `name=`**, que `api/submit.js` tiene en lista blanca uno a uno;
-- el campo trampa `fax`, dentro de `.form-hp`.
+- el campo trampa `fax`, dentro de `.form-hp`;
+- el `<div class="cf-turnstile">` como **primer hijo de `.btn-row`**, dentro del `<form>`.
 
 > ⚠ **`.w-form-done` y `.w-form-fail` llevan `display: none` en
 > `css/components.css`.** Esa regla venía de `css/webflow.css`, que este rediseño
@@ -137,15 +138,36 @@ dos páginas hay que conservar:
 2. **Lista blanca de campos.** Lo que no está en `FORMS` no se lee ni se envía.
 3. **El contenido del formulario no se loguea nunca.**
 
-Anti-abuso: honeypot en los dos formularios y límite de 5 envíos por IP cada 10
-minutos. El contador vive **en memoria**, así que es por instancia y no cubre un
-ataque repartido entre muchas IP. Corta el abuso trivial sin añadir servicios.
+Anti-abuso, en tres capas y en este orden:
+
+1. **Honeypot** en los dos formularios: el bot que lo rellena se lleva un 200 falso.
+2. **Límite de 5 envíos por IP cada 10 minutos.** El contador vive **en memoria**,
+   así que es por instancia y no cubre un ataque repartido entre muchas IP.
+3. **Cloudflare Turnstile**, que es el filtro serio. El widget mete su token en
+   `cf-turnstile-response` y `api/submit.js` lo valida contra `siteverify` **antes
+   de enviar nada**: sin token válido responde 403 y no sale ningún email. El token
+   no está en la lista blanca, así que nunca llega al correo.
+
+De Turnstile conviene saber:
+
+- La **site key** es pública y va escrita en el HTML. La **secret key** vive solo en
+  Vercel, como `TURNSTILE_SECRET_KEY`. El widget es de la cuenta de Cloudflare del
+  cliente.
+- **Falla cerrado**: si Cloudflare no contesta en 8 s, el envío se rechaza y el
+  visitante ve el panel de error.
+- El token es de un solo uso: si un envío falla, `form-submit.js` reinicia el widget.
+- El widget solo funciona en los dominios autorizados en Cloudflare, que tienen que
+  ser `ospina-talent-consulting.vercel.app` y, cuando se cambie el DNS, el dominio
+  final. En cualquier otro, incluidos `localhost` y los previews, sale en error y el
+  formulario no envía.
+- La respuesta 403 incluye los `error-codes` de Cloudflare. `invalid-input-secret`
+  significa que la secret key de Vercel no es la de este widget.
 
 ### Variables de entorno
 
-`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_TO`. Las cinco son
-obligatorias; si falta una, la función responde 500 y registra solo los nombres
-que faltan, nunca valores.
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_TO` y
+`TURNSTILE_SECRET_KEY`. Las seis son obligatorias; si falta una, la función responde
+500 y registra solo los nombres que faltan, nunca valores.
 
 **Configuradas el 22 de septiembre de 2026, solo en _Production_**: Gmail por
 `smtp.gmail.com:465` con una contraseña de aplicación del Gmail del cliente, y
@@ -192,7 +214,8 @@ Sobre el build servido, no a ojo:
   ya salía en verde con las 141 imágenes en `alt=""` (así que **no sustituye a
   mirarlo a mano**), y en cambio sí cazó el `opacity` de la animación del hero,
   que mis propias mediciones no veían.
-- **Cero peticiones a terceros** en producción, comprobado en el panel de red.
+- **Cero peticiones a terceros** en producción, comprobado en el panel de red, salvo
+  Turnstile (`challenges.cloudflare.com`) en las dos páginas con formulario.
 - **Anclas de `/services`**: las 6 caen al mismo offset bajo la barra fija, con
   dispersión 0. El `scroll-padding` y la altura de la cabecera salen del mismo
   token, así que no pueden desincronizarse.
@@ -250,8 +273,8 @@ falta verlo con un teclado de verdad.
    propio sitio sugiere `ospinatalentconsulting.com`. **Hay que recablear las tres
    cosas antes del cambio de DNS.**
 3. **Cambio de DNS**, con el usuario delante. **El DNS sigue en Webflow.**
-4. **Turnstile**, que necesita el dominio dado de alta en Cloudflare. Ver el punto
-   9 de la lista de cliente.
+4. ~~**Turnstile**~~ Hecho el 22-09-2026: ver _Reglas de `api/submit.js`_. Al
+   cambiar el DNS hay que añadir el dominio final a los hostnames del widget.
 5. **Cancelar Webflow**, ya con el DNS verificado.
 6. **Activar Web Analytics** en el panel del proyecto. El script se añadió y hubo
    que quitarlo porque sin activar devuelve 404 y ensucia la consola de las 7
@@ -272,10 +295,8 @@ falta verlo con un teclado de verdad.
    escribió y funciona, pero **se retiró del código desplegado** porque eran 4,4 KB
    que ninguna página usaba. Se recupera con
    `git show 2cbe1f8:css/components.css` y `git show 2cbe1f8:js/site.js`.
-9. **`/api/submit` es un relé de correo público.** El honeypot y el límite por IP
-   cortan el abuso trivial; el límite en memoria no se comparte entre instancias.
-   Con DUNS y datos de empresa en el formulario de partners, conviene decidir
-   Turnstile o BotID **antes** del corte de DNS, no después.
+9. ~~**`/api/submit` es un relé de correo público.**~~ Resuelto con Turnstile el
+   22-09-2026, validado en el servidor antes de enviar.
 10. **Mapa de Google.** El widget del export usaba la clave compartida de Webflow,
     que devuelve `BillingNotEnabledMapError`: renderiza en modo desarrollo, con
     marca de agua. Se sustituyó por la dirección con un enlace a Google Maps, que

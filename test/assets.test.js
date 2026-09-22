@@ -19,7 +19,11 @@ const css = fs.readdirSync(path.join(ROOT, 'css')).map((f) => path.join('css', f
 // (scroll-snap en CSS) y el widget de Elfsight llevaba roto desde antes de migrar:
 // devolvia WIDGET_NOT_FOUND y pintaba 0 hijos y 0px de alto, tambien en el sitio de
 // Webflow. El conjunto vacio es mas estricto que la lista anterior, no menos.
-const EXTERNOS_OK = []
+//
+// La unica excepcion es Turnstile, y es a proposito: sin el, /api/submit es un rele de
+// correo publico con el DUNS y los datos fiscales del formulario Partner. Solo lo cargan
+// las dos paginas con formulario; cualquier otro tercero sigue rompiendo esta prueba.
+const EXTERNOS_OK = ['challenges.cloudflare.com']
 
 function refs(file) {
   const s = fs.readFileSync(path.join(ROOT, file), 'utf8')

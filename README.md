@@ -147,6 +147,16 @@ ataque repartido entre muchas IP. Corta el abuso trivial sin añadir servicios.
 obligatorias; si falta una, la función responde 500 y registra solo los nombres
 que faltan, nunca valores.
 
+**Configuradas el 22 de septiembre de 2026, solo en _Production_**: Gmail por
+`smtp.gmail.com:465` con una contraseña de aplicación del Gmail del cliente, y
+`MAIL_TO` al buzón que publica el propio sitio. Se probaron con un envío real por
+formulario: llegan con el `From` del Gmail y el `Reply-To` de quien rellena. Los
+_previews_ no las tienen, así que allí los formularios responden 500.
+
+`SMTP_PASS` es _sensitive_: Vercel no deja leerla ni cambiarle el nombre. Si aparece
+una `smtp_key_gmail`, es la misma clave guardada con un nombre que el código no lee:
+sobra.
+
 Para comprobar que propagaron **sin mandar correo**:
 
 ```bash
@@ -234,7 +244,7 @@ falta verlo con un teclado de verdad.
 
 ### Del despliegue
 
-1. **Las 5 variables SMTP.** Sin ellas los formularios devuelven 500.
+1. ~~**Las 5 variables SMTP.**~~ Hecho el 22-09-2026: ver _Variables de entorno_.
 2. **Confirmar el dominio de producción.** Hoy el canonical, el sitemap y las
    etiquetas OG apuntan a `ospina-talent-consulting.vercel.app`. El `mailto:` del
    propio sitio sugiere `ospinatalentconsulting.com`. **Hay que recablear las tres

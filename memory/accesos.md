@@ -5,7 +5,7 @@ con qué identidad se llega.
 
 ## Repositorio
 
-- `github.com/Senavia-Corp/ospina-talent-consulting`, privado.
+- `github.com/Senavia-Corp/ospina-talent-consulting`, público.
 - `gh` autenticado como **senaviacorp**. Scopes del token: `gist`, `read:org`,
   `repo`, `workflow`. **No tiene `admin:org` ni `delete_repo`.**
 - **Autor de los commits: `hosting@senaviacorp.com`**, fijado local al repo.
@@ -15,17 +15,16 @@ con qué identidad se llega.
 
 ## Vercel
 
-- Equipo (scope): **`senaviacorp`**. Proyecto: `ospina-talent-consulting`.
-- Los identificadores están en `.vercel/project.json`, que está ignorado por git.
+- **Cuenta del cliente desde el 2026-09-22**: equipo `ospina-talent-consulting`
+  (`team_sBV9Kc5airYXSG9VzP9kmisF`, Hobby). Proyecto `ospina-talent-consulting`
+  (`prj_dm2acerQnsdii1KNZmu4SVZWnCCz`), transferido desde `senaviacorp` con el
+  mismo id. Senavia llega por Composio, cuenta `vercel_hound-sile`.
+- **Git enlazado** al repo: push a `main` = producción; cualquier otra rama = preview.
+- **No usar `--scope senaviacorp`**: el proyecto ya no está ahí y el CLI crearía
+  otro. `.vercel/project.json` (ignorado por git) sigue apuntando a ese equipo.
 - El CLI **no está instalado global**: se usa `npx --yes vercel@latest`.
 - **No usar el MCP de Vercel.** Apunta al equipo *Manuel Ramirez's projects* y
-  devuelve 403 al crear proyectos. El CLI sí ve `senaviacorp`.
-- **`vercel git connect` no funciona aquí**: el repo es privado y de una
-  organización, y el plan Hobby no lo soporta. El despliegue es a mano.
-
-```bash
-npx --yes vercel@latest deploy --prod --scope senaviacorp --yes
-```
+  devuelve 403 al crear proyectos.
 
 ## Variables de entorno
 

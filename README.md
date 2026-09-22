@@ -45,13 +45,17 @@ que sirve `/services` desde `services.html`.
 
 ## Despliegue
 
-No se usa el MCP de Vercel: apunta a otro equipo y devuelve 403 al crear
-proyectos. Y `vercel git connect` falla porque el repo es privado y de una
-organización, cosa que el plan Hobby no soporta. Se despliega a mano:
+Desde el 22 de septiembre de 2026 el proyecto vive en la **cuenta de Vercel del
+cliente** (equipo `ospina-talent-consulting`, Hobby), transferido desde
+`senaviacorp` con el mismo id, y está **enlazado a este repo por Git**: un push a
+`main` despliega a producción y cualquier otra rama sale como preview.
 
-```bash
-npx --yes vercel@latest deploy --prod --scope senaviacorp --yes
-```
+> ⚠ **No volver a desplegar con `--scope senaviacorp`.** El proyecto ya no existe
+> ahí y el CLI crearía otro en la cuenta de Senavia. El `.vercel/project.json` local,
+> que git ignora, todavía apunta a ese equipo.
+
+No se usa el MCP de Vercel: apunta a otro equipo y devuelve 403 al crear
+proyectos.
 
 **El autor de los commits tiene que ser `hosting@senaviacorp.com`.** Vercel compara
 ese email con los miembros del equipo y bloquea con `TEAM_ACCESS_REQUIRED`. Está

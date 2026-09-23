@@ -121,6 +121,59 @@ function demasiadas(ip) {
   return previas.length > MAX_POR_VENTANA
 }
 
+// El correo en HTML, con la marca del sitio. Va junto al texto plano (multipart): cada
+// cliente de correo elige, y el texto sigue siendo la version sin estilos. Estilos en
+// linea y tablas porque Gmail y Outlook ignoran casi todo lo demas; sin imagenes, para
+// que se vea igual con la carga de imagenes bloqueada.
+// Todo lo que escribio el visitante pasa por esc(): sin eso, un nombre con etiquetas se
+// pintaria como HTML en el buzon del cliente.
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
+
+// Los colores salen de css/tokens.css, con sus reglas de contraste: blanco sobre violeta
+// (9,67:1), tinta sobre ambar (8,71:1) y el ambar nunca como letra sobre claro.
+const C = { violeta: '#6214a8', ambar: '#f2a413', tinta: '#1d1029', mute: '#5b5170', linea: '#ded6e8', fondo: '#f7f5fa' }
+const FUENTE = 'Arial, Helvetica, sans-serif'
+
+function correoHtml(spec, filas, replyTo) {
+  // En los titulos, <wbr> antes de cada punto: un asunto con un dominio entero
+  // (supportstaffsolutionsusa.com, 315px en negrita de 22px) no cabia en un movil y
+  // ensanchaba todo el correo.
+  const campos = filas.map(([label, v]) => `
+          <tr><td style="padding:14px 0;border-bottom:1px solid ${C.linea}">
+            <div style="font:12px/16px ${FUENTE};color:${C.mute};text-transform:uppercase;letter-spacing:.05em">${esc(label)}</div>
+            <div style="font:16px/24px ${FUENTE};color:${C.tinta};margin-top:4px;word-break:break-word;overflow-wrap:anywhere">${esc(v).replace(/\r?\n/g, '<br>')}</div>
+          </td></tr>`).join('')
+  const boton = replyTo ? `
+      <tr><td style="padding:8px 32px 0">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${C.ambar}" style="border-radius:4px">
+          <a href="mailto:${esc(replyTo)}" style="display:inline-block;padding:12px 22px;font:bold 15px/20px ${FUENTE};color:${C.tinta};text-decoration:none">Reply by email</a>
+        </td></tr></table>
+      </td></tr>` : ''
+  const pie = replyTo
+    ? 'Replying to this email goes straight to the person who filled in the form.'
+    : 'The email address they entered is not valid, so replying to this message will not reach anyone.'
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(spec.subject)}</title></head>
+<body style="margin:0;padding:0;background:${C.fondo}">
+<div style="display:none;max-height:0;overflow:hidden">${esc(filas.slice(0, 2).map(([, v]) => v).join(' · '))}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.fondo}"><tr><td align="center" style="padding:24px 12px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff">
+    <tr><td style="background:${C.violeta};border-top:6px solid ${C.ambar};padding:24px 32px">
+      <div style="font:13px/18px ${FUENTE};color:#dccbec">Ospina Talent Consulting</div>
+      <div style="font:bold 22px/28px ${FUENTE};color:#ffffff;margin-top:4px;overflow-wrap:anywhere">${esc(spec.subject).replace(/\./g, '<wbr>.')}</div>
+    </td></tr>
+    <tr><td style="padding:24px 32px 8px;font:15px/22px ${FUENTE};color:${C.tinta}">Someone just submitted a form on the website. Here are the details:</td></tr>
+    <tr><td style="padding:8px 32px 16px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${campos}
+      </table>
+    </td></tr>${boton}
+    <tr><td style="padding:24px 32px 28px;font:13px/19px ${FUENTE};color:${C.mute}">${pie}<br>Sent automatically by the form on the Ospina Talent Consulting website.</td></tr>
+  </table>
+</td></tr></table>
+</body></html>`
+}
+
 let transport
 function mailer() {
   if (!transport) {
@@ -174,9 +227,8 @@ module.exports = async (req, res) => {
   const codes = await turnstile(value('cf-turnstile-response'), ip === 'desconocida' ? '' : ip)
   if (codes.length) return res.status(403).json({ error: 'Verification failed', codes })
 
-  const text = Object.entries(spec.fields)
-    .map(([name, label]) => `${label}: ${value(name) || '-'}`)
-    .join('\n')
+  const filas = Object.entries(spec.fields).map(([name, label]) => [label, value(name) || '-'])
+  const text = filas.map(([label, v]) => `${label}: ${v}`).join('\n')
 
   // Poner el email de quien rellena en Reply-To hace que Responder le conteste a el.
   // Solo si parece un email de verdad: un salto de linea aqui seria inyeccion de cabeceras.
@@ -190,6 +242,7 @@ module.exports = async (req, res) => {
       replyTo,
       subject: spec.subject,
       text,
+      html: correoHtml(spec, filas, replyTo),
     })
     return res.status(200).json({ ok: true })
   } catch (err) {

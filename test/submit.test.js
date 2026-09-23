@@ -207,6 +207,32 @@ test('el token va a siteverify con el secreto y la IP, y no llega al email', asy
   assert.doesNotMatch(sent[0].text, /bueno|turnstile/i)
 })
 
+test('el aviso sale tambien en HTML, con lo que escribio el visitante escapado', async () => {
+  sent.length = 0
+  const r = res()
+  await handler(req({ method: 'POST', query: { f: 'contact' },
+    body: { ...CONTACT, name: '<b>Ana</b> & "co"', Message: 'Line 1\nLine 2' } }), r)
+  assert.strictEqual(r.statusCode, 200)
+  const h = sent[0].html
+  assert.match(h, /&lt;b&gt;Ana&lt;\/b&gt; &amp; &quot;co&quot;/)
+  assert.doesNotMatch(h, /<b>Ana<\/b>/)
+  assert.match(h, /Line 1<br>Line 2/)
+  assert.match(h, /href="mailto:ana@example\.com"/)
+  assert.doesNotMatch(h, /bueno/) // el token de Turnstile no llega ni al HTML
+  // El texto plano sigue saliendo igual: es la alternativa sin estilos.
+  assert.match(sent[0].text, /^Full Name: <b>Ana<\/b> & "co"$/m)
+})
+
+test('el Partner en HTML lleva sus 25 campos y el Reply-To del contacto', async () => {
+  sent.length = 0
+  const r = res()
+  await handler(req({ method: 'POST', query: { f: 'partner' }, body: PARTNER }), r)
+  assert.strictEqual(r.statusCode, 200)
+  const h = sent[0].html
+  assert.strictEqual((h.match(/border-bottom:1px solid/g) || []).length, 25)
+  assert.match(h, /href="mailto:ana@acme\.example"/)
+})
+
 test('sin TURNSTILE_SECRET_KEY la funcion no arranca: 500', async () => {
   const antes = process.env.TURNSTILE_SECRET_KEY
   delete process.env.TURNSTILE_SECRET_KEY
